@@ -7,7 +7,6 @@ public class LaunchTerminal : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("Launching to PvPvE zone...");
         SceneManager.LoadScene(pvpveSceneName);
     }
 }

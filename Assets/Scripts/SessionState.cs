@@ -4,7 +4,11 @@ public class SessionState : MonoBehaviour
 {
     public static SessionState Instance;
 
-    public int salvage;
+    // Temporary simple model
+    public int runSalvage;
+    public int stashSalvage;
+
+    public bool returnedFromRun = false;
 
     void Awake()
     {
@@ -18,9 +22,17 @@ public class SessionState : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void AddSalvage(int amount)
+    // Called by pickups
+    public void AddRunSalvage(int amount)
     {
-        salvage += amount;
-        Debug.Log($"Salvage: {salvage}");
+        runSalvage += amount;
+        Debug.Log($"Run Salvage: {runSalvage}");
+    }
+
+    // Called by unload button
+    public void UnloadInventory()
+    {
+        stashSalvage += runSalvage;
+        runSalvage = 0;
     }
 }

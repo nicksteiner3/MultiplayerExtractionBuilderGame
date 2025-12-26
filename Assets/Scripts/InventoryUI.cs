@@ -22,6 +22,6 @@ public class InventoryUI : MonoBehaviour
     {
         if (SessionState.Instance == null) return;
 
-        salvageText.text = $"Salvage: {SessionState.Instance.salvage}";
+        salvageText.text = $"Salvage: {SessionState.Instance.runSalvage}";
     }
 }

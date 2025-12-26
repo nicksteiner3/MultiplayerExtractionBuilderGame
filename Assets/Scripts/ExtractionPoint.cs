@@ -7,7 +7,7 @@ public class ExtractionPoint : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("Extracting back to ship...");
+        SessionState.Instance.returnedFromRun = true;
         SceneManager.LoadScene(shipSceneName);
     }
 }

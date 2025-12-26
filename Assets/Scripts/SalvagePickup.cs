@@ -6,7 +6,7 @@ public class SalvagePickup : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        SessionState.Instance.AddSalvage(amount);
+        SessionState.Instance.AddRunSalvage(amount);
         Destroy(gameObject);
     }
 }

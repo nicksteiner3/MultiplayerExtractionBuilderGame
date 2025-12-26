@@ -17,6 +17,8 @@ public class FPSController : MonoBehaviour
     private float xRotation = 0f;
     private Camera playerCamera;
 
+    public bool frozen = false;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -28,6 +30,8 @@ public class FPSController : MonoBehaviour
 
     void Update()
     {
+        if (frozen) return;
+
         HandleMouseLook();
         HandleMovement();
     }

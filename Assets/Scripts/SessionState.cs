@@ -4,8 +4,7 @@ public class SessionState : MonoBehaviour
 {
     public static SessionState Instance;
 
-    public int resourcesCollected;
-    public int enemiesKilled;
+    public int salvage;
 
     void Awake()
     {
@@ -17,5 +16,11 @@ public class SessionState : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void AddSalvage(int amount)
+    {
+        salvage += amount;
+        Debug.Log($"Salvage: {salvage}");
     }
 }

@@ -14,9 +14,16 @@ public class ShipArrivalHandler : MonoBehaviour
 
     void Start()
     {
-        if (SessionState.Instance.returnedFromRun)
+        if (SessionState.Instance == null)
+            return;
+
+        if (!SessionState.Instance.lastRunEndedInDeath &&
+            SessionState.Instance.hasEnteredPvpve)
         {
             unloadInventoryUI.Show();
         }
+
+        // Reset the flag once handled
+        SessionState.Instance.lastRunEndedInDeath = false;
     }
 }

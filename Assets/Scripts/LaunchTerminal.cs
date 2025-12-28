@@ -7,6 +7,8 @@ public class LaunchTerminal : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        SessionState.Instance.hasEnteredPvpve = true;
+        SessionState.Instance.lastRunEndedInDeath = false;
         SceneManager.LoadScene(pvpveSceneName);
     }
 }

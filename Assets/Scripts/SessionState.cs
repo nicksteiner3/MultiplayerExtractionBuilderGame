@@ -3,6 +3,8 @@ using UnityEngine;
 public class SessionState : MonoBehaviour
 {
     public static SessionState Instance;
+    public bool lastRunEndedInDeath = false;
+    public bool hasEnteredPvpve = false;
 
     // Temporary simple model
     public int runSalvage;

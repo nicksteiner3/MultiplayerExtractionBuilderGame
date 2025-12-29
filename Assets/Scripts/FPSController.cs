@@ -24,8 +24,7 @@ public class FPSController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         playerCamera = GetComponentInChildren<Camera>();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        UnfreezePlayer();
     }
 
     void Update()
@@ -67,5 +66,19 @@ public class FPSController : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void FreezePlayer()
+    {
+        frozen = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void UnfreezePlayer()
+    {
+        frozen = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }

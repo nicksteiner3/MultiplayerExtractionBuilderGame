@@ -26,7 +26,7 @@ public class UnloadInventoryUI : MonoBehaviour
     void FreezePlayer(bool freeze)
     {
         // Simple version
-        var controller = FindObjectOfType<FPSController>();
+        var controller = FindFirstObjectByType<FPSController>();
         if (controller != null)
             controller.frozen = freeze;
 

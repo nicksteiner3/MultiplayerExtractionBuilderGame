@@ -1,0 +1,50 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EquipmentUIManager : MonoBehaviour
+{
+    public static EquipmentUIManager Instance;
+    public GameObject UIWindow;
+
+    [SerializeField] private List<EquipmentSlotUI> equipmentSlots = new();
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void Update()
+    {
+        HandleWindowClosure();
+    }
+
+    public EquipmentSlotUI GetFirstEmptySlot()
+    {
+        foreach (var slot in equipmentSlots)
+        {
+            if (slot.IsEmpty)
+                return slot;
+        }
+        return null;
+    }
+
+    private void HandleWindowClosure()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseWindow();
+        }
+    }
+
+    public void CloseWindow()
+    {
+        if (UIWindow.activeSelf)
+        {
+            UIWindow.SetActive(false);
+
+            var controller = FindFirstObjectByType<FPSController>();
+            if (controller)
+                controller.UnfreezePlayer();
+        }
+    }
+}

@@ -8,7 +8,7 @@ public class ShipArrivalHandler : MonoBehaviour
     {
         if (unloadInventoryUI == null)
         {
-            unloadInventoryUI = FindObjectOfType<UnloadInventoryUI>();
+            unloadInventoryUI = FindFirstObjectByType<UnloadInventoryUI>();
         }
     }
 

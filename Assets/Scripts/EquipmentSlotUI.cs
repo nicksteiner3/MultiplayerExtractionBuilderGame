@@ -15,15 +15,24 @@ public class EquipmentSlotUI : MonoBehaviour, IDropHandler
 
         if (!IsEmpty) return;
 
-        PlaceItem(abilityItem);
+        TryEquip(abilityItem);
     }
 
-    public void PlaceItem(AbilityUIItem item)
+    private void PlaceItem(AbilityUIItem item)
     {
         item.transform.SetParent(transform);
         var rt = item.GetComponent<RectTransform>();
         rt.anchoredPosition = Vector2.zero;
         rt.localScale = Vector3.one;
-        rt.localRotation = Quaternion.identity;
+    }
+
+    public void TryEquip(AbilityUIItem item)
+    {
+        var manager = EquipmentUIManager.Instance;
+        if (manager == null || manager.PlayerAbilities == null)
+            return;
+
+        manager.PlayerAbilities.EquipAbility(item.ability);
+        PlaceItem(item);
     }
 }

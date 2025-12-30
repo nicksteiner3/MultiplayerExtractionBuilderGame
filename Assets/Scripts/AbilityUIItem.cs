@@ -63,6 +63,6 @@ public class AbilityUIItem : MonoBehaviour,
         var slot = EquipmentUIManager.Instance.GetFirstEmptySlot();
         if (slot == null) return;
 
-        slot.PlaceItem(this);
+        slot.TryEquip(this);
     }
 }

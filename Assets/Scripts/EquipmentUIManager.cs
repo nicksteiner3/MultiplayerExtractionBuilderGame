@@ -5,8 +5,14 @@ public class EquipmentUIManager : MonoBehaviour
 {
     public static EquipmentUIManager Instance;
     public GameObject UIWindow;
+    public PlayerAbilities PlayerAbilities { get; private set; }
 
     [SerializeField] private List<EquipmentSlotUI> equipmentSlots = new();
+
+    private void Start()
+    {
+        PlayerAbilities = FindFirstObjectByType<PlayerAbilities>();
+    }
 
     private void Awake()
     {

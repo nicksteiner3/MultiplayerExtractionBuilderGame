@@ -8,6 +8,7 @@ public class EquipmentUIManager : MonoBehaviour
     public PlayerAbilities PlayerAbilities { get; private set; }
 
     [SerializeField] private List<EquipmentSlotUI> equipmentSlots = new();
+    [SerializeField] private List<StashSlotUI> stashSlots = new();
 
     private void Start()
     {
@@ -29,6 +30,16 @@ public class EquipmentUIManager : MonoBehaviour
         foreach (var slot in equipmentSlots)
         {
             if (slot.IsEmpty)
+                return slot;
+        }
+        return null;
+    }
+
+    public StashSlotUI GetFirstStashSlot()
+    {
+        foreach (var slot in stashSlots)
+        {
+            if (slot.transform.childCount == 0)
                 return slot;
         }
         return null;

@@ -16,7 +16,7 @@ public class StashSlotUI : MonoBehaviour, IDropHandler
         TryUnequip(item);
     }
 
-    private void TryUnequip(AbilityUIItem item)
+    public void TryUnequip(AbilityUIItem item)
     {
         var manager = EquipmentUIManager.Instance;
         if (manager == null || manager.PlayerAbilities == null)

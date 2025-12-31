@@ -52,7 +52,10 @@ public class AbilityUIItem : MonoBehaviour,
     {
         if (Time.time - lastClickTime < doubleClickThreshold)
         {
-            TryAutoEquip();
+            if (IsEquipped)
+                TryAutoUnequip();
+            else
+                TryAutoEquip();
         }
 
         lastClickTime = Time.time;
@@ -68,5 +71,23 @@ public class AbilityUIItem : MonoBehaviour,
         if (slot == null) return;
 
         slot.TryEquip(this);
+    }
+
+    private void TryAutoUnequip()
+    {
+        if (!IsEquipped) return;
+
+        var manager = EquipmentUIManager.Instance;
+        if (manager == null || manager.PlayerAbilities == null)
+            return;
+
+        // Unequip gameplay-wise
+        manager.PlayerAbilities.UnequipAbility(ability);
+
+        // Move UI-wise to any stash slot (or first one)
+        var stashSlot = manager.GetFirstStashSlot();
+        if (stashSlot == null) return;
+
+        stashSlot.TryUnequip(this);
     }
 }

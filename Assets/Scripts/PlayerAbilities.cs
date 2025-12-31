@@ -49,6 +49,19 @@ public class PlayerAbilities : MonoBehaviour
         }
     }
 
+    public void UnequipAbility(AbilityData ability)
+    {
+        var slot = equippedAbilities.FirstOrDefault(s => s.ability == ability);
+        if (slot == null) return;
+
+        equippedAbilities.Remove(slot);
+
+        if (SessionState.Instance != null)
+        {
+            SessionState.Instance.RemoveAbilityFromSession(ability);
+        }
+    }
+
     public void ClearAbilities()
     {
         equippedAbilities.Clear();

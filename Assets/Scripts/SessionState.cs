@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class SessionState : MonoBehaviour
 {
+    private List<AbilitySlot> equippedAbilities = new();
+
     public static SessionState Instance;
     public bool lastRunEndedInDeath = false;
     public bool hasEnteredPvpve = false;
@@ -12,8 +14,6 @@ public class SessionState : MonoBehaviour
     public int stashSalvage;
 
     public bool returnedFromRun = false;
-
-    public List<AbilitySlot> equippedAbilities = new();
 
     void Awake()
     {
@@ -59,11 +59,19 @@ public class SessionState : MonoBehaviour
 
     public void AddAbilityToSession(AbilityData ability)
     {
+        if (equippedAbilities.Exists(x => x.ability == ability))
+            return;
+
         equippedAbilities.Add(new AbilitySlot
         {
             ability = ability,
             cooldownRemaining = 0
         });
+    }
+
+    public void RemoveAbilityFromSession(AbilityData ability)
+    {
+        equippedAbilities.RemoveAll(x => x.ability == ability);
     }
 
     public void ClearAbilities()

@@ -21,9 +21,12 @@ public class EquipmentSlotUI : MonoBehaviour, IDropHandler
     private void PlaceItem(AbilityUIItem item)
     {
         item.transform.SetParent(transform);
+
         var rt = item.GetComponent<RectTransform>();
         rt.anchoredPosition = Vector2.zero;
         rt.localScale = Vector3.one;
+
+        item.IsEquipped = true;
     }
 
     public void TryEquip(AbilityUIItem item)

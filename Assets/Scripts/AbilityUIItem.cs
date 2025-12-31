@@ -12,6 +12,8 @@ public class AbilityUIItem : MonoBehaviour,
     private float lastClickTime;
     private const float doubleClickThreshold = 0.3f;
 
+    public bool IsEquipped { get; set; }
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -58,6 +60,8 @@ public class AbilityUIItem : MonoBehaviour,
 
     private void TryAutoEquip()
     {
+        if (IsEquipped) return;
+
         if (EquipmentUIManager.Instance == null) return;
 
         var slot = EquipmentUIManager.Instance.GetFirstEmptySlot();

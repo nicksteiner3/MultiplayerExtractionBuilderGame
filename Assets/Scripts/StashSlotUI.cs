@@ -27,7 +27,7 @@ public class StashSlotUI : MonoBehaviour, IDropHandler
         PlaceItem(item);
     }
 
-    private void PlaceItem(AbilityUIItem item)
+    public void PlaceItem(AbilityUIItem item)
     {
         item.transform.SetParent(transform);
 

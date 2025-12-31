@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class EquipmentTerminal : MonoBehaviour, IInteractable
+public class AbilityManufacturingTerminal : MonoBehaviour, IInteractable
 {
-    public GameObject equipmentTerminalUI;
+    [SerializeField] private GameObject manufacturingUI;
+
     public void Interact()
     {
-        equipmentTerminalUI.SetActive(true);
+        manufacturingUI.SetActive(true);
 
         var controller = FindFirstObjectByType<FPSController>();
         if (controller)

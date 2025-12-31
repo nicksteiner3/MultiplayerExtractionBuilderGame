@@ -4,7 +4,7 @@ using UnityEngine;
 public class EquipmentUIManager : MonoBehaviour
 {
     public static EquipmentUIManager Instance;
-    public GameObject UIWindow;
+    public GameObject equipmentManagerUi;
     public PlayerAbilities PlayerAbilities { get; private set; }
 
     [SerializeField] private List<EquipmentSlotUI> equipmentSlots = new();
@@ -22,7 +22,8 @@ public class EquipmentUIManager : MonoBehaviour
 
     private void Update()
     {
-        HandleWindowClosure();
+        if (equipmentManagerUi.gameObject.activeSelf)
+            HandleWindowClosure();
     }
 
     public EquipmentSlotUI GetFirstEmptySlot()
@@ -55,9 +56,9 @@ public class EquipmentUIManager : MonoBehaviour
 
     public void CloseWindow()
     {
-        if (UIWindow.activeSelf)
+        if (equipmentManagerUi.activeSelf)
         {
-            UIWindow.SetActive(false);
+            equipmentManagerUi.SetActive(false);
 
             var controller = FindFirstObjectByType<FPSController>();
             if (controller)

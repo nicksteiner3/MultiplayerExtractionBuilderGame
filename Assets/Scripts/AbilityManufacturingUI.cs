@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class AbilityManufacturingUI : MonoBehaviour
 {
-    [SerializeField] private AbilityData dashAbility;
-    [SerializeField] private AbilityUIItem dashAbilityPrefab;
     [SerializeField] private GameObject abilityManufacturingUi;
-    [SerializeField] private int dashCost = 50;
+
+    private FabricatorMachine currentMachine;
 
     private void Update()
     {
@@ -13,33 +12,20 @@ public class AbilityManufacturingUI : MonoBehaviour
             HandleWindowClosure();
     }
 
-    public void CraftDash()
+    public void SetMachine(FabricatorMachine machine)
     {
-        var session = SessionState.Instance;
-        if (session == null) return;
+        currentMachine = machine;
+    }
 
-        if (session.stashSalvage < dashCost)
+    public void CraftAbility(RecipeData recipe)
+    {
+        if (currentMachine == null)
         {
-            Debug.Log("Not enough salvage");
+            Debug.LogError("No FabricatorMachine found");
             return;
         }
 
-        var stashSlot = EquipmentUIManager.Instance.GetFirstStashSlot();
-        if (stashSlot == null)
-        {
-            Debug.Log("No free stash slot");
-            return;
-        }
-
-        // Deduct cost
-        session.stashSalvage -= dashCost;
-
-        // Spawn UI item
-        var item = Instantiate(dashAbilityPrefab);
-        item.ability = dashAbility;
-        item.IsEquipped = false;
-
-        stashSlot.PlaceItem(item);
+        currentMachine.StartRecipe(recipe);
     }
 
     private void HandleWindowClosure()

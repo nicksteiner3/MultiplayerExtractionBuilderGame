@@ -819,10 +819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c69ef7381dbd9f3498ec65d15e67502b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityManufacturingUI
-  dashAbility: {fileID: 11400000, guid: 361922ffdd4bc044393425db05bfb570, type: 2}
-  dashAbilityPrefab: {fileID: 8793359198289299100, guid: bf0ad689dd66bc84cb60348c530406c4, type: 3}
   abilityManufacturingUi: {fileID: 517201505}
-  dashCost: 50
 --- !u!114 &277961934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1238,16 +1235,16 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 277961933}
         m_TargetAssemblyTypeName: AbilityManufacturingUI, Assembly-CSharp
-        m_MethodName: CraftDash
-        m_Mode: 1
+        m_MethodName: CraftAbility
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: ddfaaed33e6a8054188f5437c5277aa0, type: 2}
+          m_ObjectArgumentAssemblyTypeName: RecipeData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!114 &383703341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3261,7 +3258,8 @@ GameObject:
   - component: {fileID: 1410199964}
   - component: {fileID: 1410199963}
   - component: {fileID: 1410199962}
-  - component: {fileID: 1410199961}
+  - component: {fileID: 1410199967}
+  - component: {fileID: 1410199966}
   m_Layer: 0
   m_Name: Ability Manufacturer
   m_TagString: Untagged
@@ -3269,19 +3267,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1410199961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1410199960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8133f0f18c5d142a61aade2b6d40b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AbilityManufacturingTerminal
-  manufacturingUI: {fileID: 517201505}
 --- !u!65 &1410199962
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3375,6 +3360,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1410199966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410199960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a8133f0f18c5d142a61aade2b6d40b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityManufacturingTerminal
+  manufacturingUI: {fileID: 517201505}
+--- !u!114 &1410199967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410199960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2bf806c9670e814f8c1241a726e1ae2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FabricatorMachine
 --- !u!1 &1453247546
 GameObject:
   m_ObjectHideFlags: 0
@@ -3599,6 +3609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1887015920}
   - component: {fileID: 1887015921}
+  - component: {fileID: 1887015922}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -3634,6 +3645,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipArrivalHandler
   unloadInventoryUI: {fileID: 0}
+--- !u!114 &1887015922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887015918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ee1515174e52aa4da71067cc3063ee4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PowerManager
+  totalProducedPower: 100
 --- !u!1 &2029510103
 GameObject:
   m_ObjectHideFlags: 0
@@ -3891,7 +3915,7 @@ MonoBehaviour:
   lastRunEndedInDeath: 0
   hasEnteredPvpve: 0
   runSalvage: 0
-  stashSalvage: 0
+  stashSalvage: 1000
   returnedFromRun: 0
 --- !u!4 &2052235949
 Transform:

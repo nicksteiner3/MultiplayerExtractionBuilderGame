@@ -45,11 +45,29 @@ public class FabricatorMachine : MonoBehaviour
 
     private void CompleteRecipe()
     {
-        foreach (var output in currentRecipe.outputs)
+        if (currentRecipe == null) return;
+
+        var terminal = FindFirstObjectByType<EquipmentUIManager>();
+        if (terminal == null)
         {
-            playerAbilities.EquipAbility(output.ability);
-            //SessionState.Instance.AddAbilityToSession(output.ability);
+            Debug.LogError("No Equipment Terminal found to place completed ability.");
+            return;
         }
+
+        // Get first free stash slot
+        var stashSlot = terminal.GetFirstStashSlot();
+        if (stashSlot == null)
+        {
+            Debug.LogWarning("No free stash slot available. Ability lost!");
+            return;
+        }
+
+        // Spawn the UI item
+        var item = Instantiate(currentRecipe.prefabUIItem); // prefab for this ability
+        item.ability = currentRecipe.outputs.ability;
+        item.IsEquipped = false;
+
+        stashSlot.PlaceItem(item);
 
         currentRecipe = null;
     }

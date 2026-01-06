@@ -10,5 +10,7 @@ public class RecipeData : ScriptableObject
     public float powerRequired;
 
     public List<ItemCost> inputs;
-    public List<ItemOutput> outputs;
+    public ItemOutput outputs;
+
+    public AbilityUIItem prefabUIItem;
 }

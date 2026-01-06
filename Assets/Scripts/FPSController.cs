@@ -19,10 +19,13 @@ public class FPSController : MonoBehaviour
 
     public bool frozen = false;
 
+    private PlayerAbilities playerAbilities;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
         playerCamera = GetComponentInChildren<Camera>();
+        playerAbilities = GetComponent<PlayerAbilities>();
 
         UnfreezePlayer();
     }
@@ -73,6 +76,7 @@ public class FPSController : MonoBehaviour
         frozen = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        playerAbilities.freeze = true;
     }
 
     public void UnfreezePlayer()
@@ -80,5 +84,6 @@ public class FPSController : MonoBehaviour
         frozen = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        playerAbilities.freeze = false;
     }
 }

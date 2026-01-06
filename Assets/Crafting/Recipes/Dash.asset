@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Dash
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
   recipeName: 
-  craftTime: 0
+  craftTime: 3
   powerRequired: 0
   inputs:
   - itemId: 
     amount: 50
-  outputs: []
+  outputs:
+  - ability: {fileID: 11400000, guid: 361922ffdd4bc044393425db05bfb570, type: 2}
+    amount: 0

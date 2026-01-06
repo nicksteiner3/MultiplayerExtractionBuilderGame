@@ -6,6 +6,8 @@ public class PlayerAbilities : MonoBehaviour
 {
     [SerializeField] private List<AbilitySlot> equippedAbilities = new List<AbilitySlot>();
 
+    public bool freeze = false;
+
     private void Start()
     {
         if (SessionState.Instance != null)
@@ -23,6 +25,9 @@ public class PlayerAbilities : MonoBehaviour
 
             if (slot.cooldownRemaining > 0)
                 slot.cooldownRemaining -= Time.deltaTime;
+
+            if (freeze)
+                return; 
 
             if (Input.GetKeyDown(slot.ability.activationKey) &&
                 slot.cooldownRemaining <= 0)

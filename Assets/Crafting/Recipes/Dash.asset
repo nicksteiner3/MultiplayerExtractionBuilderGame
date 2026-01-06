@@ -19,5 +19,6 @@ MonoBehaviour:
   - itemId: 
     amount: 50
   outputs:
-  - ability: {fileID: 11400000, guid: 361922ffdd4bc044393425db05bfb570, type: 2}
+    ability: {fileID: 11400000, guid: 361922ffdd4bc044393425db05bfb570, type: 2}
     amount: 0
+  prefabUIItem: {fileID: 8793359198289299100, guid: bf0ad689dd66bc84cb60348c530406c4, type: 3}

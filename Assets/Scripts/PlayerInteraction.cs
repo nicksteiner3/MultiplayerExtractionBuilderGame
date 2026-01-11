@@ -16,7 +16,11 @@ public class PlayerInteraction : MonoBehaviour
 
     void TryInteract()
     {
-        Ray ray = new Ray(transform.position, transform.forward);
+        var cam = GetComponentInChildren<Camera>();
+        Vector3 origin = cam != null ? cam.transform.position : transform.position;
+        Vector3 direction = cam != null ? cam.transform.forward : transform.forward;
+
+        Ray ray = new Ray(origin, direction);
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange/*, interactableLayer*/))
         {
             var interactable = hit.collider.GetComponent<IInteractable>();

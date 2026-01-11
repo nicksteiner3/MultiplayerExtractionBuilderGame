@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FabricatorMachine : MonoBehaviour
@@ -21,7 +22,6 @@ public class FabricatorMachine : MonoBehaviour
 
         if (!HasInputs(recipe))
         {
-            Debug.Log("Missing inputs");
             return;
         }
 
@@ -74,6 +74,12 @@ public class FabricatorMachine : MonoBehaviour
 
     private bool HasInputs(RecipeData recipe)
     {
+        if (recipe.inputs.Count == 0)
+        {
+            Debug.LogException(new Exception($"No inputs for recipe {recipe.name}"));
+            return false;
+        }
+
         return SessionState.Instance.stashSalvage >= recipe.inputs[0].amount;
     }
 

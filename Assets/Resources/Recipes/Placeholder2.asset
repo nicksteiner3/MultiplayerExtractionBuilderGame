@@ -15,7 +15,9 @@ MonoBehaviour:
   recipeName: Placeholder2
   craftTime: 0
   powerRequired: 0
-  inputs: []
+  inputs:
+  - itemId: 
+    amount: 50
   outputs:
     ability: {fileID: 11400000, guid: 4abe8043d36e512468f9a846575efb3a, type: 2}
     amount: 1

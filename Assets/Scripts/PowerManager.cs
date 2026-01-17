@@ -6,7 +6,7 @@ public class PowerManager : MonoBehaviour
     public static PowerManager Instance;
 
     [Header("MVP Settings")]
-    public float totalProducedPower = 100f;  // Global pool
+    private float totalProducedPower = 0f;  // Starts at 0; reactors add power when running
     private float totalConsumedPower = 0f;
 
     private Dictionary<object, float> consumers = new(); // Tracks who is drawing how much
@@ -54,6 +54,11 @@ public class PowerManager : MonoBehaviour
 
         totalConsumedPower -= consumers[consumer];
         consumers.Remove(consumer);
+    }
+
+    public float GetTotalPower()
+    {
+        return totalProducedPower;
     }
 
     /// <summary>

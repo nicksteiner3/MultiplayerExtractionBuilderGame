@@ -1,11 +1,18 @@
 using System;
 using UnityEngine;
 
-public class FabricatorMachine : MonoBehaviour
+public class FabricatorMachine : MonoBehaviour, IPowered
 {
     private RecipeData currentRecipe;
     private float progress;
     private PlayerAbilities playerAbilities;
+    
+    [Header("Power Settings")]
+    public float powerConsumption = 10f; // Power per second while crafting
+    
+    private bool isPaused = false;
+
+    public float PowerConsumption => powerConsumption;
 
     private void Awake()
     {
@@ -22,6 +29,14 @@ public class FabricatorMachine : MonoBehaviour
 
         if (!HasInputs(recipe))
         {
+            Debug.Log("Insufficient inputs for recipe");
+            return;
+        }
+
+        // Check if power is available
+        if (!HasSufficientPower())
+        {
+            Debug.Log("Insufficient power to start crafting");
             return;
         }
 
@@ -29,11 +44,28 @@ public class FabricatorMachine : MonoBehaviour
 
         currentRecipe = recipe;
         progress = 0f;
+        isPaused = false;
     }
 
     private void Update()
     {
         if (currentRecipe == null) return;
+
+        // If power is lost, pause
+        if (!HasSufficientPower())
+        {
+            if (!isPaused)
+            {
+                isPaused = true;
+                OnPowerLost();
+            }
+            return;
+        }
+        else if (isPaused)
+        {
+            isPaused = false;
+            OnPowerRestored();
+        }
 
         progress += Time.deltaTime;
 
@@ -86,5 +118,20 @@ public class FabricatorMachine : MonoBehaviour
     private void ConsumeInputs(RecipeData recipe)
     {
         SessionState.Instance.stashSalvage -= recipe.inputs[0].amount;
+    }
+
+    public bool HasSufficientPower()
+    {
+        return PowerManager.Instance.GetAvailablePower() >= powerConsumption;
+    }
+
+    public void OnPowerLost()
+    {
+        Debug.Log("Fabricator: Power lost, pausing crafting");
+    }
+
+    public void OnPowerRestored()
+    {
+        Debug.Log("Fabricator: Power restored, resuming crafting");
     }
 }

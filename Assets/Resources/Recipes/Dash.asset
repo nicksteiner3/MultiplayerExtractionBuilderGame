@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Dash
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
   recipeName: Dash
-  craftTime: 0
-  powerRequired: 0
+  craftTime: 20
+  powerRequired: 10
   inputs:
   - itemId: 
     amount: 50

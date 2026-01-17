@@ -277,5 +277,6 @@ Developer Status
 - [x] Core loop validated: build machines, craft ability, equip, use
 - [x] Power gating implemented and validated
 - [x] Reactor system tested with crafting
+- [ ] **Game Title:** Come up with permanent name (temp: "Extraction Protocol")
 - [ ] Material economy framework ready for implementation
 - [ ] Add tests/validation steps where practical

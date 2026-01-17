@@ -82,6 +82,48 @@
 - Seasonal Freshness: Meaningful resets with prestige and permanent rewards.
 - Skillful PvPvE: Risk management and competitive mastery at endgame.
 
+## Material Economy & Progression Framework
+
+### Resource Tiers
+**Tier 0: Raw (PvPvE Only, At-Risk)**
+- Salvage Scrap: Common, everywhere, basic currency
+- Ore Fragments: Mineral deposits, for refining
+- Bio-Matter: Organic drops, fuel source
+- Circuit Wreckage: Rare tech nodes, electronics
+
+**Tier 1: Refined (Ship-Only, Safe)**
+- Processed Alloy: Ore + power → Refinery
+- Fuel Cells: Bio-Matter + power → Fuel Processor
+- Logic Chips: Circuit Wreckage + power → Electronics Bench
+
+**Tier 2: Components (Ship, Some Portable)**
+- Ability Modules: Logic Chips + Alloy → Fabricator
+- Weapon Frames: Alloy + Salvage → Assembly Line (can take to PvP)
+- Power Cores: Fuel Cells + Logic Chips → Advanced Fabricator
+
+**Tier 3: Products (Equipped or Consumed)**
+- Finished Abilities: Modules + Cores + Salvage
+- Weapons: Frames + Logic Chips (lootable corpses)
+- Consumables: Fuel Cells + Bio-Matter (high-risk PvP targets)
+
+### Risk Model
+- **At-Risk Materials:** Tier 0 raw mats, carried by players, lootable on death
+- **Why Risk Them?** Early game manual gathering; later, bait/trade; consumables for PvP edge
+- **Safe Materials:** Tier 1 & 2 on ship; too valuable to carry
+- **Ability Loss:** Dying means losing equipped abilities (cost of failure, PvP stakes)
+
+### Automation Timeline
+- **Hour 0-10:** Manual everything
+- **Hour 10-30:** Refinery unlocked (process ore)
+- **Hour 30-50:** Self-sufficient reactor (no manual refuel)
+- **Hour 50-80:** Harvester drones (passive gathering)
+- **Hour 80-120:** Conveyor belts (auto-routing)
+- **Hour 120-150:** Assembly lines (10x throughput)
+- **Hour 150-180:** Full automation (focus shifts to PvP)
+- **Hour 180-200:** Nexus complete → Ranked Extraction
+
+
+
 ## Prototype Checklist
 
 Gameplay Basics
@@ -96,27 +138,130 @@ Gameplay Basics
 - [x] Inactive UI finding fix for terminals
 - [x] Camera raycast origin fix (use player camera)
 
-Core Loop Hooks
-- [ ] Power gating for machines via `PowerManager`
-- [ ] Manual fueling system (bio-tier) for early power
-- [ ] Self-sufficient generators (coal-like tier) milestone
-- [ ] Multi-input recipes + throughput scaling
-- [ ] Extraction cycle validation (enter/exit flow, drop-off)
-- [ ] Death/losing equipped abilities rules
-- [ ] Save/load persistence for ship state
-- [ ] Triumphs tracking and UI
+Core Power & Machines
+- [x] Power gating for machines via `PowerManager`
+- [x] Manual fueling system (reactor) for early power
+- [x] Power UI displays capacity and consumption
+- [x] Fabricator consumes power while crafting
+- [ ] Equipment terminal powered (gating ability equip)
+- [ ] Ship building terminal powered (gating machine placement)
+
+Material Types & Recipes
+- [ ] Define Salvage Scrap as tier 0 base resource
+- [ ] Add Ore Fragments resource (PvPvE drop)
+- [ ] Add Bio-Matter resource (PvPvE drop)
+- [ ] Add Circuit Wreckage resource (rare PvPvE)
+- [ ] Create Refinery machine + recipe (Ore → Processed Alloy)
+- [ ] Create Fuel Processor machine + recipe (Bio-Matter → Fuel Cells)
+- [ ] Create Electronics Bench machine + recipe (Circuit → Logic Chips)
+- [ ] Update Fabricator recipes to use Tier 1 materials
+- [ ] Design 5 ability recipes with Tier 0-2 costs
+- [ ] Design 5 weapon recipes with Tier 0-2 costs
+
+Fabricator UI Enhancements
+- [ ] Show craft time on each recipe button
+- [ ] Show salvage cost on each recipe button
+- [ ] Show power requirement on each recipe button
+- [ ] Display crafting progress bar when active
+- [ ] Display current progress time (e.g., "15 / 20 seconds")
+- [ ] Show recipe description/tooltip on hover
+
+Inventory System
+- [ ] Create InventoryManager (tracks all items, slots, categories)
+- [ ] Open inventory with TAB key (InventoryUI panel)
+- [ ] Display resources (Salvage, Ore, Bio-Matter, Circuits)
+- [ ] Display abilities (equippable, show cooldowns)
+- [ ] Display weapons (equippable, show ammo/durability)
+- [ ] Display consumables (healing, shields, buffs)
+- [ ] Equip/unequip abilities to ability slots
+- [ ] Equip/unequip weapons to weapon slots
+- [ ] Prevent equipping non-equippable items (materials, consumables)
+- [ ] Show inventory capacity per category (e.g., "12 / 20 Salvage")
+- [ ] Drop item on ground (removes from inventory, creates world object)
+- [ ] Pickup item from ground (adds to inventory or drops if full)
+- [ ] Close inventory with ESC or TAB again
+- [ ] Freeze player when inventory open (like other UIs)
+
+Early Game Loop (0-50h)
+- [ ] Unload salvage from PvPvE → goes to stash
+- [ ] Manually craft 1st ability (test loop validation)
+- [ ] Equip ability and use in PvP zone
+- [ ] Return and unload, craft more
+- [ ] Milestone 1: Craft 5 Dash abilities
+- [ ] Milestone 2: Process 50 Ore into Processed Alloy
+
+Mid Game Automation (50-150h)
+- [ ] Self-sufficient reactor (burns fuel cells, no manual refuel)
+- [ ] Harvester drone concept (place in zone, auto-gathers Salvage/Ore)
+- [ ] Harvester drone implementation (prefab, placement, gathering loop)
+- [ ] Harvester drone UI (show active drones, collection rate)
+- [ ] Conveyor belt system (visual, routing logic)
+- [ ] Conveyor belt UI (draw routes between machines)
+- [ ] Milestone 3: Produce 100 Ability Modules
+- [ ] Milestone 4: Build 10 Harvester Drones
+
+Late Game Scaling (150-200h)
+- [ ] Assembly line machine (parallel fabrication, 10x throughput)
+- [ ] Auto-sorter (routes materials by type automatically)
+- [ ] Multi-fabricator production chains (recipes spanning rooms)
+- [ ] Nexus Phase 3: Deliver 500 Ability Modules + 200 Power Cores
+- [ ] Nexus Phase 5: 1000 finished abilities produced
+- [ ] Milestone tracking UI (show progress toward goals)
+
+PvP Risk & Reward
+- [ ] Carry consumables into PvPvE zone (healing, shields, buffs)
+- [ ] Carry weapon frames for field repairs
+- [ ] Implement consumable use (right-click healing item, applies effect)
+- [ ] Consumables lost on death (add to drop table)
+- [ ] Weapon frames droppable on death (lootable)
+- [ ] Ability loss on death (player loses equipped ability, can retrieve?)
+
+Extraction Cycle
+- [ ] Extract from PvPvE zone (trigger return to ship)
+- [ ] Inventory drop-off validation (can't craft if items not unloaded)
+- [ ] Auto-unload inventory on docking (or manual button)
+- [ ] Failed extraction penalty (die in zone, lose all carried items)
+- [ ] Successful extraction bonus (unload goal amount → milestone progress)
+
+Power Generation Tiers
+- [ ] Tier 0: Manual reactor (refuel from stash, 25 power output)
+- [ ] Tier 1: Self-sufficient reactor (burns fuel cells, auto-produce)
+- [ ] Tier 2: Advanced reactor (higher output, lower consumption)
+- [ ] Multiple reactors on ship (stackable power sources)
+- [ ] Power grid visualization (show how much each machine consumes)
+
+Persistence & Save/Load
+- [ ] Save ship state (built machines, room layout)
+- [ ] Save stash inventory (materials, quantities)
+- [ ] Save equipped abilities per player
+- [ ] Load ship state on session start
+- [ ] Test load/save cycle (build, save, reload, verify)
 
 Seasonal & Endgame
 - [ ] Milestones catalogue (tiers, materials, rewards)
-- [ ] Extraction Nexus construction phases (1–5)
+- [ ] Nexus phase descriptions (1-5, what they unlock)
 - [ ] Ranked Extraction mode scaffolding
 - [ ] Expedition/retirement flow + rewards
 - [ ] Ships management UX (3–5 ship slots)
 
+Progression Unlocks
+- [ ] Unlock: +5 Salvage inventory capacity (Milestone 2)
+- [ ] Unlock: +5 Ore inventory capacity (Milestone 3)
+- [ ] Unlock: +5 Bio-Matter inventory capacity (Milestone 4)
+- [ ] Unlock: +5 Circuit inventory capacity (Milestone 5)
+- [ ] Unlock: +1 Ability equip slot (Milestone 7)
+- [ ] Unlock: +1 Weapon equip slot (Milestone 8)
+- [ ] Unlock: +5 Consumable stack size (Milestone 10)
+- [ ] Unlock: Harvester drone deployment (Milestone 12)
+- [ ] Unlock: Conveyor belt building (Milestone 15)
+- [ ] Unlock: Assembly line crafting (Milestone 18)
+- [ ] Create unlock tracking system (which unlocks player has)
+- [ ] Display unlocked items in fabricator (hide locked recipes)
+- [ ] Show unlock progress toward next milestone
+
 Systems & Rooms
 - [ ] Tether mechanic implementation
 - [ ] Practice range room
-- [ ] Power UI (graphs, alerts)
 - [ ] Resource types & economy balancing
 - [ ] Multiplayer (deferred until core systems mature)
 
@@ -130,4 +275,7 @@ Content: Abilities & Weapons
 
 Developer Status
 - [x] Core loop validated: build machines, craft ability, equip, use
+- [x] Power gating implemented and validated
+- [x] Reactor system tested with crafting
+- [ ] Material economy framework ready for implementation
 - [ ] Add tests/validation steps where practical

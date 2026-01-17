@@ -1,165 +1,133 @@
-Extraction Builder
+# Multiplayer Extraction Builder Game
 
-High-Level Pitch
-A PvPvE extraction-builder where players operate from a persistent ship base, venture into dangerous zones to gather resources, and return to manually secure their haul. Progression is driven by base construction, power management, and unlockable player abilities, not raw shooting skill alone.
-Combat is asymmetric, systemic, and consequence-driven — not a generic shooter.
+## Overview
+- Core: PvPvE extraction meets ship-building and ability crafting.
+- Loop: Run extractions → bring back salvage → build machines → craft abilities → return stronger.
+- Multiplayer: Ships are player-owned; choose solo ship or team ships.
 
-We are shooting for the building systems in Satisfactory, the extraction loop from Arc Raiders, and the abilities from hero shooters like Marvel Rivals and Overwatch. 
+## Seasonal Structure
+- Length: 3 months per season; aim for 10+ seasons.
+- Cycle: Start limited → unlock systems via milestones → retire via expeditions for permanent account-wide rewards.
+- Reset: Ship progress resets each season; account carries select unlocks.
 
-Design Pillars
-1. Risk Must Be Earned
-Valuable actions expose the player to danger
-Safety comes from preparation, not fairness
-Players choose when to be vulnerable
-2. The Ship Is the Heart of Progression
-The ship persists across runs
-Resources must be manually unloaded
-Ship upgrades unlock new gameplay, not just stats
-3. Systems Over Scripts
-No scripted “moments”
-Emergent gameplay from overlapping systems
-PvP happens because someone is doing something valuable
-4. Player Expression Through Abilities
-Hundreds of unlockable abilities
-Abilities are equipped, manufactured, powered, and risked
-Losing abilities is possible
-Core Gameplay Loop
-Prepare on the Ship
-Manage power
-Equip abilities
-Choose loadout
-Decide objectives
-Deploy to PvPvE Zone
-Enter via terminal
-Ship remains persistent
-Risk Phase
-Gather salvage
-Fight AI / players
-Use abilities with cooldowns
-Risk inventory and abilities
-Extraction
-Return to ship
-Inventory is not auto-saved
-Unload Inventory
-Player must manually unload salvage
-Salvage moves to ship stash
-Failure means loss
-Upgrade & Expand
-Build new rooms
-Unlock new abilities
-Improve systems (power, tethering, practice range)
-Repeat — with compounding complexity.
-Player Inventory & Salvage
-Personal Inventory
-Exists per run
-Lost on death
-Must be manually unloaded
-Ship Stash
-Persistent
-Safe
-Used for crafting, power, and unlocks
-Important:
-Returning with nothing is valid and expected.
-Death & Failure Rules
-Death in PvPvE:
-Lose all personal inventory
-Lose equipped abilities (design TBD)
-Return to ship empty-handed
-Death is not a game-over
-Failure informs future preparation
-Abilities System (Major Differentiator)
-Core Ideas
-Abilities are:
-Unlockable
-Equipable
-Manufacturable
-Power-dependent
-Losable
-Examples (Conceptual)
-Mobility
-Utility
-Area control
-Information warfare
-Resource manipulation
-Design Intent
-Not “classes”
-Not fixed loadouts
-High build diversity
-Counterplay-focused
-Base Building & Power System
-Ship Rooms
-Practice range
-Ability manufacturing
-Power generation
-Storage
-Specialized systems (tether, scanners, etc.)
-Power
-Limited resource
-Must be generated
-Rooms require power to function
-Forces prioritization
-Power is a strategic constraint, not a timer.
-Practice Range
-Unlockable ship room
-Requires power
-Used to:
-Test abilities
-Experiment safely
-Train without loss
-Upgradeable:
-Targets
-AI behaviors
-Ability interactions
-Tether System (Signature Mechanic)
-Concept
-Players can tether themselves to the ship and move outside it to:
-Repair
-Harvest exclusive materials
-Install upgrades
-Design Opportunities
-Risk while exposed
-Power consumption
-Tether range limits
-Emergency cut-offs
-PvP vulnerability
-This system is expandable and central to identity.
-PvP Philosophy
-PvP is contextual
-Players fight over:
-Resources
-Positioning
-Timing
-Exposure
-Not:
-Pure aim duels
-Symmetrical arenas
-Fair starts
-Multiplayer Scope (Deferred)
-Core mechanics built single-player first
-Multiplayer added once systems are solid
-No networking compromises early design
-Non-Goals (Important)
-Not a battle royale
-Not a pure shooter
-Not a survival sandbox clone
-Not an esport
-Why This Game Exists
-Most extraction games:
-Reward shooting first
-Punish creativity
-Flatten playstyles
-This game:
-Rewards preparation
-Encourages experimentation
-Creates stories through systems
-Makes failure meaningful but not punishing
-Document Status
-Living document
-Updated as systems stabilize
-Serves as design guardrails
-If you want next, we can:
-Convert this into a 1-page pitch
-Break abilities into formal categories
-Define the MVP feature cut
-Or diagram how power, abilities, and risk intersect
-Just say which.
+## Core Gameplay Loop
+- Extract: Venture into PvPvE zones as often as you want; risk vs reward.
+- Build: Use salvage to construct ship machines and terminals.
+- Craft: Manufacture abilities, weapons, upgrades using recipes.
+- Optimize: Improve efficiency and throughput to hit bigger milestones.
+- Compete: Shift to Ranked Extraction once endgame goals are met.
+
+## Full Gameplay Loop
+- First Session: Choose a starter ship, learn manual power and basic crafting; equip your first ability with limited battery constraints.
+- Prep Phase (each session): Set objectives, equip abilities, check power/fuel, queue manufacturing tasks on the ship.
+- Deploy Phase: Enter PvPvE zone, gather salvage, engage AI/players, manage risk and extraction timing.
+- Return & Unload: Dock and manually unload salvage into ship stash; failure in-zone means loss of carried items.
+- Build & Craft: Construct machines and terminals, unlock recipes, manufacture abilities/weapons/upgrades; manage equip slots and stash.
+- Power & Unlocks: Progress from manual fueling to self-sufficient generators via milestones; machines operate when powered.
+- Milestones Progression: Complete tiered objectives requiring both PvPvE materials and manufactured parts to unlock systems and efficiency.
+- Nexus Construction: Advance the 5-phase Extraction Nexus as the season’s tangible monument and victory condition.
+- Ranked Extraction: After Nexus completion, compete in ranked events using optimized ship builds and team compositions.
+- Expedition & Reset: Retire to gain permanent rewards (cosmetics, extra ship slot, +1 ability slot, blueprint persistence, 10% salvage conversion) and begin a new season with strategic advantages.
+- Season Cadence: Early (0–50h), Mid (50–150h), End (150–200h) phases guide pacing toward endgame competition.
+
+## Power Model
+- Early: Finite battery + manual fueling; machines run when powered, not hard-locked if unlocked.
+- Progression: Unlock self-sufficient power through milestone tiers (bio → coal-like → advanced generators).
+- Late: Practically unbounded power with enough inputs; soft cap emerges when generation exceeds demand.
+- Ownership: Power is unique per ship; players can maintain 3–5 ships (solo, friend-group, general).
+
+## Milestones
+- Structure: Satisfactory-style tiers; each milestone requires specific materials.
+- Sources: Mix of PvPvE-gathered materials and ship-manufactured components.
+- Rewards: Unlock machines, abilities, weapons, character upgrades, power tiers, and efficiency boosts.
+- Difficulty: Milestones scale in complexity and throughput requirements.
+
+## Ultimate Seasonal Goal: Extraction Nexus
+- Tangible Monument: A multi-phase, visible centerpiece built on the ship.
+- Phases (1–5): Power Core, Stabilizer, Extraction Array, Control Lattice, Singularity Anchor.
+- Requirements: Each phase demands materials from PvPvE and manufactured parts.
+- Completion: Fully operational Nexus unlocks Ranked Extraction Mode and serves as season victory condition.
+
+## Ranked Extraction Mode
+- Access: Unlocked by completing the Extraction Nexus.
+- Play: Competitive, team-based extraction events leveraging your ship loadout and abilities.
+- Meta: Endgame focus after maximizing systems; leaderboards and seasonal prestige.
+
+## Expeditions (Retirement) and Permanent Rewards
+- Trigger: After significant progress (e.g., Nexus completion or milestone threshold), retire the character/ship.
+- Rewards:
+	- Cosmetics/Prestige Badge: Visual veteran status.
+	- Extra Ship Slot: +1 ship slot for next season to diversify builds.
+	- Ability Slot +1: Start next season with an additional equipped ability slot.
+	- Blueprint Persistence: Fully researched machine blueprints persist account-wide.
+	- Salvage Conversion: 10% of final season salvage converts to startup salvage next season.
+- Balance: Meaningful head start without invalidating the fresh-start seasonal experience.
+
+## Early/Mid/Endgame
+- Early (0–50h): Learn extraction, basic building, manual power; craft first abilities; small battery constraints.
+- Mid (50–150h): Unlock self-sufficient power, expand machine network, craft advanced abilities/weapons; push milestone tiers.
+- End (150–200h): Maximize systems, complete Nexus, enter Ranked Extraction; optimize builds and team comps.
+
+## Triumphs (Account Checklist)
+- Structure: Repeatable achievements, e.g., “Complete 50 extractions,” “Craft 200 abilities,” “Generate X sustained power,” “Win Y ranked events.”
+- Purpose: Long-term goals across seasons; unlock titles, cosmetics, and minor account buffs.
+
+## Ships and Ownership
+- Slots: Maintain 3–5 ships; assign roles (solo, specific friend group, general-use).
+- Isolation: Each ship’s power and build are distinct; progression choices matter.
+
+## Design Pillars
+- Player Agency: Frequent extractions deepen ship progression.
+- Visible Progress: Tangible monument (Nexus) shows advancement.
+- Seasonal Freshness: Meaningful resets with prestige and permanent rewards.
+- Skillful PvPvE: Risk management and competitive mastery at endgame.
+
+## Prototype Checklist
+
+Gameplay Basics
+- [x] FPS movement + camera
+- [x] Interaction via `IInteractable` and `PlayerInteraction`
+- [x] Salvage pickup and manual unload to ship stash
+- [x] Fabricator machine + dynamic recipe UI (runtime loading)
+- [x] Ability crafting: `DashAbility` from recipe
+- [x] Equipment UI: equip ability and use in-game
+- [x] Ship building terminal + UI + placement system
+- [x] Salvage consumption on build
+- [x] Inactive UI finding fix for terminals
+- [x] Camera raycast origin fix (use player camera)
+
+Core Loop Hooks
+- [ ] Power gating for machines via `PowerManager`
+- [ ] Manual fueling system (bio-tier) for early power
+- [ ] Self-sufficient generators (coal-like tier) milestone
+- [ ] Multi-input recipes + throughput scaling
+- [ ] Extraction cycle validation (enter/exit flow, drop-off)
+- [ ] Death/losing equipped abilities rules
+- [ ] Save/load persistence for ship state
+- [ ] Triumphs tracking and UI
+
+Seasonal & Endgame
+- [ ] Milestones catalogue (tiers, materials, rewards)
+- [ ] Extraction Nexus construction phases (1–5)
+- [ ] Ranked Extraction mode scaffolding
+- [ ] Expedition/retirement flow + rewards
+- [ ] Ships management UX (3–5 ship slots)
+
+Systems & Rooms
+- [ ] Tether mechanic implementation
+- [ ] Practice range room
+- [ ] Power UI (graphs, alerts)
+- [ ] Resource types & economy balancing
+- [ ] Multiplayer (deferred until core systems mature)
+
+Content: Abilities & Weapons
+- [ ] Design 5 abilities (names, roles, power costs)
+- [ ] Implement 5 abilities (scripts, effects, cooldowns)
+- [ ] Design 5 weapons (roles, ammo/power interactions)
+- [ ] Implement 5 weapons (scripts, damage models, VFX/SFX)
+- [ ] Create recipes for all 10 items (abilities + weapons)
+- [ ] Define acquisition/unlock paths (drops, milestones, research) to enable crafting
+
+Developer Status
+- [x] Core loop validated: build machines, craft ability, equip, use
+- [ ] Add tests/validation steps where practical

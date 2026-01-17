@@ -40,11 +40,19 @@ public class FabricatorMachine : MonoBehaviour, IPowered
             return;
         }
 
+        // Request power from PowerManager
+        if (!PowerManager.Instance.RequestPower(this, powerConsumption))
+        {
+            Debug.Log("Failed to reserve power for crafting");
+            return;
+        }
+
         ConsumeInputs(recipe);
 
         currentRecipe = recipe;
         progress = 0f;
         isPaused = false;
+        Debug.Log($"Fabricator: Started crafting, consuming {powerConsumption} power");
     }
 
     private void Update()
@@ -101,6 +109,10 @@ public class FabricatorMachine : MonoBehaviour, IPowered
 
         stashSlot.PlaceItem(item);
 
+        // Release power back to the pool
+        PowerManager.Instance.ReleasePower(this);
+        Debug.Log($"Fabricator: Crafting complete, released {powerConsumption} power");
+
         currentRecipe = null;
     }
 
@@ -127,11 +139,19 @@ public class FabricatorMachine : MonoBehaviour, IPowered
 
     public void OnPowerLost()
     {
-        Debug.Log("Fabricator: Power lost, pausing crafting");
+        if (currentRecipe != null)
+        {
+            PowerManager.Instance.ReleasePower(this);
+            Debug.Log("Fabricator: Power lost, pausing crafting and releasing power");
+        }
     }
 
     public void OnPowerRestored()
     {
-        Debug.Log("Fabricator: Power restored, resuming crafting");
+        if (currentRecipe != null)
+        {
+            PowerManager.Instance.RequestPower(this, powerConsumption);
+            Debug.Log("Fabricator: Power restored, resuming crafting and re-requesting power");
+        }
     }
 }

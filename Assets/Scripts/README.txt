@@ -152,6 +152,162 @@ Core Power & Machines
 - [ ] Ship building terminal powered (gating machine placement)
 
 Material Types & Recipes
+
+## Material System Overview
+
+### Tier 1: Raw Materials (8 types from PvPvE zones)
+- Salvage Scrap (default drop, all zones)
+- Ore Fragments (metal-based, Tier 0 resource)
+- Bio-Matter (organic-based, Tier 0 resource)
+- Circuit Wreckage (electronics, rare Tier 0 resource)
+- Crystal Shards (energy-based, Tier 0 resource)
+- Synthetic Fibers (lightweight, Tier 0 resource)
+- Rare Earth Minerals (catalysts, rare Tier 0 resource)
+- Composite Slag (heavy materials, Tier 0 resource)
+
+### Tier 2: Processed Intermediates (10+ types - FUTURE)
+- Processed Alloy (from Ore via Refinery)
+- Fuel Cells (from Bio-Matter via Fuel Processor)
+- Logic Chips (from Circuits via Electronics Bench)
+- Crystal Matrix (from Crystals via Crystal Lab)
+- Synthetic Composite (from Fibers via Fiber Mill)
+- Catalyst Core (from Rare Earths via Catalyst Extractor)
+- Energy Capacitor (from Crystals variant via Energy Lab)
+- Organic Polymer (from Bio-Matter variant via Bio-Processor)
+- Reinforced Slag (from Slag via Furnace)
+- Concentrated Essence (from Volatile via Essence Refiner)
+
+### Current Machine Focus (Phase 1)
+- **Fabricator** - Crafts abilities and weapons from **raw materials + salvage**
+- NO processing machines in Phase 1 (keep loop simple)
+- All recipes use direct raw materials (Ore, Bio-Matter, Circuits, etc.)
+
+### Phase 2: Material Processing Machines (10-50h+)
+
+**Refiner Machine**
+- Input: Ore Fragments (3)
+- Output: Processed Alloy (1)
+- Craft Time: 10s
+- Power Cost: 10
+- Purpose: Convert cheap raw ore into concentrated metal for advanced recipes
+
+**Bio-Processor Machine**
+- Input: Bio-Matter (3)
+- Output: Fuel Cells (1)
+- Craft Time: 10s
+- Power Cost: 10
+- Purpose: Convert organic material into energy-dense fuel for advanced recipes
+
+**Design Philosophy:**
+- Raw materials are plentiful but heavy (3 ore → 1 alloy)
+- Processing requires time + power investment
+- Processed materials unlock higher-tier recipes on Advanced Machine
+- Players choose specialization: "I'll focus on ore refining" or "bio processing"
+
+### Phase 3+: Additional Processors (50h+)
+- Electronics Bench - Circuits → Logic Chips (3:1, 15s)
+- Crystal Lab - Crystals → Crystal Matrix (2:1, 12s)
+- Fiber Mill - Fibers → Synthetic Composite (3:1, 10s)
+- Catalyst Extractor - Rare Earths → Catalyst Core (4:1, 20s)
+- And 3-4 more as content scales
+
+### Advanced Machine (Phase 2+, unlock at 10h)
+- Handles 2+ input recipes using processed materials
+- Example: Processed Alloy (1) + Fuel Cells (2) + Salvage (50) → Jetpack Tier 1
+- Requires players to invest in processing chain
+- 20+ recipes enabling deep specialization
+
+### Recipe System Updates
+- **RecipeData.cs** updated to support multiple inputs/outputs
+- Inputs now use `List<MaterialInput>` (material type + quantity)
+- Outputs now use `List<MaterialOutput>` (material type + quantity)
+- Fabricator handles multi-input recipes (checks all materials before crafting)
+- Machine-level power consumption (not per-recipe variant)
+- Recipes specify `requiredMachine` (Fabricator or Advanced Machine)
+
+### Phase 1 Recipe Examples (Fabricator Only - Raw Materials Only)
+Simple 1-2 input recipes using raw materials (no processing):
+
+**Dash Ability Tier 0**
+- Input: Bio-Matter (1) + Salvage (30)
+- Output: Dash Ability
+- Craft Time: 20s
+- Power Cost: 10
+- Unlock: Milestone 1
+
+**Heal Orb Tier 0**
+- Input: Bio-Matter (1) + Salvage (25)
+- Output: Heal Orb Ability
+- Craft Time: 15s
+- Power Cost: 10
+- Unlock: Milestone 1
+
+**Pistol Tier 0** - Requires 1 Ore + Salvage
+- Input: Ore Fragments (1) + Salvage (40)
+- Output: Pistol Weapon
+- Craft Time: 25s
+- Power Cost: 10
+- Unlock: Milestone 1
+
+### Phase 1 Recipe TODOs
+- [ ] Create Dash recipe (Bio-Matter + Salvage)
+- [ ] Create Heal Orb recipe (Bio-Matter + Salvage)
+- [ ] Create Pistol recipe (Ore + Salvage)
+- [ ] Create Rifle recipe (Ore + Salvage variant)
+- [ ] Create 1-2 more basic recipes to test loop
+- [ ] Test material consumption and output
+- [ ] Test Fabricator with new material system
+
+### Phase 2: Advanced Machine System (10h+ unlock)
+- Create "Assembly Machine" or "Advanced Fabricator" (TBD name)
+- Supports 2+ input recipes
+- Designed for processed materials (Fuel Cells, Logic Chips, etc.)
+- 20+ recipes for complex items
+- Unlocked at Milestone 5
+- Output: Dash Recipe
+- Craft Time: 20s
+- Power Cost: 10
+
+**Rifle Weapon (Tier 0)** - Requires Metal + Logic
+- Input: Processed Alloy (2) + Logic Chips (1) + Salvage (40)
+- Output: Rifle Recipe
+- Craft Time: 25s
+- Power Cost: 10
+
+**Heal Orb (Tier 0)** - Requires Bio + Crystal
+- Input: Organic Polymer (1) + Crystal Matrix (1) + Salvage (25)
+- Output: Heal Orb Recipe
+- Craft Time: 15s
+- Power Cost: 10
+
+**Phase 1: Material System TODOs**
+- [ ] Create MaterialData.cs ScriptableObject (name, tier, icon, description)
+- [ ] Create 8 raw material assets in Resources/Materials/
+- [ ] Update SessionState.cs to track all materials (Dictionary<MaterialData, int>)
+- [ ] Add material display methods (GetMaterial, AddMaterial, RemoveMaterial, HasMaterial)
+- [ ] Create MaterialStack struct (material type + quantity, for inventory display)
+- [ ] Test material tracking in SessionState (debug logs for adds/removes)
+
+**Phase 2: Machine System TODOs**
+- [ ] Create MachineData.cs ScriptableObject (name, power cost, input material, output material, process time)
+- [ ] Create 8 machine assets in Resources/Machines/
+- [ ] Create generic MachineProcessor class (handles material conversion)
+- [ ] Implement machine crafting loop (input consumption → timer → output creation)
+- [ ] Add machine status tracking (running, paused, broken)
+- [ ] Test machine on-demand crafting (convert materials when activated)
+
+**Phase 3: Recipe System TODOs**
+- [ ] Create MaterialInput struct (MaterialData + quantity)
+- [ ] Create MaterialOutput struct (MaterialData + quantity)
+- [ ] Update RecipeData.cs to support List<MaterialInput> and List<MaterialOutput>
+- [ ] Create multi-input recipe validation (check all materials exist before crafting)
+- [ ] Update FabricatorMachine.cs to handle multiple inputs (ConsumeInputs loops through list)
+- [ ] Create 5 ability recipes with material costs
+- [ ] Create 5 weapon recipes with material costs
+- [ ] Test full production chain (extract → process → craft → equip)
+- [ ] Balance recipe costs (ensure progression pacing, not too expensive/cheap)
+
+**Current TODOs (from previous sections):**
 - [ ] Define Salvage Scrap as tier 0 base resource
 - [ ] Add Ore Fragments resource (PvPvE drop)
 - [ ] Add Bio-Matter resource (PvPvE drop)

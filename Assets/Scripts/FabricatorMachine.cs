@@ -150,18 +150,54 @@ public class FabricatorMachine : MonoBehaviour, IPowered
 
     private bool HasInputs(RecipeData recipe)
     {
-        if (recipe.inputs.Count == 0)
+        // Check new material system first
+        if (recipe.materialInputs != null && recipe.materialInputs.Count > 0)
         {
-            Debug.LogException(new Exception($"No inputs for recipe {recipe.name}"));
-            return false;
+            foreach (var input in recipe.materialInputs)
+            {
+                if (input.material == null)
+                {
+                    Debug.LogWarning($"Recipe {recipe.recipeName} has a material input slot with no material assigned.");
+                    return false;
+                }
+
+                int have = SessionState.Instance.GetMaterialCount(input.material);
+                if (have < input.amount)
+                {
+                    Debug.LogWarning($"Missing material for {recipe.recipeName}: need {input.amount}x {input.material.materialName}, have {have}.");
+                    return false;
+                }
+            }
+            return true;
         }
 
-        return SessionState.Instance.stashSalvage >= recipe.inputs[0].amount;
+        // Fallback to legacy salvage system
+        if (recipe.inputs != null && recipe.inputs.Count > 0)
+        {
+            return SessionState.Instance.stashSalvage >= recipe.inputs[0].amount;
+        }
+
+        Debug.LogWarning($"Recipe {recipe.name} has no inputs defined");
+        return false;
     }
 
     private void ConsumeInputs(RecipeData recipe)
     {
-        SessionState.Instance.stashSalvage -= recipe.inputs[0].amount;
+        // Consume new material system first
+        if (recipe.materialInputs != null && recipe.materialInputs.Count > 0)
+        {
+            foreach (var input in recipe.materialInputs)
+            {
+                SessionState.Instance.RemoveMaterial(input.material, input.amount);
+            }
+            return;
+        }
+
+        // Fallback to legacy salvage system
+        if (recipe.inputs != null && recipe.inputs.Count > 0)
+        {
+            SessionState.Instance.stashSalvage -= recipe.inputs[0].amount;
+        }
     }
 
     public bool HasSufficientPower()

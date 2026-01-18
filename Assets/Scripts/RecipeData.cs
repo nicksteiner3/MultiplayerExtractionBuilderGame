@@ -7,7 +7,6 @@ public class RecipeData : ScriptableObject
     public string recipeName;
 
     public float craftTime;
-    public float powerRequired;
 
     public List<ItemCost> inputs;
     public ItemOutput outputs;

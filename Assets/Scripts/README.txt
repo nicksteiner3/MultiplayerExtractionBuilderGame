@@ -137,6 +137,11 @@ Gameplay Basics
 - [x] Salvage consumption on build
 - [x] Inactive UI finding fix for terminals
 - [x] Camera raycast origin fix (use player camera)
+- [ ] Display "Press E" interaction prompt when looking at interactable objects
+- [ ] Add Reactor to ship building system (buildable machine alongside Fabricator)
+- [ ] Implement machine disassembly (return salvage cost when destroying placed machines)
+- [ ] Create pause menu (settings, resume, quit, controls, audio, graphics)
+- [ ] Create title screen (new game, continue, settings, quit)
 
 Core Power & Machines
 - [x] Power gating for machines via `PowerManager`
@@ -159,12 +164,31 @@ Material Types & Recipes
 - [ ] Design 5 weapon recipes with Tier 0-2 costs
 
 Fabricator UI Enhancements
-- [ ] Show craft time on each recipe button
-- [ ] Show salvage cost on each recipe button
-- [ ] Show power requirement on each recipe button
-- [ ] Display crafting progress bar when active
-- [ ] Display current progress time (e.g., "15 / 20 seconds")
-- [ ] Show recipe description/tooltip on hover
+- [x] Show craft time on each recipe button
+- [x] Show salvage cost on each recipe button
+- [x] Show recipe description/tooltip on hover
+- [x] Display crafting progress bar when active
+- [x] Display current progress time (e.g., "15 / 20 seconds")
+- [x] Change power model: machine has single power requirement (not per-recipe)
+- [x] Hide recipe list after selection, show only current recipe + progress
+- [x] Auto-queue next craft of same recipe when one completes
+- [x] Stop crafting when stash is full
+- [x] Add cancel button to stop crafting
+- [ ] Show power availability status in recipe tooltip (e.g., "Insufficient Power" if machine can't run)
+- [ ] Add status indicator showing why production is paused (insufficient power, stash full, insufficient materials)
+
+Ship Building UI Enhancements
+- [ ] Add exit button to ship building terminal UI (close without placing machine)
+
+Output Routing System (Future Enhancement)
+- [ ] Design container system: fabricator output → container inventory
+- [ ] Implement IContainer interface for output receivers
+- [ ] Create generic Container prefab (holds items, can be picked up)
+- [ ] Create StashContainer variant (direct stash integration, unlimited capacity)
+- [ ] Add output routing UI to fabricator (select destination: container or stash)
+- [ ] Implement item transfer from container to player inventory
+- [ ] Add multiple container support (chain containers together)
+- [ ] Implement conveyor belt container routing (connect to containers)
 
 Inventory System
 - [ ] Create InventoryManager (tracks all items, slots, categories)

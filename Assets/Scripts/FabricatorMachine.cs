@@ -8,9 +8,10 @@ public class FabricatorMachine : MonoBehaviour, IPowered
     private PlayerAbilities playerAbilities;
     
     [Header("Power Settings")]
-    public float powerConsumption = 10f; // Power per second while crafting
+    public float powerConsumption = 10f; // Power required to run the machine
     
     private bool isPaused = false;
+    private bool shouldRepeat = false; // Continues crafting same recipe until cancelled or stash full
 
     public float PowerConsumption => powerConsumption;
 
@@ -52,7 +53,8 @@ public class FabricatorMachine : MonoBehaviour, IPowered
         currentRecipe = recipe;
         progress = 0f;
         isPaused = false;
-        Debug.Log($"Fabricator: Started crafting, consuming {powerConsumption} power");
+        shouldRepeat = true;
+        Debug.Log($"Fabricator: Started crafting {recipe.recipeName}, consuming {powerConsumption} power");
     }
 
     private void Update()
@@ -98,7 +100,10 @@ public class FabricatorMachine : MonoBehaviour, IPowered
         var stashSlot = terminal.GetFirstStashSlot();
         if (stashSlot == null)
         {
-            Debug.LogWarning("No free stash slot available. Ability lost!");
+            Debug.LogWarning("No free stash slot available. Stopping crafting.");
+            // Stash is full, stop crafting
+            shouldRepeat = false;
+            CancelRecipe();
             return;
         }
 
@@ -109,11 +114,38 @@ public class FabricatorMachine : MonoBehaviour, IPowered
 
         stashSlot.PlaceItem(item);
 
-        // Release power back to the pool
-        PowerManager.Instance.ReleasePower(this);
-        Debug.Log($"Fabricator: Crafting complete, released {powerConsumption} power");
+        Debug.Log($"Fabricator: Completed crafting {currentRecipe.recipeName}");
 
+        // If we should repeat, start the same recipe again
+        if (shouldRepeat && HasInputs(currentRecipe) && HasSufficientPower())
+        {
+            RecipeData recipeToRepeat = currentRecipe;
+            progress = 0f;
+            ConsumeInputs(recipeToRepeat);
+            Debug.Log($"Fabricator: Auto-queuing next {recipeToRepeat.recipeName}");
+            // Don't need to release/request power, we already have it reserved
+        }
+        else
+        {
+            // Otherwise, stop crafting
+            PowerManager.Instance.ReleasePower(this);
+            Debug.Log($"Fabricator: Crafting stopped, released {powerConsumption} power");
+            currentRecipe = null;
+            shouldRepeat = false;
+            isPaused = false;
+            progress = 0f;
+        }
+    }
+
+    public void CancelRecipe()
+    {
+        if (currentRecipe == null) return;
+
+        shouldRepeat = false;
+        PowerManager.Instance.ReleasePower(this);
+        Debug.Log($"Fabricator: Crafting cancelled, released {powerConsumption} power");
         currentRecipe = null;
+        progress = 0f;
     }
 
     private bool HasInputs(RecipeData recipe)
@@ -154,4 +186,20 @@ public class FabricatorMachine : MonoBehaviour, IPowered
             Debug.Log("Fabricator: Power restored, resuming crafting and re-requesting power");
         }
     }
+
+    public RecipeData GetCurrentRecipe()
+    {
+        return currentRecipe;
+    }
+
+    public float GetProgress()
+    {
+        return progress;
+    }
+
+    public bool IsCrafting()
+    {
+        return currentRecipe != null && !isPaused;
+    }
 }
+

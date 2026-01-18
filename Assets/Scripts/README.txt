@@ -163,7 +163,171 @@ Material Types & Recipes
 - [ ] Design 5 ability recipes with Tier 0-2 costs
 - [ ] Design 5 weapon recipes with Tier 0-2 costs
 
+Weapons & Abilities Framework
+## Core 5 Abilities (Playstyle Anchors)
+- Dash: Offensive mobility, quick repositioning
+- Radar Pulse: Information gathering, enemy detection (counter: stealth)
+- Shielding: Defensive tanking, damage absorption (counter: high DPS)
+- Cloak/Fade: Evasion and stealth (counter: detection/radar)
+- Overcharge: Power/speed boost, enhanced stats (counter: healing/outlasting)
+
+## Core 5 Weapons (Engagement Archetypes)
+- Pistol: Reliable, quick-swap, early game default
+- Rifle: Medium-range balanced, versatile
+- Shotgun: Close-range burst, high damage (counter: distance/mobility)
+- Sniper: One-shot power, slow fire rate (counter: movement/cover)
+- Utility (Arc Gun/Mines/EMP): Crowd control, area denial, setup
+
+## Progression Tier System
+- Tier 0: Starter equipment (pistol, dash, basic shield) - free at start
+- Tier 1: Early farm items (3-4 hours progression) - basic variants of core items
+- Tier 2: Mid-game items (zone B viable) - improved stats, new variants unlock
+- Tier 3: Advanced items (20+ hours grind) - specialized for specific playstyles
+- Tier 4: Legendary end-game items (100+ hour commitment) - extremely overpowered, droppable on battlefield, require repair/durability management
+
+## Items & Variants Philosophy
+- Use variant/upgrade system, not completely unique mechanics per item
+- Every item has counters (rock-paper-scissors across loadouts)
+- Early-game items can be upgraded through progression
+- End-game items are expensive, powerful, and eventually wear out (require resources to repair)
+- Long-term: 50 weapons, 100 abilities, 30 utility items, 10+ shield levels (variant-based)
+
+## TODOs for Weapons & Abilities
+- [ ] Define base weapon and ability properties (damage, cooldown, cost, durability)
+- [ ] Create AbilityData and WeaponData ScriptableObjects
+- [ ] Implement Tier 0 variants for each core ability
+- [ ] Implement Tier 0 variants for each core weapon
+- [ ] Design Tier 1 variants (stat improvements, new effects)
+- [ ] Create ability cooldown and energy system
+- [ ] Create weapon ammo/durability tracking
+- [ ] Implement ability equip/unequip UI in Equipment Terminal
+- [ ] Implement weapon equip/unequip UI in Equipment Terminal
+- [ ] Add weapon firing mechanics (raycast hit detection, damage application)
+- [ ] Add ability activation mechanics (input handling, visual/audio feedback)
+- [ ] Design challenge system to force players to use less-familiar loadouts
+- [ ] Balance all items against each other (no one-meta problem)
+
+## Potential Abilities Library (Brainstorm & Design Concepts)
+These are candidate abilities for future implementation. Each will be evaluated for viability, balance, and counter-play mechanics.
+
+**Mobility/Movement:**
+- Jetpack (sustained flight, resource drain)
+- Grapple (swing to distant points, repositioning tool)
+- High Jump (single powerful vertical boost)
+- Double Jump (two consecutive jumps)
+- Triple Jump (three consecutive jumps)
+- Long Jump (extended horizontal dash)
+- Hold Jump to Hover (sustained float, controllable descent)
+- Glide (sustained diagonal descent with control)
+- Charge & Spear (dash that drags enemy with you, direction-dependent impact)
+- Wall Ride (run along vertical surfaces)
+- Hold onto Walls (cling to vertical surfaces, reposition)
+- Shift into Invincible (travel in any direction, increased speed, brief invulnerability window)
+
+**Offensive/Combat:**
+- Beam that Auto-Locks (limited range, tracking projectile)
+- Disk that Bounces (multi-target hitscan, ricochet mechanic)
+- Ground Slam (requires height to activate, AoE damage/stun on impact)
+- Grab and Slam (melee stun and damage combo)
+- Charge & Spear (see Mobility section—dual-purpose)
+- Stun Orb (thrown short-distance projectile, applies stun)
+- Fast-Moving Projectile Stun (rapid projectile with crowd control)
+- Flaming Wall (vertical line of fire that travels forward)
+- Force Push/Pull (telekinetic manipulation of objects/enemies)
+- Deployable Turrets (stationary offensive support)
+- Controllable Mech Suit (temporary vehicle with enhanced damage/durability)
+- Deflect (reflect incoming projectiles back at enemies)
+- Shoot Projectiles on Ground (create damaging lines between connected shots)
+
+**Defensive/Protection:**
+- Self Resurrection (revive after death with cooldown, limited charges)
+- Big Shield (manually deployable, absorbs damage until broken, indefinite hold time)
+- Shield Wall (stationary shield between two points: origin and activation location)
+- Make You and Nearby Allies Immune (brief window, area-based protection)
+- Become Invincible but Unable to Damage (tactical repositioning without dealing damage)
+- Field that Nullifies Projectiles (all projectiles pulled in and neutralized)
+- Flaming Wall (see Offensive—also protective barrier)
+
+**Support/Team Play:**
+- Orb Healing Over Time (attaches to teammate, continuous healing)
+- Drop Health Orbs (placeable healing items for self and team)
+- Damage Boost (buff self and nearby teammates, stat amplification)
+- Apply Damage Boost/Nerf to Target (selective buff/debuff on any player)
+- Damage Boost to You and Teammates (area-of-effect enhancement)
+
+**Utility/Control:**
+- Mark Target (reveals enemy position, enables team coordination)
+- Slow on Hit (movement speed reduction, multiple implementations possible)
+- Take Damage to Store Energy (damage-as-currency mechanic, risk-reward activation)
+- Throw Up Walls Telepathically (create temporary environmental obstacles)
+- Create Clones Where You Aim (decoys or actual clones, confusion/distraction)
+- Lifesteal (heal from damage dealt, sustain mechanic)
+
+**Experimental/Complex:**
+- Controllable Mech Suit (temporary vehicle mode, high-skill ceiling)
+- Create Clones (high skill expression, positioning dependent)
+- Shift into Invincible (high-speed evasion, skill-based timing)
+
+**Balance Considerations for Future Design:**
+- High mobility abilities need counter-play (detection, slow, area denial)
+- Offensive/crowd control needs cooldown management and positioning risk
+- Support abilities scale with team size (multiplayer relevance)
+- Defensive abilities need to have clear breaking points (duration, damage threshold)
+- Damage conversion abilities (damage → energy, slow on hit) add complexity but reward skill
+
+## Milestone & Recipe Unlock System
+
+**Core Philosophy:**
+- Milestones unlock **recipes**, not items
+- Progression: Unlock recipe → Gather resources → Build machines → Craft item → Equip → Use
+- Recipes are the reward; crafting is the investment
+- Rarity comes from resource scarcity and factory complexity, not arbitrary gatekeeping
+
+**Progression Timeline:**
+- **Milestone 1-5 (0-50h):** Directed unlocks, core abilities + machines, building foundation
+- **Milestone 6-15 (50-150h):** Hybrid unlocks + Ability Shards, player choice within guidance
+- **Milestone 16+ (150-200h+):** Specialty unlocks, deep specialization paths
+
+**Ability Shards Currency System:**
+- Awarded per milestone completion (varies by difficulty)
+- Tier 0 recipes cost 1 Shard
+- Tier 1 recipes cost 2 Shards
+- Tier 2+ recipes cost 3+ Shards
+- Players spend shards on abilities they want to unlock (not dictated)
+- Encourages multiple playthroughs with different unlock choices each season
+
+## Milestone 1: "Boot Camp" (0-10 hours)
+
+**Challenges:**
+- [ ] Craft 5 Salvage Scraps (basic crafting tutorial)
+- [ ] Deal 100 damage with Pistol (weapon familiarization)
+- [ ] Survive 10 minutes in PvPvE zone (zone survival)
+- [ ] Collect 200 Ore Fragments (resource gathering)
+- [ ] Equip and use Dash ability 5 times (ability usage)
+
+**Unlocks:**
+- Dash LV2 recipe (upgraded version)
+- Rifle recipe
+- Heal Orb recipe (support ability)
+- Refinery machine recipe
+- 5x Ability Shards (for choosing 5 Tier 0 abilities to unlock)
+
+**Implementation TODOs:**
+- [ ] Create Milestone tracking system (track challenge progress)
+- [ ] Create challenge definition system (scriptable object for challenges)
+- [ ] Implement challenge completion detection (damage dealt, items crafted, time survived)
+- [ ] Create shard currency system and UI display
+- [ ] Create recipe unlock system (track unlocked recipes per player)
+- [ ] Create ability unlock UI (show available shards, available recipes, confirm unlock)
+- [ ] Design 20 milestone definitions (Milestone 1-20 with unique challenges)
+- [ ] Design shard reward distribution (how many shards per milestone)
+- [ ] Create milestone completion rewards UI (celebration/notification)
+- [ ] Implement seasonal milestone reset (reset on character retirement/new season)
+- [ ] Design unlock progression table (which recipes unlock at which milestones)
+- [ ] Create challenge variety (20+ unique challenge types to prevent repetition)
+
 Fabricator UI Enhancements
+
 - [x] Show craft time on each recipe button
 - [x] Show salvage cost on each recipe button
 - [x] Show recipe description/tooltip on hover

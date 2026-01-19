@@ -48,6 +48,12 @@ public class PlayerAbilities : MonoBehaviour
 
         equippedAbilities.Add(slot);
 
+        // Notify tutorial if Dash was equipped
+        if (TutorialManager.Instance != null && ability.abilityName.Contains("Dash"))
+        {
+            TutorialManager.Instance.OnDashEquipped();
+        }
+
         if (SessionState.Instance != null)
         {
             SessionState.Instance.AddAbilityToSession(ability);

@@ -116,6 +116,12 @@ public class FabricatorMachine : MonoBehaviour, IPowered
 
         Debug.Log($"Fabricator: Completed crafting {currentRecipe.recipeName}");
 
+        // Notify tutorial if Dash was crafted
+        if (TutorialManager.Instance != null && currentRecipe.recipeName.Contains("Dash"))
+        {
+            TutorialManager.Instance.OnDashCrafted();
+        }
+
         // If we should repeat, start the same recipe again
         if (shouldRepeat && HasInputs(currentRecipe) && HasSufficientPower())
         {

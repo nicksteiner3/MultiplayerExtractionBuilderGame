@@ -8,6 +8,13 @@ public class LaunchTerminal : MonoBehaviour, IInteractable
     {
         SessionState.Instance.hasEnteredPvpve = true;
         SessionState.Instance.lastRunEndedInDeath = false;
+        
+        // Notify tutorial on first deploy
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.OnDeployStarted();
+        }
+        
         SceneManager.LoadScene(pvpveSceneName);
     }
 }

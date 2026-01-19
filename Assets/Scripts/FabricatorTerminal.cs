@@ -37,12 +37,6 @@ public class FabricatorTerminal : MonoBehaviour, IInteractable
 
         manufacturingUI.SetActive(true);
         manufacturingUI.GetComponent<AbilityManufacturingUI>().SetMachine(fabricatorMachine);
-        
-        // Notify tutorial on first fabricator interaction
-        if (TutorialManager.Instance != null)
-        {
-            TutorialManager.Instance.OnFabricatorInteracted();
-        }
 
         var controller = FindFirstObjectByType<FPSController>();
         if (controller)

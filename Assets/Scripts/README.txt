@@ -137,17 +137,27 @@ Gameplay Basics
 - [x] Salvage consumption on build
 - [x] Inactive UI finding fix for terminals
 - [x] Camera raycast origin fix (use player camera)
+- [x] Reactor machine + dynamic placement
+- [x] Reactor start/fueling mechanics
+- [x] Multi-material recipe system (materialInputs/outputs)
+- [x] SessionState material tracking (Dictionary<MaterialData, int>)
+- [x] Tutorial system (0-10min: Place Reactor → Start Reactor → Place Fabricator → Craft Dash → Equip Dash)
+- [x] Tutorial extension (Deploy → Return detection → Challenge prompt → Milestone prompt)
 - [ ] Display "Press E" interaction prompt when looking at interactable objects
-- [ ] Add Reactor to ship building system (buildable machine alongside Fabricator)
 - [ ] Implement machine disassembly (return salvage cost when destroying placed machines)
 - [ ] Create pause menu (settings, resume, quit, controls, audio, graphics)
 - [ ] Create title screen (new game, continue, settings, quit)
+- [ ] **BUG: Equipment terminal/Stash errors upon interacting after returning from deploy**
+- [ ] Challenge system (track progress, notify TutorialManager on completion)
+- [ ] Milestone system (aggregate challenge progress, notify on completion)
 
 Core Power & Machines
 - [x] Power gating for machines via `PowerManager`
 - [x] Manual fueling system (reactor) for early power
 - [x] Power UI displays capacity and consumption
 - [x] Fabricator consumes power while crafting
+- [x] Reactor buildable via ship building system
+- [x] Reactor start/on-off mechanics
 - [ ] Equipment terminal powered (gating ability equip)
 - [ ] Ship building terminal powered (gating machine placement)
 
@@ -171,6 +181,68 @@ Material Types & Recipes
 - [ ] Delete legacy fallback in `FabricatorMachine` (`HasInputs()`/`ConsumeInputs()` salvage branches).
 - [ ] Remove unload flow (`UnloadInventory()` and salvage pickups) or convert to material-based pickups/unload.
 - [ ] Verify Equipment/Inventory UI no longer references salvage; replace with material counts where needed.
+
+## First 10 Minutes: Guided Tutorial
+
+### Tutorial Flow
+Linear sequence guiding the player through the core loop:
+1. **Place Reactor** - Build a Reactor from the ship building terminal to enable power generation
+2. **Start Reactor** - Activate the Reactor to begin power production
+3. **Place Fabricator** - Build a Fabricator to enable ability crafting
+4. **Craft Dash** - Use the Fabricator to craft the Dash ability (uses Bio-Matter + Salvage)
+5. **Equip Dash** - Equip Dash at the Equipment Terminal
+6. **Deploy** - Launch your first extraction from the Launch Terminal
+7. **Return from Deploy** - Auto-detected on scene reload; objective updates
+8. **Complete First Challenge** - Tutorial advances to challenge system
+9. **Complete First Milestone** - Tutorial advances to milestone system
+10. **Complete** - Tutorial done; player now self-guided
+
+### Tutorial Implementation
+- `TutorialManager`: Singleton tracking progression, persists with `DontDestroyOnLoad`
+- Hooks: Events from `ShipBuilder`, `Reactor`, `FabricatorMachine`, `PlayerAbilities`, `LaunchTerminal`
+- UI: `Player Prompt Panel` displays current objective text; generic for all prompts (goals, challenges, etc.)
+- Persistence: Progress saved to `SessionState.tutorialStep` (int)
+- Return Detection: Listens to `SceneManager.sceneLoaded` to detect deploy returns
+
+### Onboarding Goals
+- **Starter Resources**: SessionState provides starting Bio-Fuel and Salvage Scrap so first 10 minutes flows smoothly
+- **Objective Text**: Updates as player progresses; shows next step clearly
+- **Toast Notifications**: Console logs (TODO: implement UI toast popup)
+
+## Challenges & Milestones System
+
+### Challenge System (TODO)
+- Simple tasks that grant progress toward milestones
+- Example: "Craft 2 abilities", "Gather 100 Bio-Matter", "Complete 1 extraction"
+- Progress tracked per session
+- Notify `TutorialManager.OnChallengeCompleted()` when first challenge is done
+
+### Milestone System (TODO)
+- Aggregate checkpoint requiring multiple challenges or specific conditions
+- Example: "Complete 3 challenges" or "Craft 5 abilities total"
+- Unlocks new machines or ability tiers
+- Notify `TutorialManager.OnMilestoneCompleted()` when first milestone is done
+
+### Challenges & Milestones TODOs
+- [ ] Create `ChallengeData` ScriptableObject (id, title, description, condition, reward)
+- [ ] Create `ChallengeManager` to track active challenges, listen for completion events
+- [ ] Create `MilestoneData` ScriptableObject (id, title, required challenges, reward)
+- [ ] Create `MilestoneManager` to track progress, aggregate challenge status
+- [ ] Wire challenge progress (craft ability → increment counter, notify manager)
+- [ ] Wire milestone progress (all challenges complete → notify manager)
+- [ ] Create simple UI for active challenges (list, progress bars)
+- [ ] Create simple UI for milestone tracking (progress toward requirement)
+
+## Known Issues & Critical TODOs
+
+### Critical Bugs
+- [ ] **Equipment Terminal/Stash Errors After Deploy**: Interacting with Equipment Terminal or Stash immediately after returning from a deploy causes errors. Likely due to SessionState or UI state corruption on scene reload. Needs investigation and fix.
+
+### UI Polish (Post-MVP)
+- [ ] Toast UI popup (currently console-only)
+- [ ] Highlight/ping system for tutorial objectives (outline Reactor, glow Fabricator terminal, etc.)
+- [ ] "Press E" interaction prompt overlay
+- [ ] Auto-save/checkpoint system
 
 ### Tier 1: Raw Materials (8 types from PvPvE zones)
 - Salvage Scrap (default drop, all zones)
@@ -319,8 +391,9 @@ Simple 1-2 input recipes using raw materials (no processing):
 - [x] Update RecipeData.cs to support List<MaterialInput> and List<MaterialOutput>
 - [x] Create multi-input recipe validation (check all materials exist before crafting)
 - [x] Update FabricatorMachine.cs to handle multiple inputs (ConsumeInputs loops through list)
-- [ ] Create 5 ability recipes with material costs
-- [ ] Create 5 weapon recipes with material costs
+- [x] Create Dash ability recipe with material costs
+- [ ] Create 4 more ability recipes (Heal Orb, Shield, Radar, etc.) with material costs
+- [ ] Create 5 weapon recipes (Pistol, Rifle, Shotgun, Sniper, Arc Gun) with material costs
 - [ ] Test full production chain (extract → process → craft → equip)
 - [ ] Balance recipe costs (ensure progression pacing, not too expensive/cheap)
 

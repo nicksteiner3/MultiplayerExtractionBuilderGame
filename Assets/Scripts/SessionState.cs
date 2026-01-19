@@ -10,6 +10,9 @@ public class SessionState : MonoBehaviour
     public bool hasEnteredPvpve = false;
     public bool returnedFromRun = false;
 
+    // Tutorial progression
+    public int tutorialStep = 0; // 0=Welcome, 1=PlaceReactor, 2=FuelReactor, 3=PowerFabricator, 4=Completed
+
     // Legacy salvage (being phased out, keeping for now)
     public int runSalvage;
     public int stashSalvage;

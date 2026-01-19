@@ -113,6 +113,19 @@ public class ShipBuilder : MonoBehaviour
         var actualMachine = Instantiate(currentBuildingData.prefab, previewInstance.transform.position, Quaternion.identity);
         SetPreviewMode(actualMachine, false);
 
+        // Notify tutorial if Reactor or Fabricator placed
+        if (TutorialManager.Instance != null)
+        {
+            if (actualMachine.GetComponent<Reactor>() != null)
+            {
+                TutorialManager.Instance.OnReactorPlaced();
+            }
+            else if (actualMachine.GetComponent<FabricatorMachine>() != null)
+            {
+                TutorialManager.Instance.OnFabricatorPlaced();
+            }
+        }
+
         // End placement
         CancelPlacement();
     }

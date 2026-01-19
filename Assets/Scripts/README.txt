@@ -155,6 +155,23 @@ Material Types & Recipes
 
 ## Material System Overview
 
+## Testing
+
+### Running Two Fabricators At Once
+- Setup: Place two Fabricator machines and ensure power capacity ≥ combined draw (each uses 10 power).
+- Seed: Use SessionState dev starts to add enough Bio-Fuel and Salvage Scrap for two crafts.
+- Start: Open each Fabricator terminal and start the same Dash recipe on both.
+- Expect: Both progress bars advance concurrently; power UI shows doubled consumption.
+- Verify: Each completion spawns an ability item into stash; if stash fills, machines stop and release power.
+- Notes: Auto-repeat is enabled; ensure sufficient inputs or it will pause on missing materials.
+
+## Legacy Cleanup
+- [ ] Remove legacy salvage integer system (fields `runSalvage`, `stashSalvage`) and related UI/readouts.
+- [ ] Remove legacy `ItemCost` salvage path in recipes; migrate all recipes to `materialInputs` only.
+- [ ] Delete legacy fallback in `FabricatorMachine` (`HasInputs()`/`ConsumeInputs()` salvage branches).
+- [ ] Remove unload flow (`UnloadInventory()` and salvage pickups) or convert to material-based pickups/unload.
+- [ ] Verify Equipment/Inventory UI no longer references salvage; replace with material counts where needed.
+
 ### Tier 1: Raw Materials (8 types from PvPvE zones)
 - Salvage Scrap (default drop, all zones)
 - Ore Fragments (metal-based, Tier 0 resource)
@@ -250,13 +267,13 @@ Simple 1-2 input recipes using raw materials (no processing):
 - Unlock: Milestone 1
 
 ### Phase 1 Recipe TODOs
-- [ ] Create Dash recipe (Bio-Matter + Salvage)
+- [x] Create Dash recipe (Bio-Matter + Salvage)
 - [ ] Create Heal Orb recipe (Bio-Matter + Salvage)
 - [ ] Create Pistol recipe (Ore + Salvage)
 - [ ] Create Rifle recipe (Ore + Salvage variant)
 - [ ] Create 1-2 more basic recipes to test loop
-- [ ] Test material consumption and output
-- [ ] Test Fabricator with new material system
+- [x] Test material consumption and output
+- [x] Test Fabricator with new material system
 
 ### Phase 2: Advanced Machine System (10h+ unlock)
 - Create "Assembly Machine" or "Advanced Fabricator" (TBD name)
@@ -281,12 +298,12 @@ Simple 1-2 input recipes using raw materials (no processing):
 - Power Cost: 10
 
 **Phase 1: Material System TODOs**
-- [ ] Create MaterialData.cs ScriptableObject (name, tier, icon, description)
-- [ ] Create 8 raw material assets in Resources/Materials/
-- [ ] Update SessionState.cs to track all materials (Dictionary<MaterialData, int>)
-- [ ] Add material display methods (GetMaterial, AddMaterial, RemoveMaterial, HasMaterial)
-- [ ] Create MaterialStack struct (material type + quantity, for inventory display)
-- [ ] Test material tracking in SessionState (debug logs for adds/removes)
+- [x] Create MaterialData.cs ScriptableObject (name, tier, icon, description)
+- [x] Create 8 raw material assets in Resources/Materials/
+- [x] Update SessionState.cs to track all materials (Dictionary<MaterialData, int>)
+- [x] Add material display methods (GetMaterial, AddMaterial, RemoveMaterial, HasMaterial)
+- [x] Create MaterialStack struct (material type + quantity, for inventory display)
+- [x] Test material tracking in SessionState (debug logs for adds/removes)
 
 **Phase 2: Machine System TODOs**
 - [ ] Create MachineData.cs ScriptableObject (name, power cost, input material, output material, process time)
@@ -297,11 +314,11 @@ Simple 1-2 input recipes using raw materials (no processing):
 - [ ] Test machine on-demand crafting (convert materials when activated)
 
 **Phase 3: Recipe System TODOs**
-- [ ] Create MaterialInput struct (MaterialData + quantity)
-- [ ] Create MaterialOutput struct (MaterialData + quantity)
-- [ ] Update RecipeData.cs to support List<MaterialInput> and List<MaterialOutput>
-- [ ] Create multi-input recipe validation (check all materials exist before crafting)
-- [ ] Update FabricatorMachine.cs to handle multiple inputs (ConsumeInputs loops through list)
+- [x] Create MaterialInput struct (MaterialData + quantity)
+- [x] Create MaterialOutput struct (MaterialData + quantity)
+- [x] Update RecipeData.cs to support List<MaterialInput> and List<MaterialOutput>
+- [x] Create multi-input recipe validation (check all materials exist before crafting)
+- [x] Update FabricatorMachine.cs to handle multiple inputs (ConsumeInputs loops through list)
 - [ ] Create 5 ability recipes with material costs
 - [ ] Create 5 weapon recipes with material costs
 - [ ] Test full production chain (extract → process → craft → equip)

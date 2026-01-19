@@ -20,4 +20,11 @@ MonoBehaviour:
   outputs:
     ability: {fileID: 11400000, guid: 361922ffdd4bc044393425db05bfb570, type: 2}
     amount: 1
+  materialInputs:
+  - material: {fileID: 11400000, guid: 366fb8970290e7e48a6935ac1aca0e10, type: 2}
+    amount: 1
+  - material: {fileID: 11400000, guid: edb1cde5d2b62bd4ca71f9ae9b8d1259, type: 2}
+    amount: 30
+  materialOutputs: []
   prefabUIItem: {fileID: 8793359198289299100, guid: bf0ad689dd66bc84cb60348c530406c4, type: 3}
+  requiredMachine: 0

@@ -81,6 +81,12 @@ public class Reactor : MonoBehaviour, IPowered
             PowerManager.Instance.AdjustProducedPower(powerOutputPerSecond);
             Debug.Log($"Reactor started: +{powerOutputPerSecond} power capacity");
             OnPowerRestored();
+            
+            // Notify tutorial on first start
+            if (TutorialManager.Instance != null)
+            {
+                TutorialManager.Instance.OnReactorStarted();
+            }
         }
         else
         {

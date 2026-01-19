@@ -6388,9 +6388,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lastRunEndedInDeath: 0
   hasEnteredPvpve: 0
+  returnedFromRun: 0
   runSalvage: 0
   stashSalvage: 1000
-  returnedFromRun: 0
+  startingBioFuel: {fileID: 11400000, guid: 366fb8970290e7e48a6935ac1aca0e10, type: 2}
+  startingBioFuelAmount: 1
+  startingSalvageScrap: {fileID: 11400000, guid: edb1cde5d2b62bd4ca71f9ae9b8d1259, type: 2}
+  startingStashSalvage: 30
 --- !u!4 &2052235949
 Transform:
   m_ObjectHideFlags: 0

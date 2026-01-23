@@ -13,7 +13,6 @@ public class Reactor : MonoBehaviour, IPowered
     
     private float currentFuel = 0f;
     private bool isRunning = false;
-    private bool hasSufficientPower = true;
 
     public float PowerConsumption => 0f; // Generator doesn't consume power, it produces it
 
@@ -115,12 +114,10 @@ public class Reactor : MonoBehaviour, IPowered
             Debug.Log($"Reactor out of fuel: -{powerOutputPerSecond} power capacity");
         }
         isRunning = false;
-        hasSufficientPower = false;
     }
 
     public void OnPowerRestored()
     {
         isRunning = true;
-        hasSufficientPower = true;
     }
 }

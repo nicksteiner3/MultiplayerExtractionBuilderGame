@@ -20,6 +20,12 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void Heal(float amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + (int)amount, maxHealth);
+        Debug.Log($"[PlayerHealth] Healed {amount}. Current: {currentHealth}/{maxHealth}");
+    }
+
     void Die()
     {
         Debug.Log("Player died");

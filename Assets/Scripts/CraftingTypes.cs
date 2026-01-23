@@ -11,5 +11,6 @@ public class ItemCost
 public class ItemOutput
 {
     public AbilityData ability;
+    public WeaponData weapon;
     public int amount;
 }

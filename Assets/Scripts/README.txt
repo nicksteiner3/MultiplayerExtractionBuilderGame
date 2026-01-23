@@ -244,8 +244,54 @@ Linear sequence guiding the player through the core loop:
 - [ ] "Press E" interaction prompt overlay
 - [ ] Auto-save/checkpoint system
 
-### Tier 1: Raw Materials (8 types from PvPvE zones)
-- Salvage Scrap (default drop, all zones)
+---
+
+## CHALLENGE & MILESTONE SYSTEM (IMPLEMENTED)
+
+### System Components:
+- [x] **ChallengeData.cs** - ScriptableObject defining individual challenges (6 types: CraftAbility, CraftWeapon, KillPlayer, KillBot, SurviveDeploy, LootObjects)
+- [x] **ChallengeManager.cs** - Singleton tracking challenge progress, firing events on completion
+- [x] **MilestoneData.cs** - ScriptableObject defining milestone bundles of challenges
+- [x] **MilestoneManager.cs** - Singleton aggregating challenge status, awarding milestone rewards
+- [x] **HealOrbAbility.cs** - First ability beyond Dash; heals 25 HP on cooldown
+- [x] **FabricatorMachine** - Now fires OnAbilityCrafted/OnWeaponCrafted events for challenge tracking
+- [x] **TutorialManager** - Calls ChallengeManager.OnDeploySurvived() on return from deploy
+
+### Setup Required (In Unity Editor):
+- [ ] Create MaterialData assets: Crystal Shards (Tier0_Raw), Ore (Tier0_Raw)
+- [ ] Create HealOrbAbility asset: name="Heal Orb", cooldown=10, healAmount=25
+- [ ] Create Recipe_HealOrb: Bio-Matter (1) + Crystal Shards (1) + Salvage (25), 15s craft
+- [ ] Create Recipe_Pistol: Ore (1) + Salvage (40), 25s craft
+- [ ] Create 6 M1 ChallengeData assets (see CHALLENGE_SETUP_GUIDE.txt)
+- [ ] Create Milestone_1 asset with 6 challenge IDs
+- [ ] Add ChallengeManager to scene with M1 challenges assigned
+- [ ] Add MilestoneManager to scene with M1 milestone assigned
+- [ ] Wire up kill/loot events (OnPlayerKilled, OnBotKilled, OnObjectLooted)
+
+### Milestone 1 (Intro, ~1h target)
+Independent challenges (any order):
+- Craft 2 abilities (Dash + Heal Orb)
+- Craft 1 weapon (Pistol)
+- Survive a deploy (return alive)
+- Kill 1 player
+- Kill 10 bots
+- Loot 10 objects
+
+Rewards:
+- Unlock recipes: Heal Orb + Pistol
+
+- Starter stash bump (e.g., +50 Salvage Scrap) and grant starter Pistol on spawn
+- Keep new machines for Milestone 2 to avoid early complexity
+
+### Unlockables Catalog (for milestone/blueprint planning)
+- Machines: Refinery, Bio-Processor, Electronics Bench, Crystal Lab, Fiber Mill, Catalyst Extractor, Advanced Fabricator/Assembly, Conveyors/Sorters, Storage, Harvester Drones
+- Power: Advanced Reactor, Battery Banks, Capacitor/efficiency upgrades, power routers/priority
+- Weapons: Pistol, Rifle, Shotgun, Sniper, Arc Gun, SMG, LMG, Grenade Launcher, Flamethrower, Bow/Charge, Railgun
+- Abilities: Dash, Heal Orb, Shield/Barrier, Radar Pulse, Cloak, Overcharge, Stun Orb, Grapple, Jetpack, Turret, Slow Field, Deflect
+- Mods/Upgrades: weapon scopes/mags/barrels/elemental rounds; ability cooldown/duration/efficiency; armor/shield regen/capacity; stash expansions
+- Ship/Rooms: Practice Range, Armory, Storage bay, Ops/Map room
+- Blueprints from deploys: weapons (Sniper, Arc Gun, Railgun), abilities (Cloak, Jetpack, Turret), machines (Refinery, Bio-Processor, Electronics Bench), mods (elemental rounds, scopes), cosmetics
+- Research/Unlock Machines: Research Terminal/Data Forge (spend rare mats), Prototype Bench (use blueprint + mats), Calibration Station (power/crafting speed tuning)
 - Ore Fragments (metal-based, Tier 0 resource)
 - Bio-Matter (organic-based, Tier 0 resource)
 - Circuit Wreckage (electronics, rare Tier 0 resource)
@@ -325,7 +371,7 @@ Simple 1-2 input recipes using raw materials (no processing):
 - Unlock: Milestone 1
 
 **Heal Orb Tier 0**
-- Input: Bio-Matter (1) + Salvage (25)
+- Input: Bio-Matter (1) + Crystal Shards (1) + Salvage (25)
 - Output: Heal Orb Ability
 - Craft Time: 15s
 - Power Cost: 10
@@ -340,7 +386,7 @@ Simple 1-2 input recipes using raw materials (no processing):
 
 ### Phase 1 Recipe TODOs
 - [x] Create Dash recipe (Bio-Matter + Salvage)
-- [ ] Create Heal Orb recipe (Bio-Matter + Salvage)
+- [ ] Create Heal Orb recipe (Bio-Matter + Crystal + Salvage)
 - [ ] Create Pistol recipe (Ore + Salvage)
 - [ ] Create Rifle recipe (Ore + Salvage variant)
 - [ ] Create 1-2 more basic recipes to test loop
@@ -398,10 +444,6 @@ Simple 1-2 input recipes using raw materials (no processing):
 - [ ] Balance recipe costs (ensure progression pacing, not too expensive/cheap)
 
 **Current TODOs (from previous sections):**
-- [ ] Define Salvage Scrap as tier 0 base resource
-- [ ] Add Ore Fragments resource (PvPvE drop)
-- [ ] Add Bio-Matter resource (PvPvE drop)
-- [ ] Add Circuit Wreckage resource (rare PvPvE)
 - [ ] Create Refinery machine + recipe (Ore → Processed Alloy)
 - [ ] Create Fuel Processor machine + recipe (Bio-Matter → Fuel Cells)
 - [ ] Create Electronics Bench machine + recipe (Circuit → Logic Chips)

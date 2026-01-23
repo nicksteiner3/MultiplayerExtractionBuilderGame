@@ -140,16 +140,21 @@ public class TutorialManager : MonoBehaviour
         {
             ShowToast("Welcome back! Now let's work toward your first milestone.");
             AdvanceStep(TutorialStep.CompleteChallenge);
+            
+            // Notify challenge system that player survived
+            if (ChallengeManager.Instance != null)
+            {
+                ChallengeManager.Instance.OnDeploySurvived();
+            }
         }
     }
 
-    public void OnChallengeCompleted()
+    public void OnChallengeCompleted(string challengeId = "")
     {
-        if (currentStep == TutorialStep.CompleteChallenge)
-        {
-            ShowToast("Challenge complete! Progress toward your first milestone.");
-            AdvanceStep(TutorialStep.CompleteMilestone);
-        }
+        Debug.Log($"[TutorialManager] OnChallengeCompleted: {challengeId}");
+        // Challenges complete as they're done; only advance to milestone step 
+        // once ALL challenges are complete (handled by MilestoneManager)
+        ShowToast("Challenge complete! Work toward your first milestone.");
     }
 
     public void OnMilestoneCompleted()

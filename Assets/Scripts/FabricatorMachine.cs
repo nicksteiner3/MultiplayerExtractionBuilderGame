@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class FabricatorMachine : MonoBehaviour, IPowered
 {
+    public static event Action<RecipeData> OnAbilityCrafted;
+    public static event Action<RecipeData> OnWeaponCrafted;
+    
     private RecipeData currentRecipe;
     private float progress;
     private PlayerAbilities playerAbilities;
@@ -92,29 +95,61 @@ public class FabricatorMachine : MonoBehaviour, IPowered
         var terminal = FindFirstObjectByType<EquipmentUIManager>();
         if (terminal == null)
         {
-            Debug.LogError("No Equipment Terminal found to place completed ability.");
+            Debug.LogError("No Equipment Terminal found to place completed item.");
             return;
         }
 
-        // Get first free stash slot
-        var stashSlot = terminal.GetFirstStashSlot();
-        if (stashSlot == null)
+        bool hasAbilityOutput = currentRecipe.outputs != null && currentRecipe.outputs.ability != null;
+        bool hasWeaponOutput = currentRecipe.outputs != null && currentRecipe.outputs.weapon != null;
+
+        if (hasAbilityOutput)
         {
-            Debug.LogWarning("No free stash slot available. Stopping crafting.");
-            // Stash is full, stop crafting
-            shouldRepeat = false;
-            CancelRecipe();
-            return;
+            var stashSlot = terminal.GetFirstStashSlot();
+            if (stashSlot == null)
+            {
+                Debug.LogWarning("No free ability stash slot available. Stopping crafting.");
+                shouldRepeat = false;
+                CancelRecipe();
+                return;
+            }
+
+            var item = Instantiate(currentRecipe.prefabUIItem);
+            item.ability = currentRecipe.outputs.ability;
+            item.IsEquipped = false;
+            stashSlot.PlaceItem(item);
         }
+        else if (hasWeaponOutput)
+        {
+            var stashSlot = terminal.GetFirstWeaponStashSlot();
+            if (stashSlot == null)
+            {
+                Debug.LogWarning("No free weapon stash slot available. Stopping crafting.");
+                shouldRepeat = false;
+                CancelRecipe();
+                return;
+            }
 
-        // Spawn the UI item
-        var item = Instantiate(currentRecipe.prefabUIItem); // prefab for this ability
-        item.ability = currentRecipe.outputs.ability;
-        item.IsEquipped = false;
-
-        stashSlot.PlaceItem(item);
+            var item = Instantiate(currentRecipe.prefabWeaponUIItem);
+            item.weapon = currentRecipe.outputs.weapon;
+            item.IsEquipped = false;
+            stashSlot.PlaceItem(item);
+        }
+        else
+        {
+            Debug.LogWarning("Recipe completed but has no output defined.");
+        }
 
         Debug.Log($"Fabricator: Completed crafting {currentRecipe.recipeName}");
+
+        // Fire craft events for challenge tracking
+        if (hasAbilityOutput)
+        {
+            OnAbilityCrafted?.Invoke(currentRecipe);
+        }
+        else if (hasWeaponOutput)
+        {
+            OnWeaponCrafted?.Invoke(currentRecipe);
+        }
 
         // Notify tutorial if Dash was crafted
         if (TutorialManager.Instance != null && currentRecipe.recipeName.Contains("Dash"))
@@ -183,8 +218,12 @@ public class FabricatorMachine : MonoBehaviour, IPowered
             return SessionState.Instance.stashSalvage >= recipe.inputs[0].amount;
         }
 
-        Debug.LogWarning($"Recipe {recipe.name} has no inputs defined");
-        return false;
+        return false; // No inputs defined
+    }
+
+    public bool HasInputsForRecipe(RecipeData recipe)
+    {
+        return HasInputs(recipe);
     }
 
     private void ConsumeInputs(RecipeData recipe)

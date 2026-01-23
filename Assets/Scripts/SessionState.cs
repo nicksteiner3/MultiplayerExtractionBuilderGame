@@ -22,6 +22,8 @@ public class SessionState : MonoBehaviour
     public int startingBioFuelAmount = 1;
     public MaterialData startingSalvageScrap;
     public int startingStashSalvage = 30;
+    public MaterialData startingOre;
+    public int startingOreAmount = 5;
 
     // Multi-material system
     private Dictionary<MaterialData, int> stashMaterials = new();
@@ -51,6 +53,11 @@ public class SessionState : MonoBehaviour
         if (startingSalvageScrap != null && startingStashSalvage > 0)
         {
             AddMaterial(startingSalvageScrap, startingStashSalvage);
+        }
+
+        if (startingOre != null && startingOreAmount > 0)
+        {
+            AddMaterial(startingOre, startingOreAmount);
         }
     }
 

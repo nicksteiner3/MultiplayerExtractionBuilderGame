@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11c72266869ea9644be58ed22a3e0c7a, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: Assembly-CSharp::RecipeData
+  recipeName: Pistol
+  craftTime: 30
+  inputs: []
+  outputs:
+    ability: {fileID: 0}
+    weapon: {fileID: 11400000, guid: 89b4f1f361b681a49aaf6f23f91dd8d3, type: 2}
+    amount: 0
+  materialInputs:
+  - material: {fileID: 11400000, guid: 89c926314182a914d99bda21be5ddec7, type: 2}
+    amount: 1
+  - material: {fileID: 11400000, guid: edb1cde5d2b62bd4ca71f9ae9b8d1259, type: 2}
+    amount: 40
+  materialOutputs: []
+  prefabUIItem: {fileID: 0}
+  prefabWeaponUIItem: {fileID: 0}
+  requiredMachine: 0

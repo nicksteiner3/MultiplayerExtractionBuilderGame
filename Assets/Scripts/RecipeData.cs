@@ -31,6 +31,7 @@ public class RecipeData : ScriptableObject
 
     [Header("UI")]
     public AbilityUIItem prefabUIItem; // For abilities only
+    public WeaponUIItem prefabWeaponUIItem; // For weapons only
 
     public enum MachineType
     {

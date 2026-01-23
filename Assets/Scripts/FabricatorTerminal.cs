@@ -16,15 +16,15 @@ public class FabricatorTerminal : MonoBehaviour, IInteractable
         if (manufacturingUI == null)
         {
             // Try to find by component (including inactive objects)
-            var allUIs = FindObjectsByType<AbilityManufacturingUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            var allUIs = FindObjectsByType<ManufacturingUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             if (allUIs.Length > 0)
             {
                 manufacturingUI = allUIs[0].gameObject;
-                Debug.Log("Found AbilityManufacturingUI component");
+                Debug.Log("Found ManufacturingUI component");
             }
             else
             {
-                Debug.LogError("FabricatorTerminal: Could not find AbilityManufacturingUI component in scene!");
+                Debug.LogError("FabricatorTerminal: Could not find ManufacturingUI component in scene!");
                 return;
             }
         }
@@ -36,7 +36,7 @@ public class FabricatorTerminal : MonoBehaviour, IInteractable
         }
 
         manufacturingUI.SetActive(true);
-        manufacturingUI.GetComponent<AbilityManufacturingUI>().SetMachine(fabricatorMachine);
+        manufacturingUI.GetComponent<ManufacturingUI>().SetMachine(fabricatorMachine);
 
         var controller = FindFirstObjectByType<FPSController>();
         if (controller)

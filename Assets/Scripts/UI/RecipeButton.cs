@@ -8,10 +8,10 @@ public class RecipeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] private TMP_Text label;
 
     private RecipeData recipe;
-    private AbilityManufacturingUI parentUI;
+    private ManufacturingUI parentUI;
     private GameObject currentTooltip;
 
-    public void Init(RecipeData recipe, AbilityManufacturingUI parent)
+    public void Init(RecipeData recipe, ManufacturingUI parent)
     {
         this.recipe = recipe;
         parentUI = parent;
@@ -63,6 +63,7 @@ public class RecipeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
         var img = tooltipGo.AddComponent<Image>();
         img.color = new Color(0, 0, 0, 0.8f);
+        img.raycastTarget = false; // Let pointer exit fire on the button
 
         // Create child object for text
         var textGo = new GameObject("Text");
@@ -75,11 +76,39 @@ public class RecipeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         textRt.offsetMax = new Vector2(-10, -10);
 
         var txt = textGo.AddComponent<TextMeshProUGUI>();
+
+        string costText;
+        if (recipe.materialInputs != null && recipe.materialInputs.Count > 0)
+        {
+            // List all material inputs
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            for (int i = 0; i < recipe.materialInputs.Count; i++)
+            {
+                var mi = recipe.materialInputs[i];
+                if (mi?.material != null)
+                {
+                    sb.Append($"{mi.material.name}: {mi.amount}");
+                    if (i < recipe.materialInputs.Count - 1) sb.Append("\n");
+                }
+            }
+            costText = sb.ToString();
+        }
+        else if (recipe.inputs != null && recipe.inputs.Count > 0)
+        {
+            // Legacy salvage input
+            costText = $"Salvage: {recipe.inputs[0].amount}";
+        }
+        else
+        {
+            costText = "No cost defined";
+        }
+
         txt.text = $"<b>{recipe.recipeName}</b>\n" +
-                   $"Salvage: {recipe.inputs[0].amount}\n" +
+                   costText + "\n" +
                    $"Time: {recipe.craftTime}s";
         txt.alignment = TextAlignmentOptions.TopLeft;
         txt.fontSize = 14;
+        txt.raycastTarget = false; // Avoid blocking hover exit
 
         currentTooltip = tooltipGo;
     }

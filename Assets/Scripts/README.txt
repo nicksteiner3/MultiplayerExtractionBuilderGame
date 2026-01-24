@@ -277,11 +277,16 @@ Independent challenges (any order):
 - Kill 10 bots
 - Loot 10 objects
 
-Rewards:
-- Unlock recipes: Heal Orb + Pistol
+**Starting resources/unlocks (to enable challenges):**
+- Starter Pistol (1x, equipped on spawn)
+- Dash recipe (unlocked)
+- Heal Orb recipe (unlocked)
+- Pistol recipe (unlocked)
+- Bio-Fuel, Salvage Scrap, Ore, Crystal Shards (starter materials in stash)
 
-- Starter stash bump (e.g., +50 Salvage Scrap) and grant starter Pistol on spawn
-- Keep new machines for Milestone 2 to avoid early complexity
+**Rewards on M1 completion:**
+- +50 Salvage Scrap (stash bump)
+- Unlock next tier recipes (TBD for Milestone 2)
 
 ### Unlockables Catalog (for milestone/blueprint planning)
 - Machines: Refinery, Bio-Processor, Electronics Bench, Crystal Lab, Fiber Mill, Catalyst Extractor, Advanced Fabricator/Assembly, Conveyors/Sorters, Storage, Harvester Drones
@@ -601,6 +606,7 @@ These are candidate abilities for future implementation. Each will be evaluated 
 - 5x Ability Shards (for choosing 5 Tier 0 abilities to unlock)
 
 **Implementation TODOs:**
+- [ ] Decide Milestone 1 completion rewards (which recipes/machines unlock for M2 progression)
 - [ ] Create Milestone tracking system (track challenge progress)
 - [ ] Create challenge definition system (scriptable object for challenges)
 - [ ] Implement challenge completion detection (damage dealt, items crafted, time survived)
@@ -719,6 +725,7 @@ Seasonal & Endgame
 - [ ] Ranked Extraction mode scaffolding
 - [ ] Expedition/retirement flow + rewards
 - [ ] Ships management UX (3–5 ship slots)
+- [ ] Raid-like cooperative encounters: queue into raid locations with ad-hoc groups, coordinate mechanics, unique rewards only from raids, PvPvE betrayal risk at the end (teammates can turn and steal everything)
 
 Progression Unlocks
 - [ ] Unlock: +5 Salvage inventory capacity (Milestone 2)

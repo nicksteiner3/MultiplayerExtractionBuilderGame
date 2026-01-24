@@ -86,9 +86,4 @@ public class MilestoneManager : MonoBehaviour
             }
         }
     }
-
-    public bool IsMilestoneComplete(string milestoneId)
-    {
-        return completedMilestones.Contains(milestoneId);
-    }
 }

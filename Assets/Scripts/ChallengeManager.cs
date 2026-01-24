@@ -120,11 +120,6 @@ public class ChallengeManager : MonoBehaviour
         return completedChallenges.Contains(challengeId);
     }
 
-    public int GetCompletedChallengeCount()
-    {
-        return completedChallenges.Count;
-    }
-
     // Event handlers
     private void HandleAbilityCrafted(RecipeData recipe)
     {

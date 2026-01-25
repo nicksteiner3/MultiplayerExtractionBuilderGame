@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbc7b7a479bb1d64c83ea3ef657fdba2, type: 3}
   m_Name: M1_Kill10Bots
   m_EditorClassIdentifier: Assembly-CSharp::ChallengeData
-  challengeId: 
+  challengeId: M1_Kill10Bots
   title: Kill 10 Bots
   description: Kill 10 Bots
   type: 3

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
   recipeName: Pistol
-  craftTime: 30
+  craftTime: 5
   inputs: []
   outputs:
     ability: {fileID: 0}
@@ -26,5 +26,5 @@ MonoBehaviour:
     amount: 40
   materialOutputs: []
   prefabUIItem: {fileID: 0}
-  prefabWeaponUIItem: {fileID: 0}
+  prefabWeaponUIItem: {fileID: -2313129594922591338, guid: 7e7a719c1d30be641b3ece3a879ac8cc, type: 3}
   requiredMachine: 0

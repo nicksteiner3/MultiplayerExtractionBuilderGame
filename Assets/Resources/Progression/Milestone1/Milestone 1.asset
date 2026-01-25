@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 243183e51a48397458ab95590c334170, type: 3}
   m_Name: Milestone 1
   m_EditorClassIdentifier: Assembly-CSharp::MilestoneData
-  milestoneId: 
-  title: 
-  description: 
-  requiredChallengeIds: []
+  milestoneId: Milestone 1
+  title: Milestone 1
+  description: Milestone 1
+  requiredChallengeIds:
+  - M1_Craft1Weapon
+  - M1_Craft2Abilities
+  - M1_Get1PvPKill
+  - M1_Kill10Bots
+  - M1_Loot10ObjectsM1_Loot10Objects
+  - M1_Survive1Deploy
   unlockedRecipes: []
-  salvageReward: 0
+  salvageReward: 50

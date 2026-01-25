@@ -224,12 +224,12 @@ Linear sequence guiding the player through the core loop:
 - Notify `TutorialManager.OnMilestoneCompleted()` when first milestone is done
 
 ### Challenges & Milestones TODOs
-- [ ] Create `ChallengeData` ScriptableObject (id, title, description, condition, reward)
-- [ ] Create `ChallengeManager` to track active challenges, listen for completion events
-- [ ] Create `MilestoneData` ScriptableObject (id, title, required challenges, reward)
-- [ ] Create `MilestoneManager` to track progress, aggregate challenge status
-- [ ] Wire challenge progress (craft ability → increment counter, notify manager)
-- [ ] Wire milestone progress (all challenges complete → notify manager)
+- [x] Create `ChallengeData` ScriptableObject (id, title, description, condition, reward)
+- [x] Create `ChallengeManager` to track active challenges, listen for completion events
+- [x] Create `MilestoneData` ScriptableObject (id, title, required challenges, reward)
+- [x] Create `MilestoneManager` to track progress, aggregate challenge status
+- [x] Wire challenge progress (craft ability → increment counter, notify manager)
+- [x] Wire milestone progress (all challenges complete → notify manager)
 - [ ] Create simple UI for active challenges (list, progress bars)
 - [ ] Create simple UI for milestone tracking (progress toward requirement)
 
@@ -237,8 +237,12 @@ Linear sequence guiding the player through the core loop:
 
 ### Critical Bugs
 - [ ] **Equipment Terminal/Stash Errors After Deploy**: Interacting with Equipment Terminal or Stash immediately after returning from a deploy causes errors. Likely due to SessionState or UI state corruption on scene reload. Needs investigation and fix.
+- [ ] **Fabricator Progress Bar Not Updating UI**: Progress bars increment programmatically but don't reflect visually in the UI. Need to wire up the bar image fill animations to the internal progress values.
+- [ ] **PlayerWeapons Equip/Unequip Logic Bug**: Dragging a weapon from stash into inventory doesn't add it to PlayerWeapons.equippedWeapons. Removing a weapon from inventory incorrectly removes from equippedWeapons if one is equipped. The `if (equippedWeapons.Any(w => w == weapon)) return;` guard needs rework to properly sync UI state with equippedWeapons list.
+- [ ] **Inventory Opens Over Other Menus**: TAB key opens inventory even when other menus (e.g., buildings list) are already open. Should block inventory opening if any other menu is active.
 
 ### UI Polish (Post-MVP)
+- [ ] Rename EquipmentSlotUI → AbilitySlotUI and StashSlotUI → AbilityStashSlotUI throughout the codebase for clarity
 - [ ] Toast UI popup (currently console-only)
 - [ ] Highlight/ping system for tutorial objectives (outline Reactor, glow Fabricator terminal, etc.)
 - [ ] "Press E" interaction prompt overlay
@@ -644,14 +648,14 @@ Output Routing System (Future Enhancement)
 - [ ] Create generic Container prefab (holds items, can be picked up)
 - [ ] Create StashContainer variant (direct stash integration, unlimited capacity)
 - [ ] Add output routing UI to fabricator (select destination: container or stash)
-- [ ] Implement item transfer from container to player inventory
+- [x] Implement item transfer from container to player inventory
 - [ ] Add multiple container support (chain containers together)
 - [ ] Implement conveyor belt container routing (connect to containers)
 
 Inventory System
-- [ ] Create InventoryManager (tracks all items, slots, categories)
-- [ ] Open inventory with TAB key (InventoryUI panel)
-- [ ] Display resources (Salvage, Ore, Bio-Matter, Circuits)
+- [x] Create InventoryManager (tracks all items, slots, categories)
+- [x] Open inventory with TAB key (InventoryUI panel)
+- [x] Display resources (Salvage, Ore, Bio-Matter, Circuits)
 - [ ] Display abilities (equippable, show cooldowns)
 - [ ] Display weapons (equippable, show ammo/durability)
 - [ ] Display consumables (healing, shields, buffs)
@@ -661,8 +665,8 @@ Inventory System
 - [ ] Show inventory capacity per category (e.g., "12 / 20 Salvage")
 - [ ] Drop item on ground (removes from inventory, creates world object)
 - [ ] Pickup item from ground (adds to inventory or drops if full)
-- [ ] Close inventory with ESC or TAB again
-- [ ] Freeze player when inventory open (like other UIs)
+- [x] Close inventory with ESC or TAB again
+- [x] Freeze player when inventory open (like other UIs)
 
 Early Game Loop (0-50h)
 - [ ] Unload salvage from PvPvE → goes to stash

@@ -50,6 +50,16 @@ public class Projectile : MonoBehaviour
             return;
         }
 
+        // Check if hit bot
+        Bot bot = other.GetComponent<Bot>();
+        if (bot != null)
+        {
+            bot.TakeDamage(damage);
+            Debug.Log($"[Projectile] Hit bot for {damage} damage");
+            Destroy(gameObject);
+            return;
+        }
+
         // Destroy on any collision except the origin source
         if (other != originCollider)
         {

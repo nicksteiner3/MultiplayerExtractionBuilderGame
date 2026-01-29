@@ -25,6 +25,9 @@ public class SessionState : MonoBehaviour
     public MaterialData startingOre;
     public int startingOreAmount = 5;
 
+    [Header("Starting Weapons")]
+    public WeaponData starterWeapon;
+
     // Multi-material system
     private Dictionary<MaterialData, int> stashMaterials = new();
 
@@ -113,7 +116,19 @@ public class SessionState : MonoBehaviour
         equippedAbilities.Clear();
     }
 
-    // Material management
+    // Weapon management
+    public void EquipStarterWeapon(PlayerWeapons playerWeapons)
+    {
+        if (playerWeapons == null || starterWeapon == null)
+        {
+            Debug.LogWarning("[SessionState] Cannot equip starter weapon: playerWeapons or starterWeapon is null");
+            return;
+        }
+
+        playerWeapons.EquipWeapon(starterWeapon);
+        Debug.Log($"[SessionState] Equipped starter weapon: {starterWeapon.weaponName}");
+    }
+
     public int GetMaterialCount(MaterialData material)
     {
         if (material == null) return 0;

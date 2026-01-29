@@ -240,9 +240,11 @@ Linear sequence guiding the player through the core loop:
 - [ ] **Fabricator Progress Bar Not Updating UI**: Progress bars increment programmatically but don't reflect visually in the UI. Need to wire up the bar image fill animations to the internal progress values.
 - [ ] **PlayerWeapons Equip/Unequip Logic Bug**: Dragging a weapon from stash into inventory doesn't add it to PlayerWeapons.equippedWeapons. Removing a weapon from inventory incorrectly removes from equippedWeapons if one is equipped. The `if (equippedWeapons.Any(w => w == weapon)) return;` guard needs rework to properly sync UI state with equippedWeapons list.
 - [ ] **Inventory Opens Over Other Menus**: TAB key opens inventory even when other menus (e.g., buildings list) are already open. Should block inventory opening if any other menu is active.
+- [ ] **Gun Fires When Player Frozen**: WeaponSystem should not fire when the player is frozen/menus are open. Need to check player frozen state before allowing Fire() to execute.
 
 ### UI Polish (Post-MVP)
 - [ ] Player health UI display (health bar and/or text showing current/max health, updates in real-time on damage/heal)
+- [ ] Crosshair (center screen indicator for aiming weapons)
 - [ ] Rename EquipmentSlotUI → AbilitySlotUI and StashSlotUI → AbilityStashSlotUI throughout the codebase for clarity
 - [ ] Toast UI popup (currently console-only)
 - [ ] Highlight/ping system for tutorial objectives (outline Reactor, glow Fabricator terminal, etc.)
@@ -271,7 +273,7 @@ Linear sequence guiding the player through the core loop:
 - [ ] Create Milestone_1 asset with 6 challenge IDs
 - [ ] Add ChallengeManager to scene with M1 challenges assigned
 - [ ] Add MilestoneManager to scene with M1 milestone assigned
-- [ ] Wire up kill/loot events (OnPlayerKilled, OnBotKilled, OnObjectLooted)
+- [x] Wire up kill/loot events (OnBotKilled ✓, OnObjectLooted ✓, OnPlayerKilled blocked by multiplayer)
 
 ### Milestone 1 (Intro, ~1h target)
 Independent challenges (any order):

@@ -242,6 +242,7 @@ Linear sequence guiding the player through the core loop:
 - [ ] **Inventory Opens Over Other Menus**: TAB key opens inventory even when other menus (e.g., buildings list) are already open. Should block inventory opening if any other menu is active.
 
 ### UI Polish (Post-MVP)
+- [ ] Player health UI display (health bar and/or text showing current/max health, updates in real-time on damage/heal)
 - [ ] Rename EquipmentSlotUI → AbilitySlotUI and StashSlotUI → AbilityStashSlotUI throughout the codebase for clarity
 - [ ] Toast UI popup (currently console-only)
 - [ ] Highlight/ping system for tutorial objectives (outline Reactor, glow Fabricator terminal, etc.)
@@ -751,6 +752,7 @@ Systems & Rooms
 - [ ] Practice range room
 - [ ] Resource types & economy balancing
 - [ ] Multiplayer (deferred until core systems mature)
+  - [ ] Implement OnPlayerKilled() hook for PvP (detect player projectile hits on other players; currently only OnBotKilled works in single-player)
 
 Content: Abilities & Weapons
 - [ ] Design 5 abilities (names, roles, power costs)

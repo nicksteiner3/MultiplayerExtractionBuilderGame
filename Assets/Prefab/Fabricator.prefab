@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2bf806c9670e814f8c1241a726e1ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FabricatorMachine
+  powerConsumption: 10
 --- !u!114 &3935249531269620371
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -21,6 +21,11 @@ public class FPSController : MonoBehaviour
 
     private PlayerAbilities playerAbilities;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
         controller = GetComponent<CharacterController>();

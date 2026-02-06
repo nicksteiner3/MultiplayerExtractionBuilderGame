@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ShipBuildingUI : MonoBehaviour
 {
@@ -7,10 +8,25 @@ public class ShipBuildingUI : MonoBehaviour
     [SerializeField] private Transform buildingButtonsContainer;
     [SerializeField] private GameObject buildingButtonPrefab;
     [SerializeField] private string resourcesPath = "Buildings"; // Folder under Resources with BuildingData assets
+    [SerializeField] private Button closeButton;
+
+    private void Awake()
+    {
+        if (closeButton != null)
+            closeButton.onClick.AddListener(CloseBuildingMenu);
+    }
 
     private void OnEnable()
     {
         PopulateBuildingList();
+    }
+
+    private void Update()
+    {
+        if (buildingUiPanel != null && buildingUiPanel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseBuildingMenu();
+        }
     }
 
     public void OpenBuildingMenu()
@@ -40,10 +56,14 @@ public class ShipBuildingUI : MonoBehaviour
         if (buildingButtonsContainer == null || buildingButtonPrefab == null)
             return;
 
-        // Clear existing
+        // Clear existing (only dynamic building buttons)
         for (int i = buildingButtonsContainer.childCount - 1; i >= 0; i--)
         {
-            Destroy(buildingButtonsContainer.GetChild(i).gameObject);
+            var child = buildingButtonsContainer.GetChild(i);
+            if (child.GetComponent<BuildingButton>() != null)
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         // Load all BuildingData from Resources

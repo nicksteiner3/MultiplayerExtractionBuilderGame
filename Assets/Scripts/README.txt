@@ -230,7 +230,7 @@ Linear sequence guiding the player through the core loop:
 - [x] Create `MilestoneManager` to track progress, aggregate challenge status
 - [x] Wire challenge progress (craft ability → increment counter, notify manager)
 - [x] Wire milestone progress (all challenges complete → notify manager)
-- [ ] Create simple UI for active challenges (list, progress bars)
+- [x] Create simple UI for active challenges (list, progress bars)
 - [ ] Create simple UI for milestone tracking (progress toward requirement)
 
 ## Known Issues & Critical TODOs
@@ -241,6 +241,8 @@ Linear sequence guiding the player through the core loop:
 - [ ] **PlayerWeapons Equip/Unequip Logic Bug**: Dragging a weapon from stash into inventory doesn't add it to PlayerWeapons.equippedWeapons. Removing a weapon from inventory incorrectly removes from equippedWeapons if one is equipped. The `if (equippedWeapons.Any(w => w == weapon)) return;` guard needs rework to properly sync UI state with equippedWeapons list.
 - [ ] **Inventory Opens Over Other Menus**: TAB key opens inventory even when other menus (e.g., buildings list) are already open. Should block inventory opening if any other menu is active.
 - [ ] **Gun Fires When Player Frozen**: WeaponSystem should not fire when the player is frozen/menus are open. Need to check player frozen state before allowing Fire() to execute.
+- [ ] **Craft Cancel Consumes Materials**: Canceling a Dash craft and re-starting shows insufficient materials. Crafting should only consume materials on completion (or refund on cancel).
+- [x] **Player Prompt UI Disappears on Deploy**: Player prompt in the UI vanishes after deploying. Should persist across scene loads or reinitialize correctly.
 
 ### UI Polish (Post-MVP)
 - [ ] Player health UI display (health bar and/or text showing current/max health, updates in real-time on damage/heal)

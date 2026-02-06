@@ -194,4 +194,20 @@ public class ChallengeManager : MonoBehaviour
             }
         }
     }
+
+    // UI Helper Methods
+    public List<ChallengeData> GetActiveChallenges()
+    {
+        return activeChallenges;
+    }
+
+    public int GetChallengeProgress(string challengeId)
+    {
+        return challengeProgress.ContainsKey(challengeId) ? challengeProgress[challengeId] : 0;
+    }
+
+    public bool IsChallengeCompleted(string challengeId)
+    {
+        return completedChallenges.Contains(challengeId);
+    }
 }

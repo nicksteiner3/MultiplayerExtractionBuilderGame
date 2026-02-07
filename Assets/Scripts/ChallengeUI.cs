@@ -138,25 +138,4 @@ public class ChallengeUI : MonoBehaviour
             }
         }
     }
-
-    public void TogglePanel()
-    {
-        if (parentPauseObjectUI != null)
-        {
-            if (parentPauseObjectUI.activeSelf)
-                ClosePanel();
-            else
-                OpenPanel();
-        }
-    }
-
-    public void ShowPanel()
-    {
-        OpenPanel();
-    }
-
-    public void HidePanel()
-    {
-        ClosePanel();
-    }
 }

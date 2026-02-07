@@ -14,6 +14,8 @@ public class TutorialManager : MonoBehaviour
         PlaceFabricator,
         CraftDash,
         EquipDash,
+        CraftPistol,
+        EquipPistol,
         Deploy,
         CompleteChallenge,
         CompleteMilestone,
@@ -120,7 +122,25 @@ public class TutorialManager : MonoBehaviour
     {
         if (currentStep == TutorialStep.EquipDash)
         {
-            ShowToast("Dash equipped! Launch your first extraction from the Launch Terminal.");
+            ShowToast("Dash equipped! Now craft a Pistol at the Fabricator.");
+            AdvanceStep(TutorialStep.CraftPistol);
+        }
+    }
+
+    public void OnPistolCrafted()
+    {
+        if (currentStep == TutorialStep.CraftPistol)
+        {
+            ShowToast("Pistol crafted! Now equip it at the Equipment Terminal.");
+            AdvanceStep(TutorialStep.EquipPistol);
+        }
+    }
+
+    public void OnPistolEquipped()
+    {
+        if (currentStep == TutorialStep.EquipPistol)
+        {
+            ShowToast("Pistol equipped! Launch your first extraction from the Launch Terminal.");
             AdvanceStep(TutorialStep.Deploy);
         }
     }
@@ -191,6 +211,8 @@ public class TutorialManager : MonoBehaviour
             TutorialStep.PlaceFabricator => "Place a Fabricator to craft abilities",
             TutorialStep.CraftDash => "Craft a Dash ability at the Fabricator",
             TutorialStep.EquipDash => "Equip Dash at the Equipment Terminal",
+            TutorialStep.CraftPistol => "Craft a Pistol at the Fabricator",
+            TutorialStep.EquipPistol => "Equip Pistol at the Equipment Terminal",
             TutorialStep.Deploy => "Deploy to the field",
             TutorialStep.CompleteChallenge => "Complete your first challenge",
             TutorialStep.CompleteMilestone => "Complete your first milestone",

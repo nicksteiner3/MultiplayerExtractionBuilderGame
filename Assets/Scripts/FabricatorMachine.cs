@@ -157,6 +157,12 @@ public class FabricatorMachine : MonoBehaviour, IPowered
             TutorialManager.Instance.OnDashCrafted();
         }
 
+        // Notify tutorial if Pistol was crafted
+        if (TutorialManager.Instance != null && currentRecipe.recipeName.Contains("Pistol"))
+        {
+            TutorialManager.Instance.OnPistolCrafted();
+        }
+
         // If we should repeat, start the same recipe again
         if (shouldRepeat && HasInputs(currentRecipe) && HasSufficientPower())
         {

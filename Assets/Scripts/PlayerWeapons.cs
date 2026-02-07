@@ -28,6 +28,12 @@ public class PlayerWeapons : MonoBehaviour
 
         equippedWeapons.Add(weapon);
         Debug.Log($"[PlayerWeapons] Equipped {weapon.weaponName}");
+        
+        // Notify tutorial if Pistol was equipped
+        if (TutorialManager.Instance != null && weapon.weaponName.Contains("Pistol"))
+        {
+            TutorialManager.Instance.OnPistolEquipped();
+        }
         // TODO: Persist to SessionState when weapon persistence is added.
     }
 

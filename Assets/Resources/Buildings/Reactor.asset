@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61856dc8031dde446b4d26dba93f1428, type: 3}
   m_Name: Reactor
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
+  id: 1
   machineName: Reactor
   salvageCost: 50
   prefab: {fileID: 5793612624015852023, guid: acc0fe5ee1846e44aa88c02ae87552ac, type: 3}

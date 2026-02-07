@@ -31,6 +31,17 @@ public class SessionState : MonoBehaviour
     // Multi-material system
     private Dictionary<MaterialData, int> stashMaterials = new();
 
+    // Building placement system
+    [System.Serializable]
+    public struct BuildingPlacement
+    {
+        public string buildingName;
+        public Vector3 position;
+        public Quaternion rotation;
+    }
+
+    private List<BuildingPlacement> placedBuildings = new();
+
     void Awake()
     {
         if (Instance != null)
@@ -175,5 +186,27 @@ public class SessionState : MonoBehaviour
     public void ClearMaterials()
     {
         stashMaterials.Clear();
+    }
+
+    // Building placement management
+    public void AddPlacedBuilding(string machineName, Vector3 position, Quaternion rotation)
+    {
+        placedBuildings.Add(new BuildingPlacement
+        {
+            buildingName = machineName,
+            position = position,
+            rotation = rotation
+        });
+        Debug.Log($"[SessionState] Saved building placement: {machineName} at {position}");
+    }
+
+    public List<BuildingPlacement> GetPlacedBuildings()
+    {
+        return new List<BuildingPlacement>(placedBuildings);
+    }
+
+    public void ClearPlacedBuildings()
+    {
+        placedBuildings.Clear();
     }
 }

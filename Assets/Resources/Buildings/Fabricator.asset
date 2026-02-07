@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61856dc8031dde446b4d26dba93f1428, type: 3}
   m_Name: Fabricator
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
+  id: 0
   machineName: Fabricator
   salvageCost: 50
   prefab: {fileID: 5596260607981471004, guid: 30106726e95b1ec428c4d0c53229e69c, type: 3}

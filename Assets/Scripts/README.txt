@@ -82,6 +82,24 @@
 - Seasonal Freshness: Meaningful resets with prestige and permanent rewards.
 - Skillful PvPvE: Risk management and competitive mastery at endgame.
 
+## Art Style
+The game’s visual identity is best described as Salvagepunk Monumentalism — a gritty, photorealistic industrial sci-fi style that blends brutalist architecture with glowing ritualized machinery. Ships resemble floating factories, built from oxidized metal, exposed conduits, and modular slabs that feel both utilitarian and sacred. Machines pulse with visible power, their seams glowing in saturated oranges, magentas, and teals against deep void blues. UI elements echo this theme with angular, metallic frames, distressed fonts, and segmented bars that feel forged rather than designed. The Nexus monument anchors the aesthetic: a towering, alien structure built by players, radiating light and scale like a sci-fi cathedral. Every object, from weapons to terminals, is chunky, purposeful, and visually distinct, emphasizing player agency and progression through tactile, glowing interfaces and monumental construction.
+
+## Future Concepts (Post-MVP)
+- **Playstyle Pillars**: Ensure PvP, builder, and social playstyles each have viable, rewarding progression without forcing a single loop.
+-  - PvP: Combat-forward extraction with meaningful risk/reward and competitive progression.
+-  - Builder: Ship optimization, automation, and layout mastery as a primary path.
+-  - Social: Co-building, layout sharing, and crew roles that reward collaboration.
+- **Social Hubs**: Non-combat spaces for players to hang out, trade, and showcase ships without PvP pressure.
+- **Ship Layout Sharing**: Allow players to view/copy ship layouts if they have required materials.
+	- Gating ideas: invite-only access, earned intel from PvPvE, or kill/ally reveals.
+	- Goal: Reduce build friction for extraction-focused players without removing depth.
+- **Crew Access & Co-Building**: Let owners grant roles (Owner/Builder/Visitor) so friends can build using ship resources.
+	- Optional limits: time-limited access, resource spend caps, or contract-based permissions.
+- **Robot-First Playstyle**: Players can manufacture and deploy robots that run extractions autonomously.
+	- Robots can create PvE pressure and allow a non-combat/commander-focused loop.
+	- Costs, upkeep, and module choices keep the loop strategic (not passive farming).
+
 ## Material Economy & Progression Framework
 
 ### Resource Tiers

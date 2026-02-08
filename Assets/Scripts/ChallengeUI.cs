@@ -12,6 +12,7 @@ public class ChallengeUI : MonoBehaviour
 
     private Dictionary<string, GameObject> challengeEntries = new Dictionary<string, GameObject>();
     private FPSController fpsController;
+    private bool playerWasFrozenLastFrame = false;
 
     private void Awake()
     {
@@ -43,9 +44,11 @@ public class ChallengeUI : MonoBehaviour
             }
             else
             {
-                OpenPanel();
+                if (!playerWasFrozenLastFrame)
+                    OpenPanel();
             }
         }
+        playerWasFrozenLastFrame = fpsController.frozen;
     }
 
     private void OpenPanel()

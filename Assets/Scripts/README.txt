@@ -242,7 +242,7 @@ Linear sequence guiding the player through the core loop:
 - [ ] **Inventory Opens Over Other Menus**: TAB key opens inventory even when other menus (e.g., buildings list) are already open. Should block inventory opening if any other menu is active.
 - [ ] **Gun Fires When Player Frozen**: WeaponSystem should not fire when the player is frozen/menus are open. Need to check player frozen state before allowing Fire() to execute.
 - [ ] **Craft Cancel Consumes Materials**: Canceling a Dash craft and re-starting shows insufficient materials. Crafting should only consume materials on completion (or refund on cancel).
-- [ ] **ESC Opens Pause Menu After Closing Other Menus**: When a menu (e.g., Fabricator UI) is open and ESC is pressed to close it, the pause menu also opens on the same frame. Need to consume ESC input or coordinate between menu systems so only one responds per press.
+- [x] **ESC Opens Pause Menu After Closing Other Menus**: When a menu (e.g., Fabricator UI) is open and ESC is pressed to close it, the pause menu also opens on the same frame. Need to consume ESC input or coordinate between menu systems so only one responds per press.
 - [x] **Player Prompt UI Disappears on Deploy**: Player prompt in the UI vanishes after deploying. Should persist across scene loads or reinitialize correctly.
 
 ### UI Polish (Post-MVP)

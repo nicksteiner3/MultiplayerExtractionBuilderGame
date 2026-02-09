@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4647229165731228027}
   - component: {fileID: 798919311107381955}
   - component: {fileID: 6631854905309658272}
+  - component: {fileID: 8800564094203748268}
   m_Layer: 5
   m_Name: Ship Building Button UI
   m_TagString: Untagged
@@ -136,6 +137,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingButton
   label: {fileID: 8234717254144813651}
   costText: {fileID: 0}
+--- !u!114 &8800564094203748268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5757313337462753813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fec1c91a3b42aa4f8406b3c74b0030c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverEffect
+  buttonImage: {fileID: 4647229165731228027}
+  buttonText: {fileID: 8234717254144813651}
+  normalSprite: {fileID: 21300000, guid: 56f82dcf353384f4aba4f1248bf94b88, type: 3}
+  normalTextColor: {r: 1, g: 0.55, b: 0.2, a: 1}
+  hoverSprite: {fileID: 21300000, guid: f824801f3ecf97448b6ae6a19eef7f7b, type: 3}
+  hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &6647090368634563317
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,21 +18,31 @@ public class HUD : MonoBehaviour
     [SerializeField] private Vector2 crosshairSize = new Vector2(4f, 4f);
     [SerializeField] private Color crosshairColor = new Color(1f, 1f, 1f, 0.5f);
 
+    [Header("Interact Prompt")]
+    [SerializeField] private TextMeshProUGUI interactPromptText;
+
     private PlayerHealth playerHealth;
     private PlayerWeapons playerWeapons;
+    private PlayerInteraction playerInteraction;
 
     private void Start()
     {
         playerHealth = FindFirstObjectByType<PlayerHealth>();
-        var temp = FindObjectsByType<PlayerHealth>(FindObjectsSortMode.None);
+        playerWeapons = FindFirstObjectByType<PlayerWeapons>();
+        playerInteraction = FindFirstObjectByType<PlayerInteraction>();
 
         if (showCrosshair)
             EnsureCrosshair();
+
+        if (interactPromptText != null)
+            interactPromptText.gameObject.SetActive(false);
 
         if (playerHealth == null)
             Debug.LogError("[HUD] PlayerHealth not found in scene!");
         if (playerWeapons == null)
             Debug.LogError("[HUD] PlayerWeapons not found in scene!");
+        if (playerInteraction == null)
+            Debug.LogError("[HUD] PlayerInteraction not found in scene!");
     }
 
     private void Update()
@@ -42,6 +52,9 @@ public class HUD : MonoBehaviour
 
         if (playerWeapons != null) 
             UpdateWeaponDisplay();
+
+        if (playerInteraction != null)
+            UpdateInteractPrompt();
     }
 
     private void UpdateHealthDisplay()
@@ -126,6 +139,26 @@ public class HUD : MonoBehaviour
                 new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height),
                 new Vector2(0.5f, 0.5f));
             img.sprite = sprite;
+        }
+    }
+
+    private void UpdateInteractPrompt()
+    {
+        if (interactPromptText == null) return;
+
+        var interactable = playerInteraction.GetCurrentInteractable();
+        if (interactable != null)
+        {
+            string objectName = "Object";
+            if (interactable is MonoBehaviour mb)
+                objectName = mb.gameObject.name;
+            
+            interactPromptText.text = $"[E] {objectName}";
+            interactPromptText.gameObject.SetActive(true);
+        }
+        else
+        {
+            interactPromptText.gameObject.SetActive(false);
         }
     }
 }

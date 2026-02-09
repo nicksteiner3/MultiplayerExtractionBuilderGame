@@ -161,7 +161,7 @@ Gameplay Basics
 - [x] SessionState material tracking (Dictionary<MaterialData, int>)
 - [x] Tutorial system (0-10min: Place Reactor → Start Reactor → Place Fabricator → Craft Dash → Equip Dash)
 - [x] Tutorial extension (Deploy → Return detection → Challenge prompt → Milestone prompt)
-- [ ] Display "Press E" interaction prompt when looking at interactable objects
+- [x] Display "Press E" interaction prompt when looking at interactable objects
 - [ ] Implement machine disassembly (return salvage cost when destroying placed machines)
 - [ ] Create pause menu (settings, resume, quit, controls, audio, graphics)
 - [ ] Create title screen (new game, continue, settings, quit)
@@ -260,16 +260,17 @@ Linear sequence guiding the player through the core loop:
 - [ ] **Inventory Opens Over Other Menus**: TAB key opens inventory even when other menus (e.g., buildings list) are already open. Should block inventory opening if any other menu is active.
 - [ ] **Gun Fires When Player Frozen**: WeaponSystem should not fire when the player is frozen/menus are open. Need to check player frozen state before allowing Fire() to execute.
 - [ ] **Craft Cancel Consumes Materials**: Canceling a Dash craft and re-starting shows insufficient materials. Crafting should only consume materials on completion (or refund on cancel).
+- [ ] **Building Placement Allows Interactions**: While holding a building to be placed, player can still interact with objects. Should block interactions until placement is confirmed or canceled.
 - [x] **ESC Opens Pause Menu After Closing Other Menus**: When a menu (e.g., Fabricator UI) is open and ESC is pressed to close it, the pause menu also opens on the same frame. Need to consume ESC input or coordinate between menu systems so only one responds per press.
 - [x] **Player Prompt UI Disappears on Deploy**: Player prompt in the UI vanishes after deploying. Should persist across scene loads or reinitialize correctly.
 
 ### UI Polish (Post-MVP)
-- [ ] Player health UI display (health bar and/or text showing current/max health, updates in real-time on damage/heal)
-- [ ] Crosshair (center screen indicator for aiming weapons)
+- [x] Player health UI display (health bar and/or text showing current/max health, updates in real-time on damage/heal)
+- [x] Crosshair (center screen indicator for aiming weapons)
 - [ ] Rename EquipmentSlotUI → AbilitySlotUI and StashSlotUI → AbilityStashSlotUI throughout the codebase for clarity
 - [ ] Toast UI popup (currently console-only)
 - [ ] Highlight/ping system for tutorial objectives (outline Reactor, glow Fabricator terminal, etc.)
-- [ ] "Press E" interaction prompt overlay
+- [x] "Press E" interaction prompt overlay
 - [ ] Auto-save/checkpoint system
 
 ---

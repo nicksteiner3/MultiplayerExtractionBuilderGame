@@ -12,6 +12,12 @@ public class HUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI weaponText;
     [SerializeField] private Image weaponIcon;
 
+    [Header("Crosshair")]
+    [SerializeField] private bool showCrosshair = true;
+    [SerializeField] private Image crosshairImage;
+    [SerializeField] private Vector2 crosshairSize = new Vector2(4f, 4f);
+    [SerializeField] private Color crosshairColor = new Color(1f, 1f, 1f, 0.5f);
+
     private PlayerHealth playerHealth;
     private PlayerWeapons playerWeapons;
 
@@ -19,6 +25,9 @@ public class HUD : MonoBehaviour
     {
         playerHealth = FindFirstObjectByType<PlayerHealth>();
         var temp = FindObjectsByType<PlayerHealth>(FindObjectsSortMode.None);
+
+        if (showCrosshair)
+            EnsureCrosshair();
 
         if (playerHealth == null)
             Debug.LogError("[HUD] PlayerHealth not found in scene!");
@@ -70,5 +79,53 @@ public class HUD : MonoBehaviour
 
         //if (weaponIcon != null)
             //weaponIcon.sprite = weapon.icon;
+    }
+
+    private void EnsureCrosshair()
+    {
+        if (crosshairImage != null)
+        {
+            ApplyCrosshairStyle(crosshairImage);
+            return;
+        }
+
+        var canvas = GetComponentInParent<Canvas>();
+        if (canvas == null)
+            canvas = FindFirstObjectByType<Canvas>();
+
+        if (canvas == null)
+        {
+            Debug.LogWarning("[HUD] No Canvas found for crosshair.");
+            return;
+        }
+
+        var go = new GameObject("CrosshairDot", typeof(RectTransform), typeof(Image));
+        go.transform.SetParent(canvas.transform, false);
+        go.transform.SetAsFirstSibling(); // Render behind other UI elements
+
+        crosshairImage = go.GetComponent<Image>();
+        ApplyCrosshairStyle(crosshairImage);
+    }
+
+    private void ApplyCrosshairStyle(Image img)
+    {
+        if (img == null) return;
+
+        var rt = img.rectTransform;
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = Vector2.zero;
+        rt.sizeDelta = crosshairSize;
+
+        img.raycastTarget = false;
+        img.color = crosshairColor;
+
+        if (img.sprite == null)
+        {
+            var sprite = Sprite.Create(Texture2D.whiteTexture,
+                new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height),
+                new Vector2(0.5f, 0.5f));
+            img.sprite = sprite;
+        }
     }
 }

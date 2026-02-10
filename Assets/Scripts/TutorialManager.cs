@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -27,6 +28,14 @@ public class TutorialManager : MonoBehaviour
     [Header("UI References")]
     public TMP_Text objectiveText;
     public GameObject objectivePanel;
+    private RectTransform panelRect;
+    private ContentSizeFitter sizeFitter;
+    private RectTransform textRect;
+    private LayoutElement textLayout;
+
+    [Header("Tutorial Panel Sizing")]
+    [SerializeField] private float panelMaxWidth = 360f;
+    [SerializeField] private Vector2 panelPadding = new Vector2(16f, 8f);
 
     private void Awake()
     {
@@ -42,6 +51,43 @@ public class TutorialManager : MonoBehaviour
 
     private void OnEnable()
     {
+        // Setup ContentSizeFitter for dynamic panel resizing
+        if (objectivePanel != null)
+        {
+            panelRect = objectivePanel.GetComponent<RectTransform>();
+            sizeFitter = objectivePanel.GetComponent<ContentSizeFitter>();
+            
+            if (sizeFitter == null)
+            {
+                sizeFitter = objectivePanel.AddComponent<ContentSizeFitter>();
+            }
+            
+            // Disable auto-sizing; we'll size manually to avoid 1-char-per-line issues
+            sizeFitter.enabled = false;
+
+            // Anchor/pivot top-left to keep panel on-screen
+            panelRect.anchorMin = new Vector2(0f, 1f);
+            panelRect.anchorMax = new Vector2(0f, 1f);
+            panelRect.pivot = new Vector2(0f, 1f);
+        }
+
+        if (objectiveText != null)
+        {
+            textRect = objectiveText.rectTransform;
+            textRect.anchorMin = new Vector2(0f, 1f);
+            textRect.anchorMax = new Vector2(0f, 1f);
+            textRect.pivot = new Vector2(0f, 1f);
+            textRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, panelMaxWidth);
+            textRect.anchoredPosition = new Vector2(panelPadding.x, -panelPadding.y);
+
+            textLayout = objectiveText.GetComponent<LayoutElement>();
+            if (textLayout == null)
+            {
+                textLayout = objectiveText.gameObject.AddComponent<LayoutElement>();
+            }
+            textLayout.preferredWidth = panelMaxWidth;
+        }
+
         // Load saved progress
         if (SessionState.Instance != null)
         {
@@ -222,6 +268,8 @@ public class TutorialManager : MonoBehaviour
 
         objectiveText.text = objective;
 
+        ApplyPanelSizing();
+
         // Keep panel visible for testing (comment out to auto-hide on completion)
         // if (objectivePanel != null)
         // {
@@ -233,6 +281,22 @@ public class TutorialManager : MonoBehaviour
     {
         Debug.Log($"[Tutorial Toast] {message}");
         // TODO: Implement actual toast UI
+    }
+
+    private void ApplyPanelSizing()
+    {
+        if (panelRect == null || textRect == null || objectiveText == null) return;
+
+        Vector2 preferred = objectiveText.GetPreferredValues(objectiveText.text, panelMaxWidth, 0f);
+        float panelWidth = panelMaxWidth + (panelPadding.x * 2f);
+        float panelHeight = preferred.y + (panelPadding.y * 2f);
+
+        panelRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, panelWidth);
+        panelRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, panelHeight);
+
+        textRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, panelMaxWidth);
+        textRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, preferred.y);
+        textRect.anchoredPosition = new Vector2(panelPadding.x, -panelPadding.y);
     }
 
     public TutorialStep GetCurrentStep()

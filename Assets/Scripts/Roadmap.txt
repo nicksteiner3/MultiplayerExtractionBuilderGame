@@ -5,14 +5,13 @@ Goal: Single‑player loop working with placeholder assets.
   - Camera aiming (DONE)
   - Interaction system with feedback (DONE)
 - Inventory + containers
-  - Item pickup and carry system
-  - Container interaction + UI
+  - Container interaction + UI (DONE)
   - Stash management (DONE)
 - Extraction loop
-  - Deploy scene with enemies/hazards
+  - Deploy scene with enemies
   - Resource/salvage gathering
   - Return to ship detection
-  - Unload/deposit flow (DONE)
+  - Unload/deposit flow
 - Basic items + progression
   - Material types and quantities
   - Challenge/milestone system (DONE)

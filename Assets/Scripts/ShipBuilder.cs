@@ -111,6 +111,7 @@ public class ShipBuilder : MonoBehaviour
 
         // Place actual machine
         var actualMachine = Instantiate(currentBuildingData.prefab, previewInstance.transform.position, Quaternion.identity);
+        actualMachine.name = currentBuildingData.machineName; // Remove (Clone) suffix
         SetPreviewMode(actualMachine, false);
 
         // Save building placement to SessionState

@@ -42,6 +42,7 @@ public class ShipInitializer : MonoBehaviour
 
             // Instantiate the building
             GameObject building = Instantiate(buildingData.prefab, placement.position, placement.rotation);
+            building.name = buildingData.machineName; // Remove (Clone) suffix
             Debug.Log($"[ShipInitializer] Reconstructed {placement.buildingName} at {placement.position}");
         }
     }

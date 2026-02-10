@@ -1,0 +1,194 @@
+PHASE 1 — Core Game Prototype (Months 1–2 | Target: April 9, 2026)
+Goal: Single‑player loop working with placeholder assets.
+- Movement, camera, interaction
+  - FPS controller (DONE)
+  - Camera aiming (DONE)
+  - Interaction system with feedback (DONE)
+- Inventory + containers
+  - Item pickup and carry system
+  - Container interaction + UI
+  - Stash management (DONE)
+- Extraction loop
+  - Deploy scene with enemies/hazards
+  - Resource/salvage gathering
+  - Return to ship detection
+  - Unload/deposit flow (DONE)
+- Basic items + progression
+  - Material types and quantities
+  - Challenge/milestone system (DONE)
+  - Progression UI
+- Placeholder UI + visual polish
+  - Health bar, weapon display, crosshair (DONE)
+  - Interact prompt (DONE)
+  - Menu layout (partially done)
+  - Pause menu + settings stubs
+  - Title screen (new game, continue, settings, quit)
+  - Toast UI popup (currently console-only)
+  - Rename EquipmentSlotUI → AbilitySlotUI and StashSlotUI → AbilityStashSlotUI
+- Bug fixes (PHASE 1 critical)
+  - Equipment Terminal/Stash errors after deploy
+  - Fabricator progress bar not updating UI
+  - PlayerWeapons equip/unequip logic sync bug
+  - Inventory opens over other menus (TAB key blocking)
+  - Gun fires when player frozen
+  - Craft cancel consumes materials (should refund or prevent)
+  - Building placement allows interactions (should block)
+- One complete scenario
+  - Tutorial flow (Place Reactor → Craft Dash → Deploy → Return)
+  - First challenge/milestone path
+  - Playable end-to-end
+- Machine/building systems
+  - Equipment terminal powered (gating ability equip)
+  - Ship building terminal powered (gating machine placement)
+  - Implement machine disassembly (return salvage cost when destroying placed machines)
+- Legacy cleanup (optional for PHASE 1, can defer)
+  - Remove legacy salvage integer system (fields `runSalvage`, `stashSalvage`)
+  - Remove legacy `ItemCost` salvage path in recipes; migrate all recipes to `materialInputs` only
+  - Delete legacy fallback in `FabricatorMachine` salvage branches
+  - Remove unload flow or convert to material-based pickups
+  - Verify Equipment/Inventory UI no longer references salvage
+Outcome: Playable single-player game; core loop validated.
+
+PHASE 1.5 — Pre-Networking Decision (1 week | Target: April 16, 2026)
+Goal: Understand technical requirements before committing to a networking stack.
+- Performance profiling
+  - Measure bandwidth per player action (item pickup, ability use, building placement)
+  - Measure latency tolerance (how much delay breaks gameplay?)
+  - Profile CPU/memory at 2, 4, 8 player counts
+- Stress testing
+  - Simulate 4 players in same extraction zone
+  - Measure desync on high-latency connections (200ms+)
+  - Test edge cases (rapid ability spam, simultaneous building placement)
+- Finalize networking stack decision
+  - Based on bandwidth + latency data, choose: Photon, PlayFab, Netcode for GameObjects, Fusion, or custom
+  - Document reasoning + architecture sketch
+- Backend architect (informed by prototype)
+  - Design player account structure (ID, cosmetics, progression, stats)
+  - Schema: extraction sessions, matchmaking queue, leaderboard data
+  - API endpoints: register, login, save progress, matchmake
+  - Choose backend service (Firebase, PlayFab, custom Node.js + PostgreSQL)
+  - Set up dev environment + deployment pipeline
+- Authentication system design
+  - OAuth flow (Steam? Custom?)
+  - Session tokens + expiry logic
+  - Anti-cheat hooks (detect impossible stats, rate-limit actions)
+  - Plan account recovery + security measures
+Outcome: Networking choice locked with data backing it; backend architecture ready.
+
+PHASE 2 — Networking Foundation (Months 3–4 | Target: June 9, 2026)
+Goal: Get players into the same world reliably.
+- Client–host architecture (based on PHASE 0 decision)
+- Player movement sync
+- Interaction sync
+- Item pickup sync
+- Container sync
+- Basic lobby/host/join
+- Disconnect handling + reconnect logic
+Outcome: Two players can run around and interact with the world without desync.
+
+PHASE 3 — Networked Core Systems + Authority (Months 7–10 | Target: February 9, 2027)
+Goal: Everything critical is network‑safe and server‑authoritative.
+- Inventory fully networked
+- Containers fully networked
+- Resource nodes networked
+- Extraction events networked
+- Stash updates networked
+- Server authority rules (cheat prevention)
+- Anti‑cheese logic (validation, rate limiting)
+- Basic matchmaking backend
+Outcome: Core loop works in multiplayer without exploits.
+
+PHASE 4 — Raid Mechanics & PvP (Months 11–13 | Target: May 9, 2027)
+Goal: Add competitive extraction and PvP stakes.
+- Ranked Extraction Mode (endgame competition after Nexus completion)
+- PvP progression system (separate ladder, seasonal prestige)
+- Ability loss on player death (creates PvP stakes)
+- Weapon loot from killed players (drops into world)
+- Risk/reward of carrying consumables into extraction zones
+- Leaderboard UI for ranked events
+- Kill statistics tracking
+- Team balancing in extraction zones
+Outcome: PvP-forward players have a competitive progression path.
+
+PHASE 5 — Crew Systems & Ship Sharing (Months 14–16 | Target: August 9, 2027)
+Goal: Enable collaborative building and team gameplay.
+- Crew access with role permissions (Owner/Builder/Visitor)
+- Time-limited and contract-based access options
+- Ship layout sharing (invite-only gating)
+- Co-building UI (showing who is building what)
+- Shared resource spend caps per crew member
+- Multiple ships per player (maintain 3–5 builds)
+- Social hub scene for crew meetups
+- Player avatars + cosmetic slots
+- Friend invites + friend list
+Outcome: Builder-focused players can collaborate on ship design; friend groups can cooperatively manage a shared vessel.
+
+PHASE 6 — Robot & Autonomous Playstyle (Months 17–20 | Target: December 9, 2027)
+Goal: Enable non-combat/commander-focused progression.
+- Robot manufacturing system (build robots from materials)
+- Robot deployment into extraction zones (autonomous extraction)
+- Robot upkeep + power consumption (strategic cost)
+- Robot module choices (e.g., harvester, scout, combat)
+- Autonomous PvE pressure (robots create world events)
+- Commander progression path (focus on robot optimization, not personal combat)
+- Robot status UI (deployed, returning, harvesting)
+- Commander cosmetics (armor, upgrades, customization)
+- Non-combat milestone path (complete by robot stats, not kills)
+Outcome: Non-PvP/non-builder players have a viable, engaging progression loop.
+
+PHASE 7 — Post-Season Systems & Progression (Months 21–23 | Target: March 9, 2028)
+Goal: Add seasonal resets with permanent account rewards.
+- Expeditions/retirement system (end-of-season archival)
+- Permanent account rewards (cosmetics, extra ship slot, +1 ability slot)
+- Blueprint persistence (researched blueprints carry forward account-wide)
+- Salvage conversion (10% of final season salvage → startup salvage next season)
+- Seasonal prestige badges + veteran cosmetics
+- Season rankings + leaderboard reset
+- Challenge + milestone system extended across seasons
+- Basic text chat + emotes in social hubs
+Outcome: Players can retire with prestige and reset cleanly for a fresh seasonal experience.
+
+PHASE 8 — Art, UI, and World Production (Months 24–27 | Target: July 9, 2028)
+Goal: Replace placeholders with final assets (Salvagepunk aesthetic).
+- Final UI (your Salvagepunk industrial style: orange/rust/glow with brutalist design)
+- Final item icons + weapon models (chunky, purposeful, visually distinct)
+- Final environment kit (ship interior, extraction zones, industrial sci-fi)
+- Final props, machines, containers (modular, oxidized metal, exposed conduits)
+- Nexus monument visual design (towering alien structure, radiating light, player-scale)
+- Lighting + post-processing (glow seams in orange/magenta/teal, void blues)
+- FX pass (ability VFX, weapon trails, impacts, power seams)
+- Sound design + music (ritualistic, industrial ambience)
+Outcome: The game embodies Salvagepunk Monumentalism; every object feels crafted and meaningful.
+
+PHASE 9 — Content Expansion & World Variety (Months 28–30 | Target: October 9, 2028)
+Goal: Add enough depth for a full release.
+- More items + item tiers (Tier 3/4 weapons, advanced abilities, cosmetics)
+- More resource types + harvesting mechanics (10+ material types with distinct visual themes)
+- More hazards + environmental challenges (faction bases, anomalies, dynamic events)
+- More machines + building variety (10+ tiers from Refinery to Research Terminal)
+- Multiple extraction zones with distinct aesthetics and loot tables
+- Guilds + clan systems (shared stash, clan progression)
+- Non-combat social hubs (trading posts, workshops, arenas)
+Outcome: A content‑complete game with high replay value and cosmetic diversity.
+
+PHASE 10 — Polish, QA, and Network Hardening (Months 31–34 | Target: February 9, 2029)
+Goal: Make it stable, smooth, and ready for players.
+- Comprehensive bug fixing (internal QA + playtests)
+- Performance optimization (frame time, bandwidth)
+- Lag compensation + hit registration tuning
+- Server stability testing (load testing, uptime)
+- UX polish (tutorials, onboarding, accessibility)
+- Balance pass (economy, PvP meta, progression curves)
+- Community playtests (closed alpha/beta)
+Outcome: A stable, polished online game ready for early access or launch.
+
+PHASE 11 — Launch Prep + Early Access / Release (Months 35–36 | Target: April 9, 2029)
+Goal: Ship and establish post-launch support.
+- Trailer + marketing assets
+- Platform setup (Steam, Epic, etc.)
+- Final build validation
+- Early Access launch OR full launch
+- Day-one hotfixes + patch readiness
+- First content patch (post-launch cosmetics, balance tweaks)
+- Community feedback loop established
+Outcome: Your game is live and players are engaged.

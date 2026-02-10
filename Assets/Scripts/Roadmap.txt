@@ -50,6 +50,7 @@ Outcome: Playable single-player game; core loop validated.
 
 PHASE 1.5 — Pre-Networking Decision (1 week | Target: April 16, 2026)
 Goal: Understand technical requirements before committing to a networking stack.
+ - Weapon UI icons (equipped weapon display)
 - Performance profiling
   - Measure bandwidth per player action (item pickup, ability use, building placement)
   - Measure latency tolerance (how much delay breaks gameplay?)

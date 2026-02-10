@@ -201,7 +201,7 @@ public class ManufacturingUI : MonoBehaviour
             if (rt != null)
             {
                 var anchored = rt.anchoredPosition;
-                anchored.y = 35f * iterator;
+                anchored.y = -55f * iterator;
                 rt.anchoredPosition = anchored;
             }
 

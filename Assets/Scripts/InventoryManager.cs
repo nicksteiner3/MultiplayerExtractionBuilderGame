@@ -24,6 +24,33 @@ public class InventoryManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        InitializeStartingInventory();
+    }
+
+    private void InitializeStartingInventory()
+    {
+        // Get starting materials from SessionState
+        var sessionState = SessionState.Instance;
+        if (sessionState == null) return;
+
+        // Add starting Bio-Fuel to player inventory
+        if (sessionState.startingBioFuel != null && sessionState.startingBioFuelAmount > 0)
+        {
+            AddToPlayer(sessionState.startingBioFuel, sessionState.startingBioFuelAmount);
+        }
+
+        // Add starting Salvage Scrap to player inventory
+        if (sessionState.startingSalvageScrap != null && sessionState.startingStashSalvage > 0)
+        {
+            AddToPlayer(sessionState.startingSalvageScrap, sessionState.startingStashSalvage);
+        }
+
+        // Add starting Ore to player inventory
+        if (sessionState.startingOre != null && sessionState.startingOreAmount > 0)
+        {
+            AddToPlayer(sessionState.startingOre, sessionState.startingOreAmount);
+        }
     }
 
     public List<InventoryStack> GetPlayerInventory()

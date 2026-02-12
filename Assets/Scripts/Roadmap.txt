@@ -82,6 +82,7 @@ Goal: Get players into the same world reliably.
 - Interaction sync
 - Item pickup sync
 - Container sync
+- Inventory stack limits (define max stack size per material, auto-create new stacks on overflow)
 - Basic lobby/host/join
 - Disconnect handling + reconnect logic
 Outcome: Two players can run around and interact with the world without desync.
@@ -165,6 +166,7 @@ Goal: Add enough depth for a full release.
 - More items + item tiers (Tier 3/4 weapons, advanced abilities, cosmetics)
 - More resource types + harvesting mechanics (10+ material types with distinct visual themes)
 - More hazards + environmental challenges (faction bases, anomalies, dynamic events)
+  - AI bot behavior and combat (patrol, aggro, loot drops, spawn variety, behavioral tiers)
 - More machines + building variety (10+ tiers from Refinery to Research Terminal)
 - Multiple extraction zones with distinct aesthetics and loot tables
 - Guilds + clan systems (shared stash, clan progression)

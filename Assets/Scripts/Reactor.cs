@@ -7,7 +7,7 @@ using UnityEngine;
 public class Reactor : MonoBehaviour, IPowered
 {
     [Header("Generator Settings")]
-    private float fuelConsumptionPerSecond = 0.5f;   // Salvage per second when running
+    private float fuelConsumptionPerSecond = 0.5f;   // Fuel per second when running
     private float powerOutputPerSecond = 25f;      // Power generated per second
     private float maxFuel = 100f;                  // Max fuel tank capacity
     
@@ -33,29 +33,56 @@ public class Reactor : MonoBehaviour, IPowered
     }
 
     /// <summary>
-    /// Attempt to refuel from stash. Returns how much was actually added.
+    /// Attempt to refuel from stash. Consumes fuel material from player inventory.
+    /// Returns how much was actually added.
     /// </summary>
     public float Refuel(float amount)
     {
-        int salvageNeeded = Mathf.CeilToInt(amount);
-        int salvageAvailable = SessionState.Instance.stashSalvage;
-
-        if (salvageAvailable <= 0)
+        if (InventoryManager.Instance == null)
         {
-            Debug.Log("No salvage in stash to refuel");
+            Debug.LogWarning("InventoryManager not found");
             return 0f;
         }
 
-        int refuelAmount = Mathf.Min(salvageNeeded, salvageAvailable);
+        // Find fuel material and its stack in one search
+        var fuelStack = FindFuelInPlayerInventory();
+        if (fuelStack == null || fuelStack.material == null || fuelStack.amount <= 0)
+        {
+            Debug.Log("No fuel materials in player inventory to refuel");
+            return 0f;
+        }
+
+        int fuelNeeded = Mathf.CeilToInt(amount);
+        int fuelAvailable = fuelStack.amount;
+        int refuelAmount = Mathf.Min(fuelNeeded, fuelAvailable);
         float spaceInTank = maxFuel - currentFuel;
 
-        // Convert salvage to fuel (1:1 ratio for now, can adjust)
+        // Convert material to fuel (1:1 ratio for now, can adjust)
         float fuelAdded = Mathf.Min(refuelAmount, spaceInTank);
         currentFuel += fuelAdded;
-        SessionState.Instance.stashSalvage -= Mathf.RoundToInt(fuelAdded);
+        InventoryManager.Instance.RemoveFromPlayer(fuelStack.material, Mathf.RoundToInt(fuelAdded));
 
-        Debug.Log($"Reactor: Refueled {fuelAdded} (consumed {Mathf.RoundToInt(fuelAdded)} salvage)");
+        Debug.Log($"Reactor: Refueled {fuelAdded} (consumed {Mathf.RoundToInt(fuelAdded)} {fuelStack.material.materialName})");
         return fuelAdded;
+    }
+
+    /// <summary>
+    /// Find a fuel material stack in the player's current inventory.
+    /// Returns the full stack (material + amount) or null if none found.
+    /// </summary>
+    private InventoryManager.InventoryStack FindFuelInPlayerInventory()
+    {
+        if (InventoryManager.Instance == null) return null;
+
+        var playerInv = InventoryManager.Instance.GetPlayerInventory();
+        foreach (var stack in playerInv)
+        {
+            if (stack.material != null && stack.material.materialName.Contains("Bio") && stack.amount > 0)
+            {
+                return stack;
+            }
+        }
+        return null;
     }
 
     /// <summary>

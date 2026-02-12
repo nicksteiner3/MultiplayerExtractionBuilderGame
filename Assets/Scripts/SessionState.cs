@@ -53,26 +53,6 @@ public class SessionState : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        StartWithMaterials_DEVONLY();
-    }
-
-    private void StartWithMaterials_DEVONLY() 
-    {
-        if (startingBioFuel != null && startingBioFuelAmount > 0)
-        {
-            AddMaterial(startingBioFuel, startingBioFuelAmount);
-        }
-
-        if (startingSalvageScrap != null && startingStashSalvage > 0)
-        {
-            AddMaterial(startingSalvageScrap, startingStashSalvage);
-        }
-
-        if (startingOre != null && startingOreAmount > 0)
-        {
-            AddMaterial(startingOre, startingOreAmount);
-        }
     }
 
     // Called by pickups

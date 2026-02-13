@@ -94,11 +94,14 @@ public class ChallengeManager : MonoBehaviour
                 // TODO: Add recipe to player's unlocked recipes
             }
             
-            // Award salvage
+            // Award salvage as material
             if (challenge.salvageReward > 0 && SessionState.Instance != null)
             {
-                SessionState.Instance.stashSalvage += challenge.salvageReward;
-                Debug.Log($"[ChallengeManager] +{challenge.salvageReward} salvage");
+                if (SessionState.Instance.startingSalvageScrap != null)
+                {
+                    SessionState.Instance.AddMaterial(SessionState.Instance.startingSalvageScrap, challenge.salvageReward);
+                    Debug.Log($"[ChallengeManager] +{challenge.salvageReward} salvage material");
+                }
             }
             
             // Notify tutorial

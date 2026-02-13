@@ -197,34 +197,28 @@ public class FabricatorMachine : MonoBehaviour, IPowered
 
     private bool HasInputs(RecipeData recipe)
     {
-        // Check new material system first
-        if (recipe.materialInputs != null && recipe.materialInputs.Count > 0)
+        if (recipe.materialInputs == null || recipe.materialInputs.Count == 0)
         {
-            foreach (var input in recipe.materialInputs)
+            Debug.LogWarning($"Recipe {recipe.recipeName} has no material inputs defined.");
+            return false;
+        }
+
+        foreach (var input in recipe.materialInputs)
+        {
+            if (input.material == null)
             {
-                if (input.material == null)
-                {
-                    Debug.LogWarning($"Recipe {recipe.recipeName} has a material input slot with no material assigned.");
-                    return false;
-                }
-
-                int have = SessionState.Instance.GetMaterialCount(input.material);
-                if (have < input.amount)
-                {
-                    Debug.LogWarning($"Missing material for {recipe.recipeName}: need {input.amount}x {input.material.materialName}, have {have}.");
-                    return false;
-                }
+                Debug.LogWarning($"Recipe {recipe.recipeName} has a material input slot with no material assigned.");
+                return false;
             }
-            return true;
-        }
 
-        // Fallback to legacy salvage system
-        if (recipe.inputs != null && recipe.inputs.Count > 0)
-        {
-            return SessionState.Instance.stashSalvage >= recipe.inputs[0].amount;
+            // Check player inventory for materials
+            if (!InventoryManager.Instance.HasMaterial(input.material, input.amount))
+            {
+                Debug.LogWarning($"Missing material for {recipe.recipeName}: need {input.amount}x {input.material.materialName}.");
+                return false;
+            }
         }
-
-        return false; // No inputs defined
+        return true;
     }
 
     public bool HasInputsForRecipe(RecipeData recipe)
@@ -234,20 +228,12 @@ public class FabricatorMachine : MonoBehaviour, IPowered
 
     private void ConsumeInputs(RecipeData recipe)
     {
-        // Consume new material system first
-        if (recipe.materialInputs != null && recipe.materialInputs.Count > 0)
-        {
-            foreach (var input in recipe.materialInputs)
-            {
-                SessionState.Instance.RemoveMaterial(input.material, input.amount);
-            }
+        if (recipe.materialInputs == null || recipe.materialInputs.Count == 0)
             return;
-        }
 
-        // Fallback to legacy salvage system
-        if (recipe.inputs != null && recipe.inputs.Count > 0)
+        foreach (var input in recipe.materialInputs)
         {
-            SessionState.Instance.stashSalvage -= recipe.inputs[0].amount;
+            InventoryManager.Instance.RemoveFromPlayer(input.material, input.amount);
         }
     }
 

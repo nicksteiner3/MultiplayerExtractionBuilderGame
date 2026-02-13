@@ -9,7 +9,7 @@ public static class PlayerDeathHandler
             return;
 
         // Lose run inventory
-        SessionState.Instance.runSalvage = 0;
+        InventoryManager.Instance.ClearInventory();
 
         // Mark that we died (important distinction)
         SessionState.Instance.lastRunEndedInDeath = true;

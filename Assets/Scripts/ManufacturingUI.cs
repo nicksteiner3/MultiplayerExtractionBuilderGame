@@ -97,7 +97,7 @@ public class ManufacturingUI : MonoBehaviour
         // Update display
         currentRecipeLabel.text = recipe.recipeName;
         
-        // Build cost string from materialInputs or legacy inputs
+        // Build cost string from materialInputs
         string costText = "No cost";
         if (recipe.materialInputs != null && recipe.materialInputs.Count > 0)
         {
@@ -108,10 +108,6 @@ public class ManufacturingUI : MonoBehaviour
                     costs.Add($"{input.material.name}: {input.amount}");
             }
             costText = string.Join(", ", costs);
-        }
-        else if (recipe.inputs != null && recipe.inputs.Count > 0)
-        {
-            costText = $"Salvage: {recipe.inputs[0].amount}";
         }
         
         recipeDetailsLabel.text = $"{costText} | Time: {recipe.craftTime}s";

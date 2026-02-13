@@ -13,15 +13,11 @@ public class SessionState : MonoBehaviour
     // Tutorial progression
     public int tutorialStep = 0; // 0=Welcome, 1=PlaceReactor, 2=FuelReactor, 3=PowerFabricator, 4=Completed
 
-    // Legacy salvage (being phased out, keeping for now)
-    public int runSalvage;
-    public int stashSalvage;
-
     [Header("Starting Materials (for testing)")]
     public MaterialData startingBioFuel;
     public int startingBioFuelAmount = 1;
     public MaterialData startingSalvageScrap;
-    public int startingStashSalvage = 30;
+    public int startingSalvageScrapAmount = 30;
     public MaterialData startingOre;
     public int startingOreAmount = 5;
 
@@ -55,21 +51,6 @@ public class SessionState : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // Called by pickups
-    public void AddRunSalvage(int amount)
-    {
-        runSalvage += amount;
-        Debug.Log($"Run Salvage: {runSalvage}");
-    }
-
-    // Called by unload button
-    public void UnloadInventory()
-    {
-        stashSalvage += runSalvage;
-        runSalvage = 0;
-    }
-
-    // Load abilities for the player
     public List<AbilitySlot> GetEquippedAbilities()
     {
         // Return copies so runtime cooldowns are independent

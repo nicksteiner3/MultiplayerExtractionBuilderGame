@@ -93,11 +93,6 @@ public class RecipeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             }
             costText = sb.ToString();
         }
-        else if (recipe.inputs != null && recipe.inputs.Count > 0)
-        {
-            // Legacy salvage input
-            costText = $"Salvage: {recipe.inputs[0].amount}";
-        }
         else
         {
             costText = "No cost defined";

@@ -72,11 +72,14 @@ public class MilestoneManager : MonoBehaviour
                 // TODO: Add to player's unlocked recipes list (track in SessionState)
             }
 
-            // Award salvage
+            // Award salvage as material
             if (milestone.salvageReward > 0 && SessionState.Instance != null)
             {
-                SessionState.Instance.stashSalvage += milestone.salvageReward;
-                Debug.Log($"[MilestoneManager] +{milestone.salvageReward} salvage");
+                if (SessionState.Instance.startingSalvageScrap != null)
+                {
+                    SessionState.Instance.AddMaterial(SessionState.Instance.startingSalvageScrap, milestone.salvageReward);
+                    Debug.Log($"[MilestoneManager] +{milestone.salvageReward} salvage material");
+                }
             }
 
             // Notify tutorial

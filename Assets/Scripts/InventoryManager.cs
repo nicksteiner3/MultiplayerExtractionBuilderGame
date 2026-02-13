@@ -41,9 +41,9 @@ public class InventoryManager : MonoBehaviour
         }
 
         // Add starting Salvage Scrap to player inventory
-        if (sessionState.startingSalvageScrap != null && sessionState.startingStashSalvage > 0)
+        if (sessionState.startingSalvageScrap != null && sessionState.startingSalvageScrapAmount > 0)
         {
-            AddToPlayer(sessionState.startingSalvageScrap, sessionState.startingStashSalvage);
+            AddToPlayer(sessionState.startingSalvageScrap, sessionState.startingSalvageScrapAmount);
         }
 
         // Add starting Ore to player inventory
@@ -81,5 +81,18 @@ public class InventoryManager : MonoBehaviour
         if (stack.amount <= 0)
             playerInventory.Remove(stack);
         return true;
+    }
+
+    public bool HasMaterial(MaterialData material, int amount)
+    {
+        if (material == null || amount <= 0) return false;
+        var stack = playerInventory.Find(s => s.material == material);
+        return stack != null && stack.amount >= amount;
+    }
+
+    public void ClearInventory()
+    {
+        playerInventory.Clear();
+        Debug.Log("[Inventory] Player inventory cleared");
     }
 }

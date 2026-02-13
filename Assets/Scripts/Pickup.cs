@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SalvagePickup : MonoBehaviour, IInteractable
+public class Pickup : MonoBehaviour, IInteractable
 {
     [SerializeField] private MaterialData material;
     [SerializeField] private int amount = 1;
@@ -14,7 +14,7 @@ public class SalvagePickup : MonoBehaviour, IInteractable
         }
         else
         {
-            Debug.LogWarning("SalvagePickup: No material assigned!");
+            Debug.LogWarning("Pickup: No material assigned!");
         }
     }
 }

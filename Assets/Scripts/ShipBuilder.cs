@@ -99,15 +99,18 @@ public class ShipBuilder : MonoBehaviour
         if (previewInstance == null || currentBuildingData == null)
             return;
 
-        // Check salvage cost
-        if (SessionState.Instance.stashSalvage < currentBuildingData.salvageCost)
+        // Check salvage cost from player inventory
+        if (SessionState.Instance.startingSalvageScrap != null && !InventoryManager.Instance.HasMaterial(SessionState.Instance.startingSalvageScrap, currentBuildingData.salvageCost))
         {
             Debug.LogWarning("Not enough salvage to build!");
             return;
         }
 
-        // Consume salvage
-        SessionState.Instance.stashSalvage -= currentBuildingData.salvageCost;
+        // Consume salvage from player inventory
+        if (SessionState.Instance.startingSalvageScrap != null)
+        {
+            InventoryManager.Instance.RemoveFromPlayer(SessionState.Instance.startingSalvageScrap, currentBuildingData.salvageCost);
+        }
 
         // Place actual machine
         var actualMachine = Instantiate(currentBuildingData.prefab, previewInstance.transform.position, Quaternion.identity);

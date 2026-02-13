@@ -8,6 +8,7 @@ public class ManufacturingUI : MonoBehaviour
     [SerializeField] private GameObject abilityManufacturingUi;
 
     [Header("Recipe Selection View")]
+    [SerializeField] private GameObject recipeSelectionPanel; // Recipe Selection Panel to toggle
     [SerializeField] private Transform recipesContainer; // parent to instantiate buttons under
     [SerializeField] private GameObject recipeButtonPrefab; // prefab with Button + RecipeButton + TMP label
     [SerializeField] private string resourcesPath = "Recipes"; // folder under Resources to load RecipeData from
@@ -28,17 +29,10 @@ public class ManufacturingUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // Toggle panels based on crafting state
+        // Only populate recipes on first enable (when starting recipe selection view)
         if (!isInCraftingView)
         {
-            recipesContainer.parent.gameObject.SetActive(true);  // Recipe Selection Panel
-            craftingPanel.SetActive(false);
             PopulateRecipeList();
-        }
-        else
-        {
-            recipesContainer.parent.gameObject.SetActive(false);
-            craftingPanel.SetActive(true);
         }
     }
 
@@ -88,7 +82,7 @@ public class ManufacturingUI : MonoBehaviour
 
         // All checks passed, now switch UI and start crafting
         isInCraftingView = true;
-        recipesContainer.parent.gameObject.SetActive(false);
+        recipeSelectionPanel.SetActive(false);
         craftingPanel.SetActive(true);
 
         // Start crafting
@@ -146,7 +140,7 @@ public class ManufacturingUI : MonoBehaviour
         // Return to recipe list view
         isInCraftingView = false;
         craftingPanel.SetActive(false);
-        recipesContainer.parent.gameObject.SetActive(true);
+        recipeSelectionPanel.SetActive(true);
     }
 
     private void HandleWindowClosure()

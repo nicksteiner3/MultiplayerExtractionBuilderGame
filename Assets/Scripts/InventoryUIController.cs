@@ -14,10 +14,13 @@ public class InventoryUIController : MonoBehaviour
 
     private ContainerInventory currentContainer;
     private bool isStandaloneMode = false; // True when opened with TAB (no container)
+    private FPSController cachedController;
 
     void Start()
     {
         if (parentUIObject != null) parentUIObject.SetActive(false);
+
+        cachedController = FindFirstObjectByType<FPSController>();
         
         if (closeButton != null)
         {
@@ -35,6 +38,9 @@ public class InventoryUIController : MonoBehaviour
             }
             else
             {
+                if (cachedController != null && cachedController.frozen)
+                    return;
+
                 OpenStandalone();
             }
         }
@@ -53,8 +59,9 @@ public class InventoryUIController : MonoBehaviour
         RefreshContainerList();
         RefreshPlayerInventory();
 
-        var controller = FindFirstObjectByType<FPSController>();
-        if (controller) controller.FreezePlayer();
+        if (cachedController == null)
+            cachedController = FindFirstObjectByType<FPSController>();
+        if (cachedController) cachedController.FreezePlayer();
     }
 
     public void OpenStandalone()
@@ -65,8 +72,9 @@ public class InventoryUIController : MonoBehaviour
         ClearContainerList();
         RefreshPlayerInventory();
 
-        var controller = FindFirstObjectByType<FPSController>();
-        if (controller) controller.FreezePlayer();
+        if (cachedController == null)
+            cachedController = FindFirstObjectByType<FPSController>();
+        if (cachedController) cachedController.FreezePlayer();
     }
 
     public void Close()
@@ -75,8 +83,9 @@ public class InventoryUIController : MonoBehaviour
         currentContainer = null;
         isStandaloneMode = false;
 
-        var controller = FindFirstObjectByType<FPSController>();
-        if (controller) controller.UnfreezePlayer();
+        if (cachedController == null)
+            cachedController = FindFirstObjectByType<FPSController>();
+        if (cachedController) cachedController.UnfreezePlayer();
     }
 
     private void RefreshContainerList()

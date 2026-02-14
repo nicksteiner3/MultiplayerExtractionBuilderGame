@@ -20,6 +20,7 @@ public class ManufacturingUI : MonoBehaviour
     [SerializeField] private Image progressBar; // Visual progress of current craft
     [SerializeField] private TMP_Text progressTimeLabel; // Shows "5.2s / 20s"
     [SerializeField] private Button cancelButton;
+    [SerializeField] private TMP_Text feedbackLabel; // Shows errors like insufficient materials
 
     [Header("Machine Info")]
     [SerializeField] private TMP_Text machineStatusLabel; // Shows "Fabricator - 10 Power"
@@ -33,6 +34,8 @@ public class ManufacturingUI : MonoBehaviour
         if (!isInCraftingView)
         {
             PopulateRecipeList();
+            if (feedbackLabel != null)
+                feedbackLabel.text = string.Empty;
         }
     }
 
@@ -63,6 +66,8 @@ public class ManufacturingUI : MonoBehaviour
         if (currentMachine == null)
         {
             Debug.LogError("No FabricatorMachine found");
+            if (feedbackLabel != null)
+                feedbackLabel.text = "No fabricator connected.";
             return;
         }
 
@@ -70,6 +75,8 @@ public class ManufacturingUI : MonoBehaviour
         if (!currentMachine.HasSufficientPower())
         {
             Debug.LogWarning("Insufficient power to start crafting");
+            if (feedbackLabel != null)
+                feedbackLabel.text = "Not enough power to start crafting.";
             return;
         }
 
@@ -77,6 +84,8 @@ public class ManufacturingUI : MonoBehaviour
         if (!currentMachine.HasInputsForRecipe(recipe))
         {
             Debug.LogWarning("Insufficient materials for recipe");
+            if (feedbackLabel != null)
+                feedbackLabel.text = "Not enough materials for this recipe.";
             return;
         }
 
@@ -84,6 +93,9 @@ public class ManufacturingUI : MonoBehaviour
         isInCraftingView = true;
         recipeSelectionPanel.SetActive(false);
         craftingPanel.SetActive(true);
+
+        if (feedbackLabel != null)
+            feedbackLabel.text = string.Empty;
 
         // Start crafting
         currentMachine.StartRecipe(recipe);

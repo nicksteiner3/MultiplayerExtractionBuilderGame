@@ -87,7 +87,12 @@ public class RecipeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                 var mi = recipe.materialInputs[i];
                 if (mi?.material != null)
                 {
-                    sb.Append($"{mi.material.name}: {mi.amount}");
+                    int have = GetPlayerAmount(mi.material);
+                    bool insufficient = have < mi.amount;
+                    string line = $"{mi.material.name}: {mi.amount}";
+                    if (insufficient)
+                        line = $"<color=#FF4C4C>{line}</color>";
+                    sb.Append(line);
                     if (i < recipe.materialInputs.Count - 1) sb.Append("\n");
                 }
             }
@@ -106,6 +111,16 @@ public class RecipeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         txt.raycastTarget = false; // Avoid blocking hover exit
 
         currentTooltip = tooltipGo;
+    }
+
+    private int GetPlayerAmount(MaterialData material)
+    {
+        if (InventoryManager.Instance == null || material == null)
+            return 0;
+
+        var inventory = InventoryManager.Instance.GetPlayerInventory();
+        var stack = inventory.Find(s => s.material == material);
+        return stack != null ? stack.amount : 0;
     }
 
     private void HideTooltip()

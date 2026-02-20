@@ -21,6 +21,8 @@ public class ManufacturingUI : MonoBehaviour
     [SerializeField] private TMP_Text progressTimeLabel; // Shows "5.2s / 20s"
     [SerializeField] private Button cancelButton;
     [SerializeField] private TMP_Text feedbackLabel; // Shows errors like insufficient materials
+    [SerializeField] private Transform outputSlotParent; // Container for crafted item display
+    [SerializeField] private GameObject outputSlotPrefab; // Prefab for displaying ability/weapon items
 
     [Header("Machine Info")]
     [SerializeField] private TMP_Text machineStatusLabel; // Shows "Fabricator - 10 Power"
@@ -30,6 +32,8 @@ public class ManufacturingUI : MonoBehaviour
 
     private void OnEnable()
     {
+        FabricatorMachine.OnCraftingCompleted += UpdateOutputDisplay;
+        
         // Only populate recipes on first enable (when starting recipe selection view)
         if (!isInCraftingView)
         {
@@ -39,13 +43,18 @@ public class ManufacturingUI : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        FabricatorMachine.OnCraftingCompleted -= UpdateOutputDisplay;
+    }
+
     private void Update()
     {
         if (abilityManufacturingUi.gameObject.activeSelf)
         {
             HandleWindowClosure();
 
-            // Update progress display if crafting
+            // Update progress display if crafting 
             if (isInCraftingView && currentMachine != null && currentMachine.IsCrafting())
             {
                 UpdateCraftingDisplay();
@@ -100,6 +109,9 @@ public class ManufacturingUI : MonoBehaviour
         // Start crafting
         currentMachine.StartRecipe(recipe);
 
+        // Clear any previous output
+        UpdateOutputDisplay();
+
         // Update display
         currentRecipeLabel.text = recipe.recipeName;
         
@@ -140,6 +152,73 @@ public class ManufacturingUI : MonoBehaviour
         // Update time label
         if (progressTimeLabel != null)
             progressTimeLabel.text = $"{progress:F1}s / {craftTime}s";
+    }
+
+    private void UpdateOutputDisplay()
+    {
+        // Clear old output display
+        if (outputSlotParent != null)
+        {
+            for (int i = outputSlotParent.childCount - 1; i >= 0; i--)
+            {
+                Destroy(outputSlotParent.GetChild(i).gameObject);
+            }
+        }
+
+        int completedCount = currentMachine.GetCompletedItemCount();
+        Debug.Log($"[UpdateOutputDisplay] Completed items count: {completedCount}");
+
+        if (completedCount > 0 && outputSlotParent != null && outputSlotPrefab != null)
+        {
+            var nextItem = currentMachine.PeekCompletedItem();
+            if (nextItem != null)
+            {
+                Debug.Log("[UpdateOutputDisplay] Creating output slot");
+                var go = Instantiate(outputSlotPrefab);
+                go.transform.SetParent(outputSlotParent, false);
+                go.transform.localPosition = Vector3.zero;
+                Debug.Log($"[UpdateOutputDisplay] Instantiated: {go.name}");
+                var label = go.GetComponentInChildren<TextMeshProUGUI>();
+                
+                string itemName = nextItem.ability != null ? nextItem.ability.abilityName : nextItem.weapon.weaponName;
+                string countText = completedCount > 1 ? $"\n×{completedCount}" : "";
+                
+                if (label != null)
+                {
+                    label.text = $"{itemName}{countText}\n(Double-click to take)";
+                    Debug.Log($"[UpdateOutputDisplay] Set label text to: {itemName}{countText}");
+                }
+                else
+                {
+                    Debug.LogWarning("[UpdateOutputDisplay] No TextMeshProUGUI found on output slot");
+                }
+
+                // Add double-click detection
+                var doubleClickDetector = go.GetComponent<DoubleClickDetector>();
+                if (doubleClickDetector != null)
+                {
+                    doubleClickDetector.SetDoubleClickCallback(HandleOutputDoubleClick);
+                    Debug.Log("[UpdateOutputDisplay] Double-click detector set up");
+                }
+                else
+                {
+                    Debug.LogWarning("[UpdateOutputDisplay] No DoubleClickDetector found on output slot");
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("[UpdateOutputDisplay] No completed items to display");
+        }
+    }
+
+    private void HandleOutputDoubleClick()
+    {
+        if (currentMachine != null)
+        {
+            currentMachine.TakeCompletedItem();
+            UpdateOutputDisplay();
+        }
     }
 
     public void CancelCrafting()

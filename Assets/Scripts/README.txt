@@ -261,6 +261,7 @@ Linear sequence guiding the player through the core loop:
 - [ ] **Gun Fires When Player Frozen**: WeaponSystem should not fire when the player is frozen/menus are open. Need to check player frozen state before allowing Fire() to execute.
 - [ ] **Craft Cancel Consumes Materials**: Canceling a Dash craft and re-starting shows insufficient materials. Crafting should only consume materials on completion (or refund on cancel).
 - [ ] **Building Placement Allows Interactions**: While holding a building to be placed, player can still interact with objects. Should block interactions until placement is confirmed or canceled.
+- [ ] **Fabricator Recipe Tooltip Persists After ESC**: When hovering over a recipe in the fabricator to show the tooltip, then pressing ESC to exit the fabricator menu while still hovering, the tooltip remains visible on screen instead of being dismissed.
 - [x] **ESC Opens Pause Menu After Closing Other Menus**: When a menu (e.g., Fabricator UI) is open and ESC is pressed to close it, the pause menu also opens on the same frame. Need to consume ESC input or coordinate between menu systems so only one responds per press.
 - [x] **Player Prompt UI Disappears on Deploy**: Player prompt in the UI vanishes after deploying. Should persist across scene loads or reinitialize correctly.
 

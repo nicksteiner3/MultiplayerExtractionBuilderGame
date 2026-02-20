@@ -678,17 +678,71 @@ Output Routing System (Future Enhancement)
 - [ ] Add multiple container support (chain containers together)
 - [ ] Implement conveyor belt container routing (connect to containers)
 
-Inventory System
-- [x] Create InventoryManager (tracks all items, slots, categories)
+## Inventory & Stash System Design
+
+### Core Philosophy
+- **Inventory = Risk**: Everything in your inventory is at risk. If you die during extraction, you lose ALL carried items (materials, weapons, abilities—equipped or not).
+- **Stash = Safety**: Lives on the ship. Manual storage only. Nothing auto-populates the stash. Use it to store items you don't want to risk on extraction.
+- **Equipment Limits**: 
+  - Weapons: 2 equipped at a time (can carry extras in inventory)
+  - Abilities: 3 equipped at a time (can carry extras in inventory)
+  - Each equipped ability has a keybinding slot
+- **Crafting Flow**: Fabricator output → Double-click → Player inventory (not stash)
+- **Inventory Capacity**: Limited (to be implemented later; death risk is primary constraint for now)
+
+### Inventory UI Structure
+- **Solo View**: Full-width panel with tabbed sections (Materials | Abilities | Weapons)
+- **Container View**: Left panel = player inventory (tabbed), Right panel = container contents
+- Each tab shows relevant items with icons, stats, and equipped status
+- Container items transfer to appropriate inventory tab (materials to Materials, abilities to Abilities, etc.)
+
+### Data Architecture
+InventoryManager expands to unified inventory system:
+- Materials: List<MaterialStack> (MaterialData + amount)
+- Abilities: List<AbilityData> (owned, equipped or not)
+- Weapons: List<WeaponData> (owned, equipped or not)
+- Future: Consumables (health packs, shield rechargers, ammo types)
+
+PlayerAbilities/PlayerWeapons reference items FROM inventory (equipped subset).
+
+### Inventory System TODOs
+- [x] Create InventoryManager (tracks materials only—needs expansion)
 - [x] Open inventory with TAB key (InventoryUI panel)
-- [x] Display resources (Salvage, Ore, Bio-Matter, Circuits)
-- [ ] Display abilities (equippable, show cooldowns)
-- [ ] Display weapons (equippable, show ammo/durability)
-- [ ] Display consumables (healing, shields, buffs)
-- [ ] Equip/unequip abilities to ability slots
-- [ ] Equip/unequip weapons to weapon slots
-- [ ] Prevent equipping non-equippable items (materials, consumables)
-- [ ] Show inventory capacity per category (e.g., "12 / 20 Salvage")
+- [x] Display materials (Bio-Matter, Salvage Scrap, Ore)
+- [ ] **Expand InventoryManager to track abilities and weapons**
+  - [ ] Add List<AbilityData> abilities field
+  - [ ] Add List<WeaponData> weapons field
+  - [ ] Add AddAbility(AbilityData), RemoveAbility(AbilityData) methods
+  - [ ] Add AddWeapon(WeaponData), RemoveWeapon(WeaponData) methods
+  - [ ] Add GetAbilities(), GetWeapons() methods
+- [ ] **Update Fabricator output to add to inventory**
+  - [ ] Change TakeCompletedItem() to call InventoryManager.AddAbility() / AddWeapon()
+  - [ ] Remove stash placement logic from fabricator double-click
+- [ ] **Redesign Inventory UI with tabbed sections**
+  - [ ] Add Materials tab (current display)
+  - [ ] Add Abilities tab (list abilities, show equipped status)
+  - [ ] Add Weapons tab (list weapons, show equipped status)
+  - [ ] Add tab switching UI (buttons or hotkeys)
+  - [ ] Show equipped indicators (e.g., "Dash Ability [EQUIPPED]")
+  - [ ] Full-width when solo, split when at container
+- [ ] **Implement equipping from inventory**
+  - [ ] Click/drag ability from inventory tab to equip (if slot available)
+  - [ ] Click/drag weapon from inventory tab to equip (if slot available)
+  - [ ] Show "No free slot" feedback when all slots occupied
+  - [ ] Enforce 2 weapon / 3 ability equip limits
+- [ ] **Implement stash transfer system**
+  - [ ] Right-click or drag item from inventory to stash (safe storage)
+  - [ ] Drag item from stash back to inventory (re-risk item)
+  - [ ] Stash UI shows separate sections (Materials | Abilities | Weapons)
+- [ ] **Add inventory capacity system** (future)
+  - [ ] Define max slots or weight limit
+  - [ ] Show capacity UI (e.g., "25 / 50 slots used")
+  - [ ] Prevent pickup when full
+  - [ ] Allow dropping items to make space
+- [ ] **Add consumables category** (future)
+  - [ ] Health packs, shield rechargers, ammo types
+  - [ ] Display in Consumables tab
+  - [ ] Implement use/consume mechanic
 - [ ] Drop item on ground (removes from inventory, creates world object)
 - [ ] Pickup item from ground (adds to inventory or drops if full)
 - [x] Close inventory with ESC or TAB again
@@ -720,13 +774,25 @@ Late Game Scaling (150-200h)
 - [ ] Nexus Phase 5: 1000 finished abilities produced
 - [ ] Milestone tracking UI (show progress toward goals)
 
-PvP Risk & Reward
+## Death & Risk Mechanics
+
+### Total Loss on Death
+- **Die during extraction = lose EVERYTHING in inventory**
+  - All materials (Bio-Matter, Salvage, Ore, etc.)
+  - All weapons (equipped or carried)
+  - All abilities (equipped or carried)
+  - All consumables (health, shields, ammo)
+- **Stash is safe**: Items stored on ship are never lost
+- **Strategic choice**: Risk valuable items for extraction rewards vs play safe with minimal loadout
+
+### PvP Risk & Reward TODOs
+- [ ] Implement death inventory drop (all items spawn as lootable on corpse)
+- [ ] Make dropped items lootable by other players
+- [ ] Clear player inventory on death (InventoryManager.ClearInventory() already exists)
+- [ ] Respawn player with empty inventory (no items, must re-equip from stash)
 - [ ] Carry consumables into PvPvE zone (healing, shields, buffs)
-- [ ] Carry weapon frames for field repairs
 - [ ] Implement consumable use (right-click healing item, applies effect)
-- [ ] Consumables lost on death (add to drop table)
-- [ ] Weapon frames droppable on death (lootable)
-- [ ] Ability loss on death (player loses equipped ability, can retrieve?)
+- [ ] Future: Partial insurance system (recover % of lost items for cost)
 
 Extraction Cycle
 - [ ] Extract from PvPvE zone (trigger return to ship)

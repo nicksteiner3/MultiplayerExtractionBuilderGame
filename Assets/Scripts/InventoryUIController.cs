@@ -276,14 +276,24 @@ public class InventoryUIController : MonoBehaviour
         List<AbilityData> abilities = InventoryManager.Instance.GetAbilities();
         Debug.Log($"[InventoryUI] Player abilities: {abilities.Count}");
 
+        Dictionary<AbilityData, int> abilityCounts = new Dictionary<AbilityData, int>();
         foreach (var ability in abilities)
+        {
+            if (ability == null) continue;
+            if (!abilityCounts.ContainsKey(ability))
+                abilityCounts[ability] = 0;
+            abilityCounts[ability] += 1;
+        }
+
+        foreach (var kvp in abilityCounts)
         {
             var go = Instantiate(playerInventorySlotPrefab);
             go.transform.SetParent(playerInventoryParent, false);
             var label = go.GetComponentInChildren<TextMeshProUGUI>();
-            if (label != null && ability != null)
+            if (label != null)
             {
-                label.text = ability.abilityName;
+                string countSuffix = kvp.Value > 1 ? $" x{kvp.Value}" : "";
+                label.text = $"{kvp.Key.abilityName}{countSuffix}";
             }
         }
     }

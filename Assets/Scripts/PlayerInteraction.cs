@@ -7,11 +7,20 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask interactableLayer;
 
     private IInteractable currentInteractable;
+    private FPSController cachedController;
 
     public IInteractable GetCurrentInteractable() => currentInteractable;
 
     void Update()
     {
+        if (cachedController == null)
+        {
+            cachedController = GetComponent<FPSController>();
+        }
+
+        if (cachedController != null && cachedController.frozen)
+            return;
+
         CheckForInteractable();
 
         if (Input.GetKeyDown(interactKey))

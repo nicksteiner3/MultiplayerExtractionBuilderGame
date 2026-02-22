@@ -51,7 +51,27 @@ public class InventoryUIController : MonoBehaviour
             closeButton.onClick.AddListener(() => Close());
         }
 
+        SetupEquippedSlotClickHandlers();
         CacheInventoryPanelLayout();
+    }
+
+    private void SetupEquippedSlotClickHandlers()
+    {
+        SetupEquippedSlotButton(equippedAbilitySlot1, 0);
+        SetupEquippedSlotButton(equippedAbilitySlot2, 1);
+        SetupEquippedSlotButton(equippedAbilitySlot3, 2);
+    }
+
+    private void SetupEquippedSlotButton(GameObject slotObject, int slotIndex)
+    {
+        if (slotObject == null) return;
+
+        var button = slotObject.GetComponent<Button>();
+        if (button == null)
+            button = slotObject.AddComponent<Button>();
+
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => OnEquippedSlotClicked(slotIndex));
     }
 
     void Update()
@@ -414,6 +434,15 @@ public class InventoryUIController : MonoBehaviour
                 string countSuffix = kvp.Value > 1 ? $" x{kvp.Value}" : "";
                 label.text = $"{kvp.Key.abilityName}{countSuffix}";
             }
+
+            // Add click handler to equip ability
+            var button = go.GetComponent<Button>();
+            if (button == null)
+                button = go.AddComponent<Button>();
+
+            AbilityData abilityToEquip = kvp.Key;
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(() => OnAbilityClicked(abilityToEquip));
         }
     }
 
@@ -475,5 +504,56 @@ public class InventoryUIController : MonoBehaviour
         currentContainer.TransferToPlayer(stack);
         RefreshContainerList();
         RefreshPlayerInventory();
+    }
+
+    private void OnAbilityClicked(AbilityData ability)
+    {
+        if (ability == null || playerAbilities == null) return;
+
+        List<AbilityData> equippedList = GetEquippedAbilities();
+        
+        // Check if we have space (max 3 abilities)
+        if (equippedList.Count >= 3)
+        {
+            Debug.LogWarning("[InventoryUI] Cannot equip ability - all slots are full (max 3)");
+            return;
+        }
+
+        // Equip the ability
+        playerAbilities.EquipAbility(ability);
+        
+        // Remove one instance from inventory
+        InventoryManager.Instance.RemoveAbility(ability);
+
+        // Refresh UI
+        RefreshPlayerInventory();
+        
+        Debug.Log($"[InventoryUI] Equipped {ability.abilityName}");
+    }
+
+    private void OnEquippedSlotClicked(int slotIndex)
+    {
+        if (playerAbilities == null) return;
+
+        List<AbilityData> equippedList = GetEquippedAbilities();
+        
+        if (slotIndex >= equippedList.Count || equippedList[slotIndex] == null)
+        {
+            Debug.Log("[InventoryUI] Empty slot clicked - nothing to unequip");
+            return;
+        }
+
+        AbilityData abilityToUnequip = equippedList[slotIndex];
+        
+        // Unequip the ability
+        playerAbilities.UnequipAbility(abilityToUnequip);
+        
+        // Add back to inventory
+        InventoryManager.Instance.AddAbility(abilityToUnequip);
+
+        // Refresh UI
+        RefreshPlayerInventory();
+        
+        Debug.Log($"[InventoryUI] Unequipped {abilityToUnequip.abilityName}");
     }
 }

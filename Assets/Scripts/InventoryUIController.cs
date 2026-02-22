@@ -21,10 +21,14 @@ public class InventoryUIController : MonoBehaviour
     [SerializeField] private Image borderImage;
     [SerializeField] private Sprite standaloneBorderSprite;
     [SerializeField] private Sprite splitBorderSprite;
+    [SerializeField] private GameObject equippedAbilitySlot1;
+    [SerializeField] private GameObject equippedAbilitySlot2;
+    [SerializeField] private GameObject equippedAbilitySlot3;
 
     private ContainerInventory currentContainer;
     private bool isStandaloneMode = false; // True when opened with TAB (no container)
     private FPSController cachedController;
+    private PlayerAbilities playerAbilities;
     private Vector2 inventoryPanelAnchorMinDefault;
     private Vector2 inventoryPanelAnchorMaxDefault;
     private Vector2 inventoryPanelOffsetMinDefault;
@@ -40,6 +44,7 @@ public class InventoryUIController : MonoBehaviour
         if (parentUIObject != null) parentUIObject.SetActive(false);
 
         cachedController = FindFirstObjectByType<FPSController>();
+        playerAbilities = FindFirstObjectByType<PlayerAbilities>();
         
         if (closeButton != null)
         {
@@ -306,14 +311,52 @@ public class InventoryUIController : MonoBehaviour
         switch (currentTab)
         {
             case InventoryTab.Abilities:
+                ShowEquippedAbilitySlots(true);
+                RefreshEquippedAbilitySlots();
                 PopulateAbilitiesList();
                 break;
             case InventoryTab.Weapons:
+                ShowEquippedAbilitySlots(false);
                 PopulateWeaponsList();
                 break;
             default:
+                ShowEquippedAbilitySlots(false);
                 PopulateMaterialsList();
                 break;
+        }
+    }
+
+    private void ShowEquippedAbilitySlots(bool show)
+    {
+        if (equippedAbilitySlot1 != null) equippedAbilitySlot1.SetActive(show);
+        if (equippedAbilitySlot2 != null) equippedAbilitySlot2.SetActive(show);
+        if (equippedAbilitySlot3 != null) equippedAbilitySlot3.SetActive(show);
+    }
+
+    private void RefreshEquippedAbilitySlots()
+    {
+        List<AbilityData> equippedList = GetEquippedAbilities();
+
+        UpdateEquippedSlot(equippedAbilitySlot1, equippedList, 0);
+        UpdateEquippedSlot(equippedAbilitySlot2, equippedList, 1);
+        UpdateEquippedSlot(equippedAbilitySlot3, equippedList, 2);
+    }
+
+    private void UpdateEquippedSlot(GameObject slotObject, List<AbilityData> equippedList, int index)
+    {
+        if (slotObject == null) return;
+
+        var label = slotObject.GetComponentInChildren<TextMeshProUGUI>();
+        if (label != null)
+        {
+            if (index < equippedList.Count && equippedList[index] != null)
+            {
+                label.text = equippedList[index].abilityName;
+            }
+            else
+            {
+                label.text = "Empty";
+            }
         }
     }
 
@@ -337,18 +380,30 @@ public class InventoryUIController : MonoBehaviour
 
     private void PopulateAbilitiesList()
     {
-        List<AbilityData> abilities = InventoryManager.Instance.GetAbilities();
-        Debug.Log($"[InventoryUI] Player abilities: {abilities.Count}");
+        List<AbilityData> allAbilities = InventoryManager.Instance.GetAbilities();
+        Debug.Log($"[InventoryUI] Player abilities: {allAbilities.Count}");
 
-        Dictionary<AbilityData, int> abilityCounts = new Dictionary<AbilityData, int>();
-        foreach (var ability in abilities)
+        // Filter out equipped abilities from inventory
+        List<AbilityData> unequippedAbilities = new List<AbilityData>();
+        foreach (var ability in allAbilities)
         {
             if (ability == null) continue;
+            if (!IsAbilityEquipped(ability))
+            {
+                unequippedAbilities.Add(ability);
+            }
+        }
+
+        // Count duplicates of unequipped abilities
+        Dictionary<AbilityData, int> abilityCounts = new Dictionary<AbilityData, int>();
+        foreach (var ability in unequippedAbilities)
+        {
             if (!abilityCounts.ContainsKey(ability))
                 abilityCounts[ability] = 0;
             abilityCounts[ability] += 1;
         }
 
+        // Display unequipped abilities
         foreach (var kvp in abilityCounts)
         {
             var go = Instantiate(playerInventorySlotPrefab);
@@ -360,6 +415,40 @@ public class InventoryUIController : MonoBehaviour
                 label.text = $"{kvp.Key.abilityName}{countSuffix}";
             }
         }
+    }
+
+    private List<AbilityData> GetEquippedAbilities()
+    {
+        List<AbilityData> equipped = new List<AbilityData>();
+        if (playerAbilities == null) return equipped;
+
+        var equippedSlots = playerAbilities.GetType().GetField("equippedAbilities", 
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        
+        if (equippedSlots != null)
+        {
+            var slots = equippedSlots.GetValue(playerAbilities) as List<AbilitySlot>;
+            if (slots != null)
+            {
+                foreach (var slot in slots)
+                {
+                    if (slot.ability != null)
+                    {
+                        equipped.Add(slot.ability);
+                    }
+                }
+            }
+        }
+
+        return equipped;
+    }
+
+    private bool IsAbilityEquipped(AbilityData ability)
+    {
+        if (ability == null || playerAbilities == null) return false;
+        
+        var equippedList = GetEquippedAbilities();
+        return equippedList.Contains(ability);
     }
 
     private void PopulateWeaponsList()

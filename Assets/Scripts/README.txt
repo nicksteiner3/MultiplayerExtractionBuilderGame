@@ -681,6 +681,7 @@ Ship Building UI Enhancements
 - [ ] Keybinding to open Abilities menu (open inventory to Abilities tab)
 - [ ] Keybinding to open Weapons menu (open inventory to Weapons tab)
 - [ ] Keybinding to cycle inventory tabs (Previous: Q, Next: E)
+- [ ] Can click on tabs to change tabs as an alternative to pressing Q and E
 - [ ] Display current keybindings for inventory (Tab)
 - [ ] Display current keybindings for ability activation (1, 2, 3 for ability slots)
 - [ ] Display current keybindings for weapon swap/fire

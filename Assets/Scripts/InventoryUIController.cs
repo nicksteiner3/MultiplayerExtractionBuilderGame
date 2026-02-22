@@ -14,10 +14,22 @@ public class InventoryUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI inventoryDisplayText; // For tabbed display
     [SerializeField] private TextMeshProUGUI previousTabText;
     [SerializeField] private TextMeshProUGUI nextTabText;
+    [SerializeField] private GameObject containerPanel;
+    [SerializeField] private RectTransform playerInventoryPanel;
+    [SerializeField] private Vector2 standaloneMarginMin = new Vector2(40f, 40f);
+    [SerializeField] private Vector2 standaloneMarginMax = new Vector2(40f, 40f);
+    [SerializeField] private Image borderImage;
+    [SerializeField] private Sprite standaloneBorderSprite;
+    [SerializeField] private Sprite splitBorderSprite;
 
     private ContainerInventory currentContainer;
     private bool isStandaloneMode = false; // True when opened with TAB (no container)
     private FPSController cachedController;
+    private Vector2 inventoryPanelAnchorMinDefault;
+    private Vector2 inventoryPanelAnchorMaxDefault;
+    private Vector2 inventoryPanelOffsetMinDefault;
+    private Vector2 inventoryPanelOffsetMaxDefault;
+    private bool inventoryPanelLayoutCached = false;
 
     // Tab system
     private enum InventoryTab { Materials, Abilities, Weapons }
@@ -33,6 +45,8 @@ public class InventoryUIController : MonoBehaviour
         {
             closeButton.onClick.AddListener(() => Close());
         }
+
+        CacheInventoryPanelLayout();
     }
 
     void Update()
@@ -148,6 +162,7 @@ public class InventoryUIController : MonoBehaviour
     {
         currentContainer = container;
         isStandaloneMode = false;
+        ApplyStandaloneLayout(false);
         if (parentUIObject != null) parentUIObject.SetActive(true);
         RefreshContainerList();
         RefreshPlayerInventory();
@@ -162,6 +177,7 @@ public class InventoryUIController : MonoBehaviour
         currentContainer = null;
         isStandaloneMode = true;
         currentTab = InventoryTab.Materials;
+        ApplyStandaloneLayout(true);
         if (parentUIObject != null) parentUIObject.SetActive(true);
         ClearContainerList();
         RefreshPlayerInventory();
@@ -180,6 +196,54 @@ public class InventoryUIController : MonoBehaviour
         if (cachedController == null)
             cachedController = FindFirstObjectByType<FPSController>();
         if (cachedController) cachedController.UnfreezePlayer();
+    }
+
+    private void CacheInventoryPanelLayout()
+    {
+        if (playerInventoryPanel == null || inventoryPanelLayoutCached)
+            return;
+
+        inventoryPanelAnchorMinDefault = playerInventoryPanel.anchorMin;
+        inventoryPanelAnchorMaxDefault = playerInventoryPanel.anchorMax;
+        inventoryPanelOffsetMinDefault = playerInventoryPanel.offsetMin;
+        inventoryPanelOffsetMaxDefault = playerInventoryPanel.offsetMax;
+        inventoryPanelLayoutCached = true;
+    }
+
+    private void ApplyStandaloneLayout(bool standalone)
+    {
+        if (containerPanel != null)
+        {
+            containerPanel.SetActive(!standalone);
+        }
+
+        if (borderImage != null)
+        {
+            borderImage.sprite = standalone ? standaloneBorderSprite : splitBorderSprite;
+        }
+
+        if (playerInventoryPanel != null)
+        {
+            CacheInventoryPanelLayout();
+
+            if (standalone)
+            {
+                playerInventoryPanel.anchorMin = new Vector2(0f, 0f);
+                playerInventoryPanel.anchorMax = new Vector2(1f, 1f);
+                playerInventoryPanel.offsetMin = new Vector2(standaloneMarginMin.x, standaloneMarginMin.y);
+                playerInventoryPanel.offsetMax = new Vector2(-standaloneMarginMax.x, -standaloneMarginMax.y);
+            }
+            else
+            {
+                if (inventoryPanelLayoutCached)
+                {
+                    playerInventoryPanel.anchorMin = inventoryPanelAnchorMinDefault;
+                    playerInventoryPanel.anchorMax = inventoryPanelAnchorMaxDefault;
+                    playerInventoryPanel.offsetMin = inventoryPanelOffsetMinDefault;
+                    playerInventoryPanel.offsetMax = inventoryPanelOffsetMaxDefault;
+                }
+            }
+        }
     }
 
     private void RefreshContainerList()

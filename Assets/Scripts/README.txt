@@ -200,6 +200,12 @@ Material Types & Recipes
 - [ ] Remove unload flow (`UnloadInventory()` and salvage pickups) or convert to material-based pickups/unload.
 - [ ] Verify Equipment/Inventory UI no longer references salvage; replace with material counts where needed.
 
+## Code Quality & Cleanup (Ongoing)
+- [ ] **Phase 1 Code Cleanup**: Remove unneeded debug log lines, unused variables, and old code that's no longer used
+- [ ] General debug log review - identify and remove non-critical debug logs across all systems
+- [ ] Code consistency pass - ensure naming conventions and patterns are consistent
+- [ ] Remove commented-out code and dead code blocks
+
 ## First 10 Minutes: Guided Tutorial
 
 ### Tutorial Flow
@@ -662,11 +668,28 @@ Fabricator UI Enhancements
 - [x] Auto-queue next craft of same recipe when one completes
 - [x] Stop crafting when stash is full
 - [x] Add cancel button to stop crafting
+- [ ] Show material inventory amounts in recipe tooltip (e.g., "Bio-Matter: 50/1" showing have/need)
 - [ ] Show power availability status in recipe tooltip (e.g., "Insufficient Power" if machine can't run)
 - [ ] Add status indicator showing why production is paused (insufficient power, stash full, insufficient materials)
 
 Ship Building UI Enhancements
 - [ ] Add exit button to ship building terminal UI (close without placing machine)
+
+## Keybindings & Menu System
+- [ ] Add keybindings menu (accessible from main menu/pause menu)
+- [ ] Keybinding to open Inventory (Materials tab) - currently Tab
+- [ ] Keybinding to open Abilities menu (open inventory to Abilities tab)
+- [ ] Keybinding to open Weapons menu (open inventory to Weapons tab)
+- [ ] Keybinding to cycle inventory tabs (Previous: Q, Next: E)
+- [ ] Display current keybindings for inventory (Tab)
+- [ ] Display current keybindings for ability activation (1, 2, 3 for ability slots)
+- [ ] Display current keybindings for weapon swap/fire
+- [ ] Display current keybindings for fabricator menu (E interact)
+- [ ] Allow remapping of keybindings (rebindable controls)
+- [ ] Add secondary keybinding slots (allow multiple keys for same action, e.g., Tab AND I for inventory)
+- [ ] Add logic to prevent duplicate bindings (prevent same key from being bound to multiple actions)
+- [ ] Save keybinding preferences to config file
+- [ ] Reset keybindings to default option
 
 Output Routing System (Future Enhancement)
 - [ ] Design container system: fabricator output → container inventory
@@ -709,20 +732,21 @@ PlayerAbilities/PlayerWeapons reference items FROM inventory (equipped subset).
 - [x] Create InventoryManager (tracks materials only—needs expansion)
 - [x] Open inventory with TAB key (InventoryUI panel)
 - [x] Display materials (Bio-Matter, Salvage Scrap, Ore)
-- [ ] **Expand InventoryManager to track abilities and weapons**
-  - [ ] Add List<AbilityData> abilities field
-  - [ ] Add List<WeaponData> weapons field
-  - [ ] Add AddAbility(AbilityData), RemoveAbility(AbilityData) methods
-  - [ ] Add AddWeapon(WeaponData), RemoveWeapon(WeaponData) methods
-  - [ ] Add GetAbilities(), GetWeapons() methods
-- [ ] **Update Fabricator output to add to inventory**
-  - [ ] Change TakeCompletedItem() to call InventoryManager.AddAbility() / AddWeapon()
-  - [ ] Remove stash placement logic from fabricator double-click
+- [x] **Expand InventoryManager to track abilities and weapons**
+  - [x] Add List<AbilityData> abilities field
+  - [x] Add List<WeaponData> weapons field
+  - [x] Add AddAbility(AbilityData), RemoveAbility(AbilityData) methods
+  - [x] Add AddWeapon(WeaponData), RemoveWeapon(WeaponData) methods
+  - [x] Add GetAbilities(), GetWeapons() methods
+- [x] **Update Fabricator output to add to inventory**
+  - [x] Change TakeCompletedItem() to call InventoryManager.AddAbility() / AddWeapon()
+  - [x] Remove stash placement logic from fabricator double-click
 - [ ] **Redesign Inventory UI with tabbed sections**
-  - [ ] Add Materials tab (current display)
-  - [ ] Add Abilities tab (list abilities, show equipped status)
-  - [ ] Add Weapons tab (list weapons, show equipped status)
-  - [ ] Add tab switching UI (buttons or hotkeys)
+  - [x] Add Materials tab (current display)
+  - [x] Add Abilities tab (list abilities, show equipped status)
+  - [x] Add Weapons tab (list weapons, show equipped status)
+  - [x] Add tab switching UI (buttons or hotkeys)
+  - [ ] **Add proper equipped status check for abilities** - Currently placeholder showing "[EQUIPPED]" for all abilities; need method to check if ability is actually in PlayerAbilities.equippedAbilities list
   - [ ] Show equipped indicators (e.g., "Dash Ability [EQUIPPED]")
   - [ ] Full-width when solo, split when at container
 - [ ] **Implement equipping from inventory**

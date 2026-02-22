@@ -11,10 +11,17 @@ public class InventoryUIController : MonoBehaviour
     [SerializeField] private Transform playerInventoryParent;
     [SerializeField] private GameObject playerInventorySlotPrefab;
     [SerializeField] private Button closeButton;
+    [SerializeField] private TextMeshProUGUI inventoryDisplayText; // For tabbed display
+    [SerializeField] private TextMeshProUGUI previousTabText;
+    [SerializeField] private TextMeshProUGUI nextTabText;
 
     private ContainerInventory currentContainer;
     private bool isStandaloneMode = false; // True when opened with TAB (no container)
     private FPSController cachedController;
+
+    // Tab system
+    private enum InventoryTab { Materials, Abilities, Weapons }
+    private InventoryTab currentTab = InventoryTab.Materials;
 
     void Start()
     {
@@ -49,7 +56,93 @@ public class InventoryUIController : MonoBehaviour
         {
             Close();
         }
+
+        // Tab navigation with Q and E
+        if (parentUIObject != null && parentUIObject.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                CycleTab(1);
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                CycleTab(-1);
+            }
+        }
+
+        // Update header in real-time if display text available
+        if (parentUIObject != null && parentUIObject.activeSelf)
+        {
+            UpdateTabHeader();
+        }
     }
+
+    private void CycleTab(int direction)
+    {
+        int tabCount = System.Enum.GetValues(typeof(InventoryTab)).Length;
+        int currentIndex = (int)currentTab;
+        currentIndex = (currentIndex + direction + tabCount) % tabCount;
+        currentTab = (InventoryTab)currentIndex;
+        RefreshPlayerInventory();
+    }
+
+    private void UpdateTabHeader()
+    {
+        if (inventoryDisplayText != null)
+        {
+            inventoryDisplayText.text = GetTabHeader();
+        }
+
+        if (previousTabText != null)
+        {
+            previousTabText.text = $"{GetPreviousTabName()} [Q]";
+        }
+
+        if (nextTabText != null)
+        {
+            nextTabText.text = $"{GetNextTabName()} [E]";
+        }
+    }
+
+    private string GetTabHeader()
+    {
+        switch (currentTab)
+        {
+            case InventoryTab.Abilities:
+                return "Abilities";
+            case InventoryTab.Weapons:
+                return "Weapons";
+            default:
+                return "Materials";
+        }
+    }
+
+    private string GetPreviousTabName()
+    {
+        switch (currentTab)
+        {
+            case InventoryTab.Abilities:
+                return "Materials";
+            case InventoryTab.Weapons:
+                return "Abilities";
+            default:
+                return "Weapons";
+        }
+    }
+
+    private string GetNextTabName()
+    {
+        switch (currentTab)
+        {
+            case InventoryTab.Abilities:
+                return "Weapons";
+            case InventoryTab.Weapons:
+                return "Materials";
+            default:
+                return "Abilities";
+        }
+    }
+
 
     public void Open(ContainerInventory container)
     {
@@ -68,6 +161,7 @@ public class InventoryUIController : MonoBehaviour
     {
         currentContainer = null;
         isStandaloneMode = true;
+        currentTab = InventoryTab.Materials;
         if (parentUIObject != null) parentUIObject.SetActive(true);
         ClearContainerList();
         RefreshPlayerInventory();
@@ -145,9 +239,25 @@ public class InventoryUIController : MonoBehaviour
             return;
         }
 
+        switch (currentTab)
+        {
+            case InventoryTab.Abilities:
+                PopulateAbilitiesList();
+                break;
+            case InventoryTab.Weapons:
+                PopulateWeaponsList();
+                break;
+            default:
+                PopulateMaterialsList();
+                break;
+        }
+    }
+
+    private void PopulateMaterialsList()
+    {
         List<InventoryManager.InventoryStack> playerItems = InventoryManager.Instance.GetPlayerInventory();
         Debug.Log($"[InventoryUI] Player inventory has {playerItems.Count} stacks");
-        
+
         foreach (var stack in playerItems)
         {
             var go = Instantiate(playerInventorySlotPrefab);
@@ -157,6 +267,40 @@ public class InventoryUIController : MonoBehaviour
             {
                 label.text = $"{stack.material.materialName} x{stack.amount}";
                 Debug.Log($"[InventoryUI] Added slot: {stack.material.materialName} x{stack.amount}");
+            }
+        }
+    }
+
+    private void PopulateAbilitiesList()
+    {
+        List<AbilityData> abilities = InventoryManager.Instance.GetAbilities();
+        Debug.Log($"[InventoryUI] Player abilities: {abilities.Count}");
+
+        foreach (var ability in abilities)
+        {
+            var go = Instantiate(playerInventorySlotPrefab);
+            go.transform.SetParent(playerInventoryParent, false);
+            var label = go.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null && ability != null)
+            {
+                label.text = ability.abilityName;
+            }
+        }
+    }
+
+    private void PopulateWeaponsList()
+    {
+        List<WeaponData> weapons = InventoryManager.Instance.GetWeapons();
+        Debug.Log($"[InventoryUI] Player weapons: {weapons.Count}");
+
+        foreach (var weapon in weapons)
+        {
+            var go = Instantiate(playerInventorySlotPrefab);
+            go.transform.SetParent(playerInventoryParent, false);
+            var label = go.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null && weapon != null)
+            {
+                label.text = weapon.weaponName;
             }
         }
     }

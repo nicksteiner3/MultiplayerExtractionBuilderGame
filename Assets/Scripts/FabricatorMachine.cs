@@ -281,49 +281,24 @@ public class FabricatorMachine : MonoBehaviour, IPowered
 
     public void TakeCompletedItem()
     {
-        var terminal = FindFirstObjectByType<EquipmentUIManager>();
-        if (terminal == null)
+        if (InventoryManager.Instance == null)
         {
-            Debug.LogError("No Equipment Terminal found to place completed item.");
+            Debug.LogError("No InventoryManager found to add completed items.");
             return;
         }
 
-        // Take all completed items and add them to the stash
+        // Take all completed items and add them to player inventory
         while (completedItems.Count > 0)
         {
             var item = completedItems.Dequeue();
 
-            if (item.ability != null && item.recipe != null && item.recipe.prefabUIItem != null)
+            if (item.ability != null)
             {
-                var stashSlot = terminal.GetFirstStashSlot();
-                if (stashSlot != null)
-                {
-                    var abilityUIItem = Instantiate(item.recipe.prefabUIItem);
-                    abilityUIItem.ability = item.ability;
-                    abilityUIItem.IsEquipped = false;
-                    stashSlot.PlaceItem(abilityUIItem);
-                }
-                else
-                {
-                    Debug.LogWarning("No free ability stash slot available.");
-                    break; // Stop if we can't place more
-                }
+                InventoryManager.Instance.AddAbility(item.ability);
             }
-            else if (item.weapon != null && item.recipe != null && item.recipe.prefabWeaponUIItem != null)
+            else if (item.weapon != null)
             {
-                var stashSlot = terminal.GetFirstWeaponStashSlot();
-                if (stashSlot != null)
-                {
-                    var weaponUIItem = Instantiate(item.recipe.prefabWeaponUIItem);
-                    weaponUIItem.weapon = item.weapon;
-                    weaponUIItem.IsEquipped = false;
-                    stashSlot.PlaceItem(weaponUIItem);
-                }
-                else
-                {
-                    Debug.LogWarning("No free weapon stash slot available.");
-                    break; // Stop if we can't place more
-                }
+                InventoryManager.Instance.AddWeapon(item.weapon);
             }
         }
     }

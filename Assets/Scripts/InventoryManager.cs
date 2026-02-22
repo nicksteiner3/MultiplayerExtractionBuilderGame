@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Simple inventory manager for player materials/items (minimal scaffolding)
+// Unified inventory manager for player materials, abilities, and weapons
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance;
@@ -14,6 +14,8 @@ public class InventoryManager : MonoBehaviour
     }
 
     [SerializeField] private List<InventoryStack> playerInventory = new();
+    [SerializeField] private List<AbilityData> abilities = new();
+    [SerializeField] private List<WeaponData> weapons = new();
 
     void Awake()
     {
@@ -93,6 +95,66 @@ public class InventoryManager : MonoBehaviour
     public void ClearInventory()
     {
         playerInventory.Clear();
-        Debug.Log("[Inventory] Player inventory cleared");
+        abilities.Clear();
+        weapons.Clear();
+        Debug.Log("[Inventory] Player inventory cleared (materials, abilities, weapons)");
+    }
+
+    // Ability Management
+    public void AddAbility(AbilityData ability)
+    {
+        if (ability == null) return;
+        abilities.Add(ability);
+        Debug.Log($"[Inventory] Added ability: {ability.abilityName}");
+    }
+
+    public bool RemoveAbility(AbilityData ability)
+    {
+        if (ability == null) return false;
+        bool removed = abilities.Remove(ability);
+        if (removed)
+        {
+            Debug.Log($"[Inventory] Removed ability: {ability.abilityName}");
+        }
+        return removed;
+    }
+
+    public List<AbilityData> GetAbilities()
+    {
+        return new List<AbilityData>(abilities);
+    }
+
+    public bool HasAbility(AbilityData ability)
+    {
+        return abilities.Contains(ability);
+    }
+
+    // Weapon Management
+    public void AddWeapon(WeaponData weapon)
+    {
+        if (weapon == null) return;
+        weapons.Add(weapon);
+        Debug.Log($"[Inventory] Added weapon: {weapon.weaponName}");
+    }
+
+    public bool RemoveWeapon(WeaponData weapon)
+    {
+        if (weapon == null) return false;
+        bool removed = weapons.Remove(weapon);
+        if (removed)
+        {
+            Debug.Log($"[Inventory] Removed weapon: {weapon.weaponName}");
+        }
+        return removed;
+    }
+
+    public List<WeaponData> GetWeapons()
+    {
+        return new List<WeaponData>(weapons);
+    }
+
+    public bool HasWeapon(WeaponData weapon)
+    {
+        return weapons.Contains(weapon);
     }
 }
